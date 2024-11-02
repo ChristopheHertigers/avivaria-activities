@@ -1,0 +1,25 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+    http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             version="1.0">
+    <persistence-unit name="Avivaria">
+        <properties>
+            <!-- Only scan and detect annotated entities -->
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <!-- SQL stdout logging-->
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+            <property name="use_sql_comments" value="false"/>
+            <!-- Datasource -->
+            <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+            <property name="hibernate.connection.url" value="jdbc:derby:activities"/>
+            <property name="hibernate.connection.autocommit" value="false"/>
+            <!-- Hibernate parameters -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
+            <property name="hibernate.current_session_context_class" value="managed"/>
+            <property name="hibernate.jdbc.batch_size" value="100"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>

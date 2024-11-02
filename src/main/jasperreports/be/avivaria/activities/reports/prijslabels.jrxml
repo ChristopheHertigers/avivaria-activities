@@ -1,0 +1,80 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="prijslabels" language="java" columnCount="2" printOrder="Horizontal" pageWidth="595" pageHeight="842" columnWidth="297" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6fe0e41b-b83d-4bbf-a85a-168607113084">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="LABEL_HOKNUMMER" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["HOKNR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_FOKKERNUMMER" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["FOKKERNR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_CLUB" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CLUB"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_CLUBNAAM" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CLUB NAAM"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_FOKKERNAAM" class="java.lang.String"/>
+	<parameter name="LABEL_RAS" class="java.lang.String"/>
+	<parameter name="LABEL_KLEUR" class="java.lang.String"/>
+	<query language="sql"><![CDATA[]]></query>
+	<field name="geslachtEnLeeftijd" class="java.lang.String">
+		<description><![CDATA[geslachtEnLeeftijd]]></description>
+	</field>
+	<field name="hoknummer" class="java.lang.Long">
+		<description><![CDATA[hoknummer]]></description>
+	</field>
+	<field name="kleur" class="java.lang.String">
+		<description><![CDATA[kleur]]></description>
+	</field>
+	<field name="opmerking" class="java.lang.String">
+		<description><![CDATA[opmerking]]></description>
+	</field>
+	<field name="prijs" class="java.lang.String">
+		<description><![CDATA[prijs]]></description>
+	</field>
+	<field name="ras" class="java.lang.String">
+		<description><![CDATA[ras]]></description>
+	</field>
+	<field name="volgnummer" class="java.lang.Long">
+		<description><![CDATA[volgnummer]]></description>
+	</field>
+	<field name="naam" class="java.lang.String"/>
+	<background splitType="Stretch"/>
+	<detail>
+		<band height="105" splitType="Stretch">
+			<element kind="textField" uuid="bcc39c67-90fe-48ad-9b1c-41dc43a288cb" x="18" y="30" width="47" height="26" fontSize="20.0" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{hoknummer}]]></expression>
+			</element>
+			<element kind="textField" uuid="e6897158-cbf7-4037-8911-229cb5408d1b" x="18" y="16" width="47" height="14" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$P{LABEL_HOKNUMMER}]]></expression>
+			</element>
+			<element kind="textField" uuid="d05c425e-0e34-43ae-a83c-288519cd1fa8" x="73" y="14" width="213" height="27" fontSize="20.0" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{prijs}]]></expression>
+			</element>
+			<element kind="textField" uuid="91448dd7-761e-41d3-b7a2-e1deb4790cf9" x="73" y="60" width="61" height="10" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$P{LABEL_FOKKERNUMMER}]]></expression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="9bde9678-d492-4e9c-931e-8a41c7822974" x="139" y="60" width="24" height="10" fontSize="8.0" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{volgnummer}]]></expression>
+			</element>
+			<element kind="textField" uuid="b71fcb30-65f7-4456-8dc7-88c6b5269475" x="73" y="41" width="213" height="15" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{opmerking}]]></expression>
+			</element>
+			<element kind="textField" uuid="0afe3d74-0824-4876-b1a4-3decbbd8b11d" x="73" y="70" width="61" height="10" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$P{LABEL_RAS}]]></expression>
+			</element>
+			<element kind="textField" uuid="6a88f6be-2a7c-41d7-8f86-332fb96162a1" x="139" y="70" width="147" height="10" fontSize="8.0" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{ras}]]></expression>
+			</element>
+			<element kind="textField" uuid="58e9ee67-1413-4539-9473-150735290f46" x="73" y="80" width="61" height="10" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$P{LABEL_KLEUR}]]></expression>
+			</element>
+			<element kind="textField" uuid="e8d8b16a-0182-479e-86e5-5840e56afc26" x="139" y="80" width="147" height="10" fontSize="8.0" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{kleur}]]></expression>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

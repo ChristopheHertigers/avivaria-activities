@@ -1,0 +1,139 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="palmares" language="java" columnCount="2" pageWidth="595" pageHeight="842" columnWidth="277" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cd3e1426-c04b-472d-911a-49b6738570f1">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="115"/>
+	<parameter name="EVENT_NAME" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVENT NAME"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ADDRESS" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVENT ADDRESS"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPORT_PAGE_FOOTER_TITLE" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["REPORT PAGE FOOTER TITLE"]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[]]></query>
+	<field name="soort" class="java.lang.String">
+		<description><![CDATA[soort]]></description>
+	</field>
+	<field name="ras" class="java.lang.String">
+		<description><![CDATA[ras]]></description>
+	</field>
+	<field name="kleur" class="java.lang.String">
+		<description><![CDATA[kleur]]></description>
+	</field>
+	<field name="geslachtEnLeeftijd" class="java.lang.String">
+		<description><![CDATA[geslachtEnLeeftijd]]></description>
+	</field>
+	<field name="hokNummer" class="java.lang.Long">
+		<description><![CDATA[hokNummer]]></description>
+	</field>
+	<field name="inschrijver" class="java.lang.String">
+		<description><![CDATA[inschrijver]]></description>
+	</field>
+	<field name="predicaat" class="java.lang.String">
+		<description><![CDATA[predicaat]]></description>
+	</field>
+	<field name="teKoop" class="java.lang.String">
+		<description><![CDATA[teKoop]]></description>
+	</field>
+	<group name="Soort" keepTogether="true">
+		<expression><![CDATA[$F{soort}]]></expression>
+		<groupHeader>
+			<band height="21">
+				<element kind="textField" uuid="2c57eaa5-1a1c-4d41-85ef-1103d1c18868" x="0" y="5" width="277" height="15" fontSize="11.0" pdfFontName="Helvetica-Bold" underline="true" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$F{soort}]]></expression>
+				</element>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="7"/>
+		</groupFooter>
+	</group>
+	<group name="Ras" keepTogether="true">
+		<expression><![CDATA[$F{ras}]]></expression>
+		<groupHeader>
+			<band height="20">
+				<element kind="textField" uuid="db084d95-c942-4b46-b289-00d3aa35f4d8" x="0" y="4" width="277" height="15" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$F{ras}]]></expression>
+				</element>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Kleur" keepTogether="true">
+		<expression><![CDATA[$F{kleur}]]></expression>
+		<groupHeader>
+			<band height="17">
+				<element kind="textField" uuid="d4b1a571-ae07-449e-93b7-874c8ef6e57b" x="0" y="2" width="277" height="15" pdfFontName="Helvetica-Oblique" removeLineWhenBlank="true" underline="true" italic="true" vTextAlign="Middle">
+					<expression><![CDATA[$F{kleur}]]></expression>
+				</element>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Geslacht en Leeftijd">
+		<expression><![CDATA[$F{geslachtEnLeeftijd}]]></expression>
+		<groupHeader>
+			<band height="15">
+				<element kind="textField" uuid="58eb9349-f34a-4e98-b666-6ca2d1226c02" x="0" y="0" width="277" height="15" hTextAlign="Center" vTextAlign="Middle">
+					<expression><![CDATA[$F{geslachtEnLeeftijd}]]></expression>
+				</element>
+			</band>
+		</groupHeader>
+	</group>
+	<background splitType="Stretch"/>
+	<pageHeader height="78" splitType="Stretch">
+		<element kind="rectangle" uuid="a625e3b0-637c-414d-bc1e-7ad39bfd7dfe" x="0" y="0" width="555" height="78"/>
+		<element kind="image" uuid="6e3a263a-7aa8-4564-b872-eea4ef1de82d" x="1" y="1" width="76" height="76">
+			<expression><![CDATA["logo.jpg"]]></expression>
+		</element>
+		<element kind="textField" uuid="d185e45d-3c05-463d-8f86-f375c518b736" x="93" y="0" width="462" height="50" fontSize="16.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{EVENT_NAME}]]></expression>
+		</element>
+		<element kind="textField" uuid="7ef1b224-f92d-4d1e-8b5e-7086a4d1b63d" x="93" y="50" width="462" height="27" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{EVENT_ADDRESS}]]></expression>
+		</element>
+	</pageHeader>
+	<columnHeader height="22" splitType="Stretch">
+		<element kind="line" uuid="4b9bf6f6-8ad0-4899-a2af-8d86bd810bdc" x="0" y="20" width="277" height="1"/>
+		<element kind="staticText" uuid="17e428ef-c19c-4eb1-b6e2-a854742bc300" x="2" y="5" width="21" height="15" pdfFontName="Helvetica-Bold" strikeThrough="false" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Hok]]></text>
+		</element>
+		<element kind="staticText" uuid="58f706b2-19a9-4a62-92ce-3bb2d3581f4c" x="25" y="5" width="135" height="15" pdfFontName="Helvetica-Bold" strikeThrough="false" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Eigenaar]]></text>
+		</element>
+		<element kind="staticText" uuid="293c6244-68f3-45c5-9dd5-2432a061e1b9" x="181" y="5" width="48" height="15" pdfFontName="Helvetica-Bold" strikeThrough="false" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Predicaat]]></text>
+		</element>
+		<element kind="staticText" uuid="c808d787-c7e3-44f8-8a37-de311571439a" x="232" y="5" width="45" height="15" pdfFontName="Helvetica-Bold" strikeThrough="false" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Te koop]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<element kind="textField" uuid="c8d96f8c-92e5-4096-a04d-311c99d19e16" x="0" y="0" width="20" height="15" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$F{hokNummer}]]></expression>
+			</element>
+			<element kind="textField" uuid="2be9e5c2-f730-4865-9d0d-67e954ea917d" x="23" y="0" width="183" height="15" vTextAlign="Middle">
+				<expression><![CDATA[$F{inschrijver}]]></expression>
+			</element>
+			<element kind="textField" uuid="a441effb-fec8-46cd-b273-3b38c45f5786" x="249" y="0" width="24" height="15" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{teKoop}]]></expression>
+			</element>
+			<element kind="textField" uuid="95fd6613-6df3-416e-be14-d5c7d66802ba" x="206" y="0" width="34" height="15" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{predicaat}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="25" splitType="Stretch">
+		<element kind="line" uuid="bcb68695-eb05-48ac-8b0e-11c50b5b6dab" x="0" y="2" width="555" height="1"/>
+		<element kind="textField" uuid="5449b752-a94b-4403-8e26-5e4e5a8f1f66" x="1" y="3" width="434" height="15" vTextAlign="Bottom">
+			<expression><![CDATA[$P{REPORT_PAGE_FOOTER_TITLE}]]></expression>
+		</element>
+		<element kind="textField" uuid="79deb4d3-61a4-41a6-9737-b157de77b1c2" x="536" y="3" width="18" height="15" vTextAlign="Bottom">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="staticText" uuid="c3d86dac-53e6-4d66-a093-da181bba0ef6" x="510" y="3" width="22" height="15" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Blz.]]></text>
+		</element>
+	</pageFooter>
+</jasperReport>

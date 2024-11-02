@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Thu Aug 24 14:43:20 UTC 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-018a-27ff-efa5-000007523a68 
+on database directory /Users/christophehertigers/.avivaria/activities with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@5c29bfd 
+Loaded from file:/Users/christophehertigers/Library/Application%20Support/JetBrains/IntelliJIdea2021.2/jdbc-drivers/Apache%20Derby/10.15.2.0/org/apache/derby/derby/10.15.2.0/derby-10.15.2.0.jar
+java.vendor=JetBrains s.r.o.
+java.runtime.version=11.0.13+8-b1504.49
+user.dir=/Users/christophehertigers/Projects/Java/avivaria/activiteiten
+os.name=Mac OS X
+os.arch=x86_64
+os.version=12.6.7
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

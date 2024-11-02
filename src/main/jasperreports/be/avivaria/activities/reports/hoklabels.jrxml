@@ -1,0 +1,66 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="hoklabels" language="java" columnCount="2" printOrder="Horizontal" pageWidth="595" pageHeight="842" columnWidth="297" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6fe0e41b-b83d-4bbf-a85a-168607113084">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="LABEL_HOKNUMMER" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["HOKNR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_FOKKERNUMMER" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["FOKKERNR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_CLUB" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CLUB"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_CLUBNAAM" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CLUB NAAM"]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[]]></query>
+	<field name="geslachtEnLeeftijd" class="java.lang.String">
+		<description><![CDATA[geslachtEnLeeftijd]]></description>
+	</field>
+	<field name="hoknummer" class="java.lang.Long">
+		<description><![CDATA[hoknummer]]></description>
+	</field>
+	<field name="kleur" class="java.lang.String">
+		<description><![CDATA[kleur]]></description>
+	</field>
+	<field name="opmerking" class="java.lang.String">
+		<description><![CDATA[opmerking]]></description>
+	</field>
+	<field name="prijs" class="java.lang.String">
+		<description><![CDATA[prijs]]></description>
+	</field>
+	<field name="ras" class="java.lang.String">
+		<description><![CDATA[ras]]></description>
+	</field>
+	<field name="volgnummer" class="java.lang.Long">
+		<description><![CDATA[volgnummer]]></description>
+	</field>
+	<background splitType="Stretch"/>
+	<detail>
+		<band height="105" splitType="Stretch">
+			<element kind="textField" uuid="bcc39c67-90fe-48ad-9b1c-41dc43a288cb" x="18" y="18" width="47" height="26" fontSize="20.0" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{hoknummer}]]></expression>
+			</element>
+			<element kind="textField" uuid="4ce08f2d-6d2a-4d9e-99ad-a169277e8443" x="73" y="60" width="213" height="14" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{ras}]]></expression>
+			</element>
+			<element kind="textField" uuid="9a19520b-fdc1-4860-9600-47927d8dfd8e" x="73" y="73" width="213" height="14" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{kleur}]]></expression>
+			</element>
+			<element kind="textField" uuid="e6897158-cbf7-4037-8911-229cb5408d1b" x="18" y="43" width="47" height="14" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$P{LABEL_HOKNUMMER}]]></expression>
+			</element>
+			<element kind="textField" uuid="bfe598ab-2346-4160-9187-902d8417e1d8" x="18" y="73" width="47" height="14" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{geslachtEnLeeftijd}]]></expression>
+			</element>
+			<element kind="textField" uuid="d04f2689-0c73-48c1-9f60-c8b395de6e63" x="65" y="33" width="232" height="26" fontSize="20.0" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$P{LABEL_CLUBNAAM}]]></expression>
+			</element>
+			<element kind="textField" uuid="30150ea5-2301-4883-83e6-02527b4d7e5b" x="65" y="17" width="232" height="22" fontSize="16.0" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$P{LABEL_CLUB}]]></expression>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

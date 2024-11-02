@@ -1,0 +1,67 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="verenigingen" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3e57aa6c-bb18-46c5-b2df-a8ecf11f3fe4">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="REPORT_PAGE_FOOTER_TITLE" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["REPORT PAGE FOOTER TITLE"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_NAME" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVENT NAME"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ADDRESS" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVENT ADDRESS"]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[]]></query>
+	<field name="aantalDeelnemers" class="java.lang.Long">
+		<description><![CDATA[aantalDeelnemers]]></description>
+	</field>
+	<field name="aantalDieren" class="java.lang.Long">
+		<description><![CDATA[aantalDieren]]></description>
+	</field>
+	<field name="vereniging" class="java.lang.String">
+		<description><![CDATA[vereniging]]></description>
+	</field>
+	<background splitType="Stretch"/>
+	<pageHeader height="103" splitType="Stretch">
+		<element kind="rectangle" uuid="e6930818-4720-4690-bccd-53666603cf2c" x="0" y="0" width="555" height="78"/>
+		<element kind="image" uuid="3a86f802-8de4-4d14-8bd5-93bac5658e19" x="1" y="1" width="76" height="76">
+			<expression><![CDATA["logo.jpg"]]></expression>
+		</element>
+		<element kind="textField" uuid="c6ad6ba6-31ef-4f57-b343-b09a9ae92f54" x="93" y="0" width="462" height="50" fontSize="16.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{EVENT_NAME}]]></expression>
+		</element>
+		<element kind="textField" uuid="b07ea6e3-52ed-428a-9f1d-c371b1a5f9e9" x="93" y="51" width="462" height="27" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{EVENT_ADDRESS}]]></expression>
+		</element>
+		<element kind="line" uuid="93e5f3a8-3a81-41d7-ba80-f6059fe8453a" x="0" y="100" width="555" height="1"/>
+		<element kind="staticText" uuid="cc7f83b8-f3b7-4ed2-b553-9daae6cf3307" x="1" y="85" width="292" height="15" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Vereniging]]></text>
+		</element>
+		<element kind="staticText" uuid="1196513b-591f-46e9-a378-d8e7b10f5c1c" x="293" y="85" width="111" height="15" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Aantal deelnemers]]></text>
+		</element>
+		<element kind="staticText" uuid="17f2719a-1f03-4924-a593-1f8d7e585b90" x="404" y="85" width="93" height="15" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Aantal dieren]]></text>
+		</element>
+	</pageHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<element kind="textField" uuid="895acc54-1b26-499c-9fa7-1942871e091a" x="1" y="0" width="291" height="18" vTextAlign="Middle">
+				<expression><![CDATA[$F{vereniging}]]></expression>
+			</element>
+			<element kind="textField" uuid="1d2790a3-818a-43a1-b47d-36459358b1cb" x="404" y="0" width="93" height="18" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{aantalDieren}]]></expression>
+			</element>
+			<element kind="textField" uuid="2857e4e4-bf31-4e12-93da-49286d0bac00" x="293" y="0" width="111" height="18" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{aantalDeelnemers}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="22" splitType="Stretch">
+		<element kind="line" uuid="1e1dc26f-5d87-4101-8550-8ec88ce84197" x="0" y="2" width="555" height="1"/>
+		<element kind="textField" uuid="bf55f951-3b7c-43f6-99f6-8910090ca2e9" x="2" y="5" width="434" height="15" vTextAlign="Bottom">
+			<expression><![CDATA[$P{REPORT_PAGE_FOOTER_TITLE}]]></expression>
+		</element>
+	</pageFooter>
+</jasperReport>

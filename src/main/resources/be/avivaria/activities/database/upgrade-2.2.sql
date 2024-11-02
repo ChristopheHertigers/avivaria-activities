@@ -1,0 +1,4 @@
+ALTER TABLE event ADD club_naam_regel_1 VARCHAR(20)  NOT NULL  DEFAULT 'Kleindierclub';
+ALTER TABLE event ADD club_naam_regel_2 VARCHAR(20)  NOT NULL  DEFAULT 'AVIVARIA VZW.';
+
+UPDATE VERSION SET VERSION = '2.2';

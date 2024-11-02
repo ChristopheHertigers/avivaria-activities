@@ -1,0 +1,420 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="Avivaria Inschrijverslijst" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="29be35ca-4d3f-4113-b8a1-7261d67d0978">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="EVENT_NAME" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVENT NAME"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ADDRESS" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVENT ADDRESS"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ORGANIZER" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVENT ORGANIZER"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_DIEREN" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Dieren"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_PALMARES" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Palmares"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_DIERENTEKOOP" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Dieren te koop"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_LIDGELD" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Lidgeld"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_LIDGELDJEUGD" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Lidgeld (-18)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_FOKKERSKAART" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Fokkerskaart"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_FOKKERSKAART2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Fokkerskaart (2e)"]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[]]></query>
+	<field name="deelnemerFokkerskaartNummer" class="java.lang.String">
+		<description><![CDATA[deelnemerFokkerskaartNummer]]></description>
+	</field>
+	<field name="soort" class="java.lang.String">
+		<description><![CDATA[soort]]></description>
+	</field>
+	<field name="totaalLidgeld" class="java.lang.String">
+		<description><![CDATA[totaalLidgeld]]></description>
+	</field>
+	<field name="ras" class="java.lang.String">
+		<description><![CDATA[ras]]></description>
+	</field>
+	<field name="fokkerskaart2" class="java.lang.Integer">
+		<description><![CDATA[fokkerskaart2]]></description>
+	</field>
+	<field name="aantalTeKoop" class="java.lang.Long">
+		<description><![CDATA[aantalTeKoop]]></description>
+	</field>
+	<field name="prijsLidgeld" class="java.lang.String">
+		<description><![CDATA[prijsLidgeld]]></description>
+	</field>
+	<field name="aantal" class="java.lang.String">
+		<description><![CDATA[aantal]]></description>
+	</field>
+	<field name="prijsDier" class="java.lang.String">
+		<description><![CDATA[prijsDier]]></description>
+	</field>
+	<field name="totaalDierTeKoop" class="java.lang.String">
+		<description><![CDATA[totaalDierTeKoop]]></description>
+	</field>
+	<field name="prijsFokkerskaart" class="java.lang.String">
+		<description><![CDATA[prijsFokkerskaart]]></description>
+	</field>
+	<field name="totaal" class="java.lang.String">
+		<description><![CDATA[totaal]]></description>
+	</field>
+	<field name="deelnemerWoonplaats" class="java.lang.String">
+		<description><![CDATA[deelnemerWoonplaats]]></description>
+	</field>
+	<field name="deelnemerNaam" class="java.lang.String">
+		<description><![CDATA[deelnemerNaam]]></description>
+	</field>
+	<field name="totaalFokkerskaart" class="java.lang.String">
+		<description><![CDATA[totaalFokkerskaart]]></description>
+	</field>
+	<field name="totaalFokkerskaart2" class="java.lang.String">
+		<description><![CDATA[totaalFokkerskaart2]]></description>
+	</field>
+	<field name="lidgeld" class="java.lang.Integer">
+		<description><![CDATA[lidgeld]]></description>
+	</field>
+	<field name="lidgeldJeugd" class="java.lang.Integer">
+		<description><![CDATA[lidgeldJeugd]]></description>
+	</field>
+	<field name="prijsFokkerskaart2" class="java.lang.String">
+		<description><![CDATA[prijsFokkerskaart2]]></description>
+	</field>
+	<field name="aantalDieren" class="java.lang.Long">
+		<description><![CDATA[aantalDieren]]></description>
+	</field>
+	<field name="kleur" class="java.lang.String">
+		<description><![CDATA[kleur]]></description>
+	</field>
+	<field name="deelnemerStraat" class="java.lang.String">
+		<description><![CDATA[deelnemerStraat]]></description>
+	</field>
+	<field name="totaalPalmares" class="java.lang.String">
+		<description><![CDATA[totaalPalmares]]></description>
+	</field>
+	<field name="prijsDierTeKoop" class="java.lang.String">
+		<description><![CDATA[prijsDierTeKoop]]></description>
+	</field>
+	<field name="ringNummer" class="java.lang.String">
+		<description><![CDATA[ringNummer]]></description>
+	</field>
+	<field name="inschrijvingId" class="java.lang.Long">
+		<description><![CDATA[inschrijvingId]]></description>
+	</field>
+	<field name="prijsLidgeldJeugd" class="java.lang.String">
+		<description><![CDATA[prijsLidgeldJeugd]]></description>
+	</field>
+	<field name="prijs" class="java.lang.String">
+		<description><![CDATA[prijs]]></description>
+	</field>
+	<field name="palmares" class="java.lang.Integer">
+		<description><![CDATA[palmares]]></description>
+	</field>
+	<field name="deelnemerTelefoon" class="java.lang.String">
+		<description><![CDATA[deelnemerTelefoon]]></description>
+	</field>
+	<field name="fokkerskaart" class="java.lang.Integer">
+		<description><![CDATA[fokkerskaart]]></description>
+	</field>
+	<field name="hoknummer" class="java.lang.Long">
+		<description><![CDATA[hoknummer]]></description>
+	</field>
+	<field name="prijsPalmares" class="java.lang.String">
+		<description><![CDATA[prijsPalmares]]></description>
+	</field>
+	<field name="totaalLidgeldJeugd" class="java.lang.String">
+		<description><![CDATA[totaalLidgeldJeugd]]></description>
+	</field>
+	<field name="totaalDier" class="java.lang.String">
+		<description><![CDATA[totaalDier]]></description>
+	</field>
+	<field name="deelnemerVereniging" class="java.lang.String">
+		<description><![CDATA[deelnemerVereniging]]></description>
+	</field>
+	<field name="inschrijvingVolgnummer" class="java.lang.Long">
+		<description><![CDATA[inschrijvingVolgnummer]]></description>
+	</field>
+	<field name="jeugdDeelnemer" class="java.lang.String">
+		<description><![CDATA[jeugdDeelnemer]]></description>
+	</field>
+	<group name="Inschrijving" keepTogether="true" startNewPage="true">
+		<expression><![CDATA[$F{inschrijvingId}]]></expression>
+		<groupHeader>
+			<band height="172">
+				<element kind="rectangle" uuid="89c2eec9-a748-4bb8-8f8d-2c9abda37e24" x="335" y="0" width="222" height="146"/>
+				<element kind="rectangle" uuid="e4bd427e-9b09-43bb-a586-436567c72e3e" x="595" y="0" width="207" height="48"/>
+				<element kind="rectangle" uuid="ad2b05e0-98cf-4085-b289-bdc851a2905b" x="595" y="48" width="207" height="49"/>
+				<element kind="rectangle" uuid="9894d7a9-75c2-4910-8e7f-2d854394b996" x="595" y="97" width="207" height="49"/>
+				<element kind="staticText" uuid="e56c0208-dc59-4623-a251-6870cbae81ab" x="341" y="127" width="173" height="20" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Right" vTextAlign="Middle">
+					<text><![CDATA[Totaal =]]></text>
+				</element>
+				<element kind="textField" uuid="44ca31d4-b20d-4cb3-a070-2657836d9c8e" x="431" y="0" width="28" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{aantalDieren}]]></expression>
+				</element>
+				<element kind="textField" uuid="98592911-23c8-4f55-b109-05e6cc84f82f" x="431" y="19" width="28" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{palmares}]]></expression>
+				</element>
+				<element kind="textField" uuid="e621c92d-49ae-4041-afeb-520c1c5e9bb3" x="431" y="37" width="28" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{aantalTeKoop}]]></expression>
+				</element>
+				<element kind="textField" uuid="ef10fd9f-e528-4da1-a9d1-9d9209dbfffb" x="431" y="55" width="28" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{lidgeld}]]></expression>
+				</element>
+				<element kind="textField" uuid="d0a920fc-b407-4ead-9712-ffa1a32ba835" x="431" y="73" width="28" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{lidgeldJeugd}]]></expression>
+				</element>
+				<element kind="textField" uuid="af9f8163-13fc-492f-b8c0-3a334468785e" x="431" y="91" width="28" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{fokkerskaart}]]></expression>
+				</element>
+				<element kind="textField" uuid="e25f68d2-865d-42d1-b9b0-ffd7c4b0c8e9" x="431" y="109" width="28" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{fokkerskaart2}]]></expression>
+				</element>
+				<element kind="textField" uuid="7826cf63-e988-41ea-9d3b-e4b256b494a6" x="462" y="0" width="52" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{prijsDier}]]></expression>
+				</element>
+				<element kind="textField" uuid="e840e9bb-6e9e-495e-8fd6-497fcccdbbcb" x="462" y="19" width="52" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{prijsPalmares}]]></expression>
+				</element>
+				<element kind="textField" uuid="65dda457-860c-49f0-a109-2b24abca9837" x="462" y="37" width="52" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{prijsDierTeKoop}]]></expression>
+				</element>
+				<element kind="textField" uuid="aac57358-a572-4239-bccc-5d457a702d15" x="462" y="55" width="52" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{prijsLidgeld}]]></expression>
+				</element>
+				<element kind="textField" uuid="e4ebc335-616a-4ccf-ae9e-2c199c300983" x="462" y="73" width="52" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{prijsLidgeldJeugd}]]></expression>
+				</element>
+				<element kind="textField" uuid="aeca07fe-cd5f-4c86-8287-20540af38121" x="462" y="91" width="52" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{prijsFokkerskaart}]]></expression>
+				</element>
+				<element kind="textField" uuid="69b4170a-a0b5-4b87-b068-4fad71751550" x="462" y="109" width="52" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{prijsFokkerskaart2}]]></expression>
+				</element>
+				<element kind="textField" uuid="53b6b04d-a0d7-4728-bedf-84c2d00933f1" x="514" y="0" width="40" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{totaalDier}]]></expression>
+				</element>
+				<element kind="textField" uuid="de5272d1-9db4-4970-948f-08038eb01be2" x="514" y="19" width="40" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{totaalPalmares}]]></expression>
+				</element>
+				<element kind="textField" uuid="cf11286a-c5bb-41c7-8bc5-cb9b4f8e895e" x="514" y="37" width="40" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{totaalDierTeKoop}]]></expression>
+				</element>
+				<element kind="textField" uuid="16b59774-e125-496f-9df3-f8cb9aa2243d" x="514" y="55" width="40" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{totaalLidgeld}]]></expression>
+				</element>
+				<element kind="textField" uuid="f9127547-8f70-4209-bc16-6d9aaa557f3b" x="514" y="73" width="40" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{totaalLidgeldJeugd}]]></expression>
+				</element>
+				<element kind="textField" uuid="2fe6581b-de29-4b82-87aa-1fd7e7a1d694" x="514" y="91" width="40" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{totaalFokkerskaart}]]></expression>
+				</element>
+				<element kind="textField" uuid="0b3f8e84-2abc-4bdd-ab15-24034aa7a979" x="514" y="109" width="40" height="18" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{totaalFokkerskaart2}]]></expression>
+				</element>
+				<element kind="textField" uuid="6e73aa54-b1ee-40d4-a578-0e22b0f380ae" x="514" y="127" width="40" height="20" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{totaal}]]></expression>
+				</element>
+				<element kind="line" uuid="35d7e636-6e49-4cb2-b5e4-083de5560067" x="335" y="17" width="222" height="1"/>
+				<element kind="line" uuid="2e3fee9b-7d79-4188-911a-bd6756008dae" x="335" y="35" width="222" height="1"/>
+				<element kind="line" uuid="ce15ff69-6b03-4c31-b2ab-808863b8e1e2" x="335" y="53" width="222" height="1"/>
+				<element kind="line" uuid="60fb70f9-1cf4-4b40-b649-c8f515f28640" x="335" y="71" width="222" height="1"/>
+				<element kind="line" uuid="53865451-3347-4b49-8311-77c7fa00569f" x="335" y="89" width="222" height="1"/>
+				<element kind="line" uuid="ee922bed-7e62-401d-9569-fdd0b2a057a9" x="335" y="106" width="222" height="1"/>
+				<element kind="line" uuid="615ffc29-9540-450b-ab59-dc07a2472627" x="335" y="124" width="222" height="1"/>
+				<element kind="textField" uuid="493a9b10-fe68-4876-b517-8bd48feb235e" x="49" y="1" width="243" height="18" vTextAlign="Middle">
+					<expression><![CDATA[$F{deelnemerNaam}]]></expression>
+				</element>
+				<element kind="textField" uuid="904f13d8-2c9a-4458-b37e-a29b7fe67ce4" x="49" y="19" width="243" height="18" vTextAlign="Middle">
+					<expression><![CDATA[$F{deelnemerStraat}]]></expression>
+				</element>
+				<element kind="textField" uuid="b7778bf1-5fd4-41c1-b683-3471a7e1ee4d" x="49" y="36" width="243" height="18" vTextAlign="Middle">
+					<expression><![CDATA[$F{deelnemerWoonplaats}]]></expression>
+				</element>
+				<element kind="textField" uuid="1a1bc630-37e3-4bc4-b098-f7e7e9e5381d" x="49" y="53" width="243" height="18" vTextAlign="Middle">
+					<expression><![CDATA[$F{deelnemerTelefoon}]]></expression>
+				</element>
+				<element kind="textField" uuid="abd8831b-45e3-47b1-850a-3979278cfb71" x="49" y="70" width="243" height="18" vTextAlign="Middle">
+					<expression><![CDATA[$F{deelnemerVereniging}]]></expression>
+				</element>
+				<element kind="textField" uuid="dd2cd302-ae84-4d28-be14-a498276c5d7f" x="93" y="87" width="199" height="18" vTextAlign="Middle">
+					<expression><![CDATA[$F{deelnemerFokkerskaartNummer}]]></expression>
+				</element>
+				<element kind="staticText" uuid="a461b6b4-e3bf-4233-a034-e2788397cb4a" x="0" y="1" width="48" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<text><![CDATA[Naam :]]></text>
+				</element>
+				<element kind="staticText" uuid="526d5503-ec35-4be8-b2aa-b04fa6f96ced" x="0" y="19" width="48" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<text><![CDATA[Adres :]]></text>
+				</element>
+				<element kind="staticText" uuid="ed9628d9-8503-4ed5-9e0d-8b2e65946deb" x="0" y="53" width="48" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<text><![CDATA[Tel. :]]></text>
+				</element>
+				<element kind="staticText" uuid="08c6890f-6a2f-440d-9efe-21f13e839a50" x="0" y="70" width="48" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<text><![CDATA[Lid van :]]></text>
+				</element>
+				<element kind="staticText" uuid="1625a238-1ed2-4496-8fcf-434dacb05018" x="0" y="87" width="92" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<text><![CDATA[Fokkerskaartnr. :]]></text>
+				</element>
+				<element kind="staticText" uuid="11b4e344-ac07-4e8a-b5cc-f37f5c6eb593" x="597" y="1" width="68" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<text><![CDATA[Voldaan :]]></text>
+				</element>
+				<element kind="staticText" uuid="8e203614-10b5-4659-8b79-ddf3b27a7599" x="597" y="50" width="68" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<text><![CDATA[Inkorving :]]></text>
+				</element>
+				<element kind="staticText" uuid="481d457e-8013-47e1-98c1-633acf5a0abe" x="597" y="99" width="68" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<text><![CDATA[Uitkorving :]]></text>
+				</element>
+				<element kind="staticText" uuid="4e855ea1-4c65-4681-9050-55bce33657cf" x="2" y="154" width="28" height="18" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+					<text><![CDATA[Hok]]></text>
+				</element>
+				<element kind="staticText" uuid="2dff55a9-7f2c-46bc-a067-a15b5d7bd3aa" x="35" y="154" width="58" height="18" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+					<text><![CDATA[Aantal]]></text>
+				</element>
+				<element kind="line" uuid="5383ff15-0935-4245-9788-befe61a807a5" x="32" y="154" width="1" height="18"/>
+				<element kind="line" uuid="8f9955a3-4b0f-4fe3-857b-8641062c6642" x="95" y="154" width="1" height="18"/>
+				<element kind="staticText" uuid="87e0cd9b-d70b-41da-814c-bcff4dc19179" x="99" y="154" width="30" height="18" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+					<text><![CDATA[Soort]]></text>
+				</element>
+				<element kind="staticText" uuid="02409652-b072-48ff-bfa4-887fa4ee53b8" x="747" y="154" width="54" height="18" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+					<text><![CDATA[Verkocht]]></text>
+				</element>
+				<element kind="line" uuid="a8ca35a4-21b4-4444-b371-aeafc40e42e5" x="746" y="154" width="1" height="18"/>
+				<element kind="staticText" uuid="4da29420-2db4-4783-86e9-9f47aab79056" x="681" y="154" width="65" height="18" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+					<text><![CDATA[Prijs]]></text>
+				</element>
+				<element kind="line" uuid="5321d8b2-73f2-4c1b-9ea0-9229d32de489" x="680" y="154" width="1" height="18"/>
+				<element kind="staticText" uuid="983ffc28-c229-4bfe-bde3-b3dafc9a5e72" x="597" y="154" width="80" height="18" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+					<text><![CDATA[Ringnummer]]></text>
+				</element>
+				<element kind="line" uuid="11949c72-edf5-4033-9e2b-b0f94c9d6838" x="594" y="154" width="1" height="18"/>
+				<element kind="line" uuid="f92b4654-4687-465b-bf8b-e0909f6261b8" x="131" y="154" width="1" height="18"/>
+				<element kind="staticText" uuid="e1b9d407-6eab-4dd8-beac-6ce26f89323a" x="135" y="154" width="298" height="18" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Left" vTextAlign="Middle">
+					<text><![CDATA[Ras en type]]></text>
+				</element>
+				<element kind="staticText" uuid="ca30a048-9c6b-457e-b847-ca426d58a070" x="439" y="154" width="153" height="18" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Left" vTextAlign="Middle">
+					<text><![CDATA[Kleur]]></text>
+				</element>
+				<element kind="line" uuid="7edbc991-7d26-4d7f-973d-6223b3e0e79c" x="435" y="154" width="1" height="18"/>
+				<element kind="line" uuid="ef2ac0f0-049d-47f6-abaf-59941e1d24fc" x="0" y="154" width="802" height="1"/>
+				<element kind="line" uuid="fd556c76-5bee-40dc-9386-24b6935b2f6f" x="0" y="171" width="802" height="1"/>
+				<element kind="line" uuid="e6938619-99f3-4827-88af-53dbd53e77f3" x="0" y="154" width="1" height="18"/>
+				<element kind="line" uuid="b6af7e29-af3b-47c7-8cfa-c0067cad9e11" x="801" y="154" width="1" height="18"/>
+				<element kind="line" uuid="c72edd68-2c60-4cd9-b668-8cf191a211f7" x="434" y="0" width="1" height="125"/>
+				<element kind="line" uuid="779e6f2e-a158-4b4f-90a0-fd120d6f2ee2" x="462" y="0" width="1" height="125"/>
+				<element kind="line" uuid="0aedf928-d682-4120-a7fc-c474cd9e697f" x="517" y="0" width="1" height="146"/>
+				<element kind="textField" uuid="b042a80f-c5f3-448c-833c-f0f52bdd208f" x="93" y="104" width="36" height="18" strikeThrough="false" hTextAlign="Center" vTextAlign="Middle">
+					<printWhenExpression><![CDATA[$F{jeugdDeelnemer}.equals( "X" )]]></printWhenExpression>
+					<expression><![CDATA[$F{jeugdDeelnemer}]]></expression>
+				</element>
+				<element kind="staticText" uuid="0cd7d20e-3f04-4ba3-adbb-a5ca102c28b8" x="0" y="104" width="92" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<printWhenExpression><![CDATA[$F{jeugdDeelnemer}.equals( "X" )]]></printWhenExpression>
+					<text><![CDATA[Jeugddeelnemer :]]></text>
+				</element>
+				<element kind="staticText" uuid="58887811-794f-4d1e-a300-e9398f82fd65" x="0" y="121" width="92" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<printWhenExpression><![CDATA[$F{jeugdDeelnemer}.equals( "X" )]]></printWhenExpression>
+					<text><![CDATA[Geboortedatum :]]></text>
+				</element>
+				<element kind="staticText" uuid="6ec2e1fa-6990-4d00-9349-803d49e8b815" x="93" y="121" width="92" height="18" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+					<printWhenExpression><![CDATA[$F{jeugdDeelnemer}.equals( "X" )]]></printWhenExpression>
+					<text><![CDATA[___________________]]></text>
+				</element>
+				<element kind="textField" uuid="99e68677-7ab4-4269-b55b-77374739ea51" x="338" y="0" width="93" height="18" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$P{LABEL_DIEREN}]]></expression>
+				</element>
+				<element kind="textField" uuid="73dff06c-94a2-440a-8dce-6e6d310d3aa1" x="338" y="19" width="93" height="18" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$P{LABEL_PALMARES}]]></expression>
+				</element>
+				<element kind="textField" uuid="f432b188-999e-4901-907b-9c538a31283a" x="338" y="37" width="93" height="18" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$P{LABEL_DIERENTEKOOP}]]></expression>
+				</element>
+				<element kind="textField" uuid="e64fed0e-5f72-4be7-91c6-641c8ca73187" x="338" y="55" width="93" height="18" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$P{LABEL_LIDGELD}]]></expression>
+				</element>
+				<element kind="textField" uuid="49398be1-9f61-42df-a0e9-3d627d3da7b5" x="338" y="73" width="93" height="18" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$P{LABEL_LIDGELDJEUGD}]]></expression>
+				</element>
+				<element kind="textField" uuid="514b4d6e-a258-4484-9a6b-b35f8d30c926" x="338" y="91" width="93" height="18" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$P{LABEL_FOKKERSKAART}]]></expression>
+				</element>
+				<element kind="textField" uuid="52680841-cc75-4e8b-8a58-f26b7077d737" x="338" y="109" width="93" height="18" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$P{LABEL_FOKKERSKAART2}]]></expression>
+				</element>
+			</band>
+		</groupHeader>
+	</group>
+	<background splitType="Stretch"/>
+	<pageHeader height="83" splitType="Stretch">
+		<element kind="rectangle" uuid="dbbef85f-f795-4a9d-8510-fef0648971f1" x="0" y="0" width="802" height="78"/>
+		<element kind="image" uuid="4ad24e16-feda-4aa3-83b1-4ecc760e0f8c" x="1" y="1" width="76" height="76">
+			<expression><![CDATA["logo.jpg"]]></expression>
+		</element>
+		<element kind="textField" uuid="ac314e9e-0f0b-4976-830c-d604bebd9a85" x="93" y="1" width="709" height="55" fontSize="16.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{EVENT_NAME}]]></expression>
+		</element>
+		<element kind="textField" uuid="c9cfcdd3-930b-4313-9a63-b75e59e02cd0" x="448" y="56" width="355" height="22" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{EVENT_ADDRESS}]]></expression>
+		</element>
+		<element kind="textField" uuid="56547c71-2222-48c6-b216-9d25a5b72f7c" x="93" y="56" width="355" height="22" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{EVENT_ORGANIZER}]]></expression>
+		</element>
+	</pageHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<element kind="textField" uuid="628ceb41-623a-4d0e-8fd9-de7e1b0b0b9e" x="2" y="0" width="28" height="15" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$F{hoknummer}]]></expression>
+			</element>
+			<element kind="textField" uuid="4d196e6a-8d10-4a11-9424-e18b0bec3974" x="35" y="0" width="57" height="15" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{aantal}]]></expression>
+			</element>
+			<element kind="textField" uuid="89b5c1ee-9360-4f51-8f1c-17f0b9c9a131" x="99" y="0" width="30" height="15" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{soort}]]></expression>
+			</element>
+			<element kind="textField" uuid="5c3cd3cd-c0fd-4b68-b1fa-5592e4ae8e1c" x="135" y="0" width="298" height="15" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{ras}]]></expression>
+			</element>
+			<element kind="textField" uuid="6c8812b3-03e7-47ce-bae5-892a784762d5" x="439" y="0" width="153" height="15" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{kleur}]]></expression>
+			</element>
+			<element kind="textField" uuid="106672ac-277c-4328-8532-483acf8c3480" x="597" y="0" width="80" height="15" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{ringNummer}]]></expression>
+			</element>
+			<element kind="textField" uuid="32c0502c-31f3-42d9-93a2-458e2c0628a4" x="680" y="0" width="67" height="15" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{prijs}]]></expression>
+			</element>
+			<element kind="line" uuid="d86d5cd5-707a-409e-9843-0141b98827ca" x="0" y="15" width="802" height="1"/>
+			<element kind="line" uuid="cd0b0458-1b18-4b0d-84e9-477af93086f1" x="0" y="0" width="1" height="16"/>
+			<element kind="line" uuid="7d409d2c-29f3-4df3-a2cb-7123dd3420c0" x="32" y="0" width="1" height="16"/>
+			<element kind="line" uuid="992b5022-1439-4d34-9d48-d69ca22a39ad" x="95" y="0" width="1" height="16"/>
+			<element kind="line" uuid="7bd4ff63-2ebe-4a4f-9464-08a80a9313ce" x="131" y="0" width="1" height="16"/>
+			<element kind="line" uuid="3ea046fb-b95d-4c10-995c-4fe3d0db938c" x="435" y="0" width="1" height="16"/>
+			<element kind="line" uuid="e9f1f083-c76a-43b2-8ed8-3990743d84ed" x="594" y="0" width="1" height="16"/>
+			<element kind="line" uuid="4bf4cd44-0b66-4559-9ba9-45f9e8ea45c0" x="680" y="0" width="1" height="16"/>
+			<element kind="line" uuid="df023666-6840-4a73-8e5f-9d498d7420e1" x="746" y="0" width="1" height="16"/>
+			<element kind="line" uuid="17d46959-1de3-465e-9e36-76ac91926411" x="801" y="0" width="1" height="16"/>
+		</band>
+	</detail>
+	<pageFooter height="22" splitType="Stretch">
+		<element kind="staticText" uuid="0a9ad51b-5a37-4641-b75b-71cba5be9002" x="689" y="4" width="88" height="15" vTextAlign="Middle">
+			<text><![CDATA[Fokkersnummer :]]></text>
+		</element>
+		<element kind="staticText" uuid="23fb4b35-d747-4b7e-9266-ce887a557532" x="2" y="4" width="20" height="15" vTextAlign="Middle">
+			<text><![CDATA[Blz.]]></text>
+		</element>
+		<element kind="textField" uuid="bd996bca-7dd8-4244-b03d-924775967f02" x="22" y="4" width="26" height="15" vTextAlign="Middle">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="8541dfac-c944-409a-b4fd-8c3722965f06" x="777" y="4" width="25" height="15" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$F{inschrijvingVolgnummer}]]></expression>
+		</element>
+	</pageFooter>
+</jasperReport>
