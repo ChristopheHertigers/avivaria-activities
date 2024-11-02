@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_blame.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/derby.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docs/_TODO.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/izpack/install.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/deelnemers.jrxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/hoklabels.jrxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/inschrijvers.jrxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/kampioenen.jrxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/logo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/palmares.jrxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/prijslabels.jrxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/verenigingen.jrxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/FixFokkerskaartNummers.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/AantalDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/DeelnemerDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/EventDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/HokDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/InschrijvingDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/InschrijvingLijnDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/KeurmeesterDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/KleurDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/RasDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/SoortDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/VerenigingDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/DatabaseManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/ScriptRunner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/AantalController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/AboutController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ActivityMenuItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/DeelnemerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/EventController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ExportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/HokController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/InschrijvingController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/KleurController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/PredicaatController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/PrijsLabelController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ProgressDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/RasController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ReportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/SoortController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/VerenigingController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Aantal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/BaseEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Deelnemer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Event.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/EventType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Hok.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/HokType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/HoofdSoort.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/InschrijvingHeader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/InschrijvingLijn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Keurmeester.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Kleur.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Ras.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/RasKleur.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Soort.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Vereniging.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/usertype/EventTypeUserType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/usertype/HokTypeUserType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/DeelnemerReportDecorator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/InschrijvingReportDecorator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/KampioenReportDecorator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/LabelReportDecorator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/PalmaresReportDecorator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/ReportDataFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/VerenigingReportDecorator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/AbstractController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/AbstractPersistentTableController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/ControllerRegistry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/DataAccessAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/DefaultAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/DefaultEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/DefaultEventListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/EntityTableColumn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/EntityTableModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/PersistenceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/VetoableListSelectionModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/celleditor/AutoCompletion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/celleditor/ComboBoxCellEditor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/cellrenderer/BooleanCenteredRenderer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/cellrenderer/CellRenderers.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/cellrenderer/StringCenteredRenderer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/components/Dropdown.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/components/Table.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/BooleanStringType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/Dao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/EnumIntType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/EnumStringType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/exception/MissingArgumentException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/CollectionUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/DateFormat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/EnvironmentUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/HibernateUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/MD5.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/NumberUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/StringUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/SystemConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/avivaria.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/database/initial_data.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/database/initial_schema.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/database/upgrade-2.0.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/database/upgrade-2.1.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/database/upgrade-2.2.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/database/upgrade-2.4.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/gui/add.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/gui/copy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/gui/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/gui/paste.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/gui/remove.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/gui/waitAnimation.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/system.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2oIHGTkmc3eDVwkOau2pVxeoykA" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/christophe/projects/avivaria/activities",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="be.avivaria.activities.Main" />
+      <module name="activities" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="be.avivaria.activities.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="activities" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="activities" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.19072.14" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.19072.14" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="" />
+      <created>1730550073753</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1730550073753</updated>
+      <workItem from="1730550074760" duration="4183000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
