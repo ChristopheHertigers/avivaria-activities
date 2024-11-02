@@ -1,16 +1,17 @@
 package be.avivaria.activities;
 
-import be.avivaria.activities.dao.EventDao;
-import be.avivaria.activities.dao.HokDao;
-import be.avivaria.activities.dao.InschrijvingDao;
+import be.avivaria.activities.dao.EventRepository;
+import be.avivaria.activities.dao.HokRepository;
+import be.avivaria.activities.dao.InschrijvingRepository;
 import be.avivaria.activities.gui.ActivityMenuItem;
 import be.avivaria.activities.model.Event;
 import be.avivaria.activities.model.HokType;
+import be.indigosolutions.framework.AbstractController;
 import be.indigosolutions.framework.DefaultAction;
-import be.indigosolutions.framework.PersistenceController;
-import com.jgoodies.looks.HeaderStyle;
-import com.jgoodies.looks.Options;
-import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,49 +20,50 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 
-/**
- * Main application controller.
- *
- * @author Christophe Hertigers
- * @version $Id: $
- * @created 21-jul-2008
- */
-public class MainController extends PersistenceController {
+@Controller
+public class MainController extends AbstractController {
 
-    private JLabel huidigeActiviteitLabel;
+    @SuppressWarnings("unused")
+    Logger logger = LoggerFactory.getLogger(MainController.class);
 
-    private JPanel inschrijvingenPanel;
-    private JLabel aantalInschrijvingen;
-    private JButton inschrijvingDetailButton;
+    private final EventRepository eventRepository;
+    private final InschrijvingRepository inschrijvingRepository;
+    private final HokRepository hokRepository;
 
-    private JPanel hoknummerTitlePanel;
-    private JPanel hoknummerPanel;
-    private JLabel aantalHokkenType1 = new JLabel();
-    private JLabel aantalHokkenType2 = new JLabel();
-    private JLabel aantalHokkenType3 = new JLabel();
-    private JLabel aantalHokkenType4 = new JLabel();
-    private JLabel aantalHokkenType5 = new JLabel();
-    private JLabel aantalHokken = new JLabel();
-    private JButton hoknummersButton;
-    private JButton afdrukkenInschrijversButton;
+    private final JPanel inschrijvingenPanel;
+    private final JPanel hoknummerTitlePanel;
+    private final JPanel hoknummerPanel;
+    private final JPanel palmaresTitlePanel;
+    private final JPanel palmaresPanel;
+    private final JPanel labelsTitlePanel;
+    private final JPanel labelsPanel;
 
-    private JPanel palmaresTitlePanel;
-    private JPanel palmaresPanel;
-    private JButton predicatenButton;
-    private JButton afdrukkenVerenigingenButton;
-    private JButton afdrukkenDeelnemersButton;
-    private JButton afdrukkenJeugdButton;
-    private JButton afdrukkenPalmaresButton;
-    private JButton afdrukkenKampioenenButton;
+    private final JLabel huidigeActiviteitLabel = new JLabel();
+    private final JLabel aantalInschrijvingen = new JLabel();
+    private final JLabel aantalHokkenType1 = new JLabel();
+    private final JLabel aantalHokkenType2 = new JLabel();
+    private final JLabel aantalHokkenType3 = new JLabel();
+    private final JLabel aantalHokkenType4 = new JLabel();
+    private final JLabel aantalHokkenType5 = new JLabel();
+    private final JLabel aantalHokken = new JLabel();
 
-    private JPanel labelsTitlePanel;
-    private JPanel labelsPanel;
-    private JButton afdrukkenHokLabelsButton;
-    private JButton afdrukkenPrijsLabelsButton;
-    private JButton editPrijsLabelsButton;
+    private final JButton exitButton;
 
-    public MainController() {
-        super(new JFrame("Avivaria Activiteiten Beheer"), null);
+    private Event selectedEvent;
+
+    @Autowired
+    public MainController(
+            EventRepository eventRepository,
+            InschrijvingRepository inschrijvingRepository,
+            HokRepository hokRepository
+    ) {
+
+        super(new JFrame("Avivaria Activiteiten Beheer"));
+
+        this.eventRepository = eventRepository;
+        this.inschrijvingRepository = inschrijvingRepository;
+        this.hokRepository = hokRepository;
+
         final JFrame mainWindow = (JFrame) getView();
 
         // Decoration etc.
@@ -69,8 +71,7 @@ public class MainController extends PersistenceController {
         mainWindow.getContentPane().setLayout(null);
 
         // Menu
-        JMenuBar menuBar = ActivityMenuItem.createMenu(this, getPersistenceContext());
-        menuBar.putClientProperty(Options.HEADER_STYLE_KEY, HeaderStyle.BOTH);
+        JMenuBar menuBar = ActivityMenuItem.createMenu(this);
         mainWindow.setJMenuBar(menuBar);
 
         // Current activity panel
@@ -162,39 +163,23 @@ public class MainController extends PersistenceController {
         // Bottom panel
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setBounds(10, 520, 825, 30);
-        JButton exitButton = createExitButton();
+        exitButton = createExitButton();
         bottomPanel.add(exitButton, BorderLayout.EAST);
         mainWindow.add(bottomPanel);
-
-        // load data
-        loadData();
 
         // Display the window
         mainWindow.setMinimumSize(new Dimension(860, 620));
         mainWindow.setPreferredSize(new Dimension(860, 620));
         mainWindow.setLocation(300, 0);
-        mainWindow.setVisible(true);
+    }
+
+    @Override
+    public void show() {
+        // load data
+        loadData();
+        super.show();
         exitButton.requestFocus();
     }
-
-
-    private JButton createExitButton() {
-        JButton exitButton = new JButton("Sluit");
-        registerAction(exitButton, new DefaultAction("exit") {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        return exitButton;
-    }
-
-    private JButton createInschrijvingDetailButton() {
-        inschrijvingDetailButton = new JButton("Ga naar inschrijving");
-        inschrijvingDetailButton.setBounds(670, 3, 150, 28);
-        registerAction(inschrijvingDetailButton, ActivityMenuItem.Inschrijvingen.getAction(this, getPersistenceContext()));
-        return inschrijvingDetailButton;
-    }
-
 
     private JPanel createTitle(String title, Rectangle r, MouseAdapter adapter) {
         final JPanel p = new JPanel(new BorderLayout());
@@ -212,11 +197,27 @@ public class MainController extends PersistenceController {
     private JPanel createActitivyPanel() {
         JPanel panel = new JPanel();
         panel.setBounds(10, 35, 820, 30);
-        huidigeActiviteitLabel = new JLabel();
         huidigeActiviteitLabel.setFont(new Font("Verdana", Font.PLAIN, 16));
         huidigeActiviteitLabel.setForeground(new Color(0, 0, 128));
         panel.add(huidigeActiviteitLabel);
         return panel;
+    }
+
+    private JButton createExitButton() {
+        JButton exitButton = new JButton("Sluit");
+        registerAction(exitButton, new DefaultAction("exit") {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        return exitButton;
+    }
+
+    private JButton createInschrijvingDetailButton() {
+        JButton inschrijvingDetailButton = new JButton("Ga naar inschrijving");
+        inschrijvingDetailButton.setBounds(670, 3, 150, 28);
+        registerAction(inschrijvingDetailButton, ActivityMenuItem.Inschrijvingen.getAction(this));
+        return inschrijvingDetailButton;
     }
 
     private JPanel createInschrijvingPanel() {
@@ -227,7 +228,6 @@ public class MainController extends PersistenceController {
         aantalInschrijvingenLabel.setBounds(30, 0, 150, 30);
         panel.add(aantalInschrijvingenLabel);
 
-        aantalInschrijvingen = new JLabel();
         aantalInschrijvingen.setBounds(180, 0, 50, 30);
         panel.add(aantalInschrijvingen);
         panel.add(createInschrijvingDetailButton());
@@ -257,19 +257,20 @@ public class MainController extends PersistenceController {
     }
 
     private JButton createHoknummersButton() {
-        hoknummersButton = new JButton("Hoknummers");
+        JButton hoknummersButton = new JButton("Hoknummers");
         hoknummersButton.setBounds(655, 3, 165, 28);
-        registerAction(hoknummersButton, ActivityMenuItem.HoknummersToekennen.getAction(this, getPersistenceContext()));
+        registerAction(hoknummersButton, ActivityMenuItem.HoknummersToekennen.getAction(this));
         return hoknummersButton;
     }
 
     private JButton createAfdrukkenInschrijversButton() {
-        afdrukkenInschrijversButton = new JButton("Afdrukken inschrijvers");
+        JButton afdrukkenInschrijversButton = new JButton("Afdrukken inschrijvers");
         afdrukkenInschrijversButton.setBounds(655, 33, 165, 28);
-        registerAction(afdrukkenInschrijversButton, ActivityMenuItem.InschrijvingenAfdrukken.getAction(this, getPersistenceContext()));
+        registerAction(afdrukkenInschrijversButton, ActivityMenuItem.InschrijvingenAfdrukken.getAction(this));
         return afdrukkenInschrijversButton;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void createHokTypeLabels(JPanel panel, JLabel aantalHokkenType, String title, String value, int x) {
         JLabel aantalHokkenType1Label = new JLabel(title);
         aantalHokkenType1Label.setBounds(x, 10, 50, 20);
@@ -285,37 +286,52 @@ public class MainController extends PersistenceController {
 
     private JPanel createPalmaresPanel() {
         JPanel panel = new JPanel(null);
-        panel.setBounds(10, 190, 820, 65);
+        panel.setBounds(10, 190, 820, 97);
 
-        predicatenButton = new JButton("Predicaten");
+        JButton predicatenButton = new JButton("Predicaten");
         predicatenButton.setBounds(230, 3, 90, 28);
-        registerAction(predicatenButton, ActivityMenuItem.PredicatenToekennen.getAction(this, getPersistenceContext()));
+        registerAction(predicatenButton, ActivityMenuItem.PredicatenToekennen.getAction(this));
         panel.add(predicatenButton);
 
-        afdrukkenVerenigingenButton = new JButton("Afdrukken verenigingen");
+        JButton afdrukkenVerenigingenButton = new JButton("Afdrukken verenigingen");
         afdrukkenVerenigingenButton.setBounds(325, 3, 165, 28);
-        registerAction(afdrukkenVerenigingenButton, ActivityMenuItem.VerenigingenAfdrukken.getAction(this, getPersistenceContext()));
+        registerAction(afdrukkenVerenigingenButton, ActivityMenuItem.VerenigingenAfdrukken.getAction(this));
         panel.add(afdrukkenVerenigingenButton);
 
-        afdrukkenDeelnemersButton = new JButton("Afdrukken deelnemers");
+        JButton afdrukkenDeelnemersButton = new JButton("Afdrukken deelnemers");
         afdrukkenDeelnemersButton.setBounds(495, 3, 160, 28);
-        registerAction(afdrukkenDeelnemersButton, ActivityMenuItem.DeelnemersAfdrukken.getAction(this, getPersistenceContext()));
+        registerAction(afdrukkenDeelnemersButton, ActivityMenuItem.DeelnemersAfdrukken.getAction(this));
         panel.add(afdrukkenDeelnemersButton);
 
-        afdrukkenJeugdButton = new JButton("Afdrukken jeugd");
+        JButton afdrukkenJeugdButton = new JButton("Afdrukken jeugd");
         afdrukkenJeugdButton.setBounds(660, 3, 160, 28);
-        registerAction(afdrukkenJeugdButton, ActivityMenuItem.JeugdDeelnemersAfdrukken.getAction(this, getPersistenceContext()));
+        registerAction(afdrukkenJeugdButton, ActivityMenuItem.JeugdDeelnemersAfdrukken.getAction(this));
         panel.add(afdrukkenJeugdButton);
 
-        afdrukkenPalmaresButton = new JButton("Afdrukken palmares");
+        JButton keurmeesterButton = new JButton("Keurmeester");
+        keurmeesterButton.setBounds(325, 35, 165, 28);
+        registerAction(keurmeesterButton, ActivityMenuItem.Keurmeesters.getAction(this));
+        panel.add(keurmeesterButton);
+
+        JButton afdrukkenPalmaresButton = new JButton("Afdrukken palmares");
         afdrukkenPalmaresButton.setBounds(495, 35, 160, 28);
-        registerAction(afdrukkenPalmaresButton, ActivityMenuItem.PalmaresAfdrukken.getAction(this, getPersistenceContext()));
+        registerAction(afdrukkenPalmaresButton, ActivityMenuItem.PalmaresAfdrukken.getAction(this));
         panel.add(afdrukkenPalmaresButton);
 
-        afdrukkenKampioenenButton = new JButton("Afdrukken kampioenen");
+        JButton afdrukkenKampioenenButton = new JButton("Afdrukken kampioenen");
         afdrukkenKampioenenButton.setBounds(660, 35, 160, 28);
-        registerAction(afdrukkenKampioenenButton, ActivityMenuItem.KampioenenAfdrukken.getAction(this, getPersistenceContext()));
+        registerAction(afdrukkenKampioenenButton, ActivityMenuItem.KampioenenAfdrukken.getAction(this));
         panel.add(afdrukkenKampioenenButton);
+
+        JButton afdrukkenAantalDierenLedenButton = new JButton("Afdrukken dieren lid");
+        afdrukkenAantalDierenLedenButton.setBounds(495, 67, 160, 28);
+        registerAction(afdrukkenAantalDierenLedenButton, ActivityMenuItem.AantalDierenLedenAfdrukken.getAction(this));
+        panel.add(afdrukkenAantalDierenLedenButton);
+
+        JButton afdrukkenAantalDierenNietLedenButton = new JButton("Afdrukken dieren rest");
+        afdrukkenAantalDierenNietLedenButton.setBounds(660, 67, 160, 28);
+        registerAction(afdrukkenAantalDierenNietLedenButton, ActivityMenuItem.AantalDierenNietLedenAfdrukken.getAction(this));
+        panel.add(afdrukkenAantalDierenNietLedenButton);
 
         return panel;
     }
@@ -324,38 +340,34 @@ public class MainController extends PersistenceController {
         JPanel panel = new JPanel(null);
         panel.setBounds(10, 230, 820, 30);
 
-        afdrukkenHokLabelsButton = new JButton("Afdrukken hoklabels");
+        JButton afdrukkenHokLabelsButton = new JButton("Afdrukken hoklabels");
         afdrukkenHokLabelsButton.setBounds(330, 3, 160, 28);
-        registerAction(afdrukkenHokLabelsButton, ActivityMenuItem.HokLabelsAfdrukken.getAction(this, getPersistenceContext()));
+        registerAction(afdrukkenHokLabelsButton, ActivityMenuItem.HokLabelsAfdrukken.getAction(this));
         panel.add(afdrukkenHokLabelsButton);
 
-        afdrukkenPrijsLabelsButton = new JButton("Afdrukken prijslabels");
+        JButton afdrukkenPrijsLabelsButton = new JButton("Afdrukken prijslabels");
         afdrukkenPrijsLabelsButton.setBounds(495, 3, 160, 28);
-        registerAction(afdrukkenPrijsLabelsButton, ActivityMenuItem.PrijsLabelsAfdrukken.getAction(this, getPersistenceContext()));
+        registerAction(afdrukkenPrijsLabelsButton, ActivityMenuItem.PrijsLabelsAfdrukken.getAction(this));
         panel.add(afdrukkenPrijsLabelsButton);
 
-        editPrijsLabelsButton = new JButton("Wijzig prijslabels");
+        JButton editPrijsLabelsButton = new JButton("Wijzig prijslabels");
         editPrijsLabelsButton.setBounds(660, 3, 160, 28);
-        registerAction(editPrijsLabelsButton, ActivityMenuItem.EditPrijsLabels.getAction(this, getPersistenceContext()));
+        registerAction(editPrijsLabelsButton, ActivityMenuItem.EditPrijsLabels.getAction(this));
         panel.add(editPrijsLabelsButton);
 
         return panel;
     }
 
-    public void loadData() {
-        Session session = getPersistenceContext();
-        EventDao eventDao = new EventDao(session);
-        Event selectedEvent = eventDao.findSelected();
 
-        InschrijvingDao inschrijvingDao = new InschrijvingDao(session);
-        long nbrInschrijvingen = inschrijvingDao.countForEvent(selectedEvent.getId());
+    public void loadData() {
+        selectedEvent = eventRepository.findBySelectedTrue();
+        long nbrInschrijvingen = inschrijvingRepository.countByEvent(selectedEvent);
 
         huidigeActiviteitLabel.setText(selectedEvent.getNaam());
-        aantalInschrijvingen.setText(""+nbrInschrijvingen);
+        aantalInschrijvingen.setText("" + nbrInschrijvingen);
 
-        HokDao hokDao = new HokDao(session);
-        Map<HokType,Long> countsPerHokType = hokDao.countPerHokTypeByEventId(selectedEvent.getId());
-        long nbrHokken = hokDao.countForEvent(selectedEvent.getId());
+        Map<HokType,Long> countsPerHokType = hokRepository.countPerHokTypeByEvent(selectedEvent);
+        long nbrHokken = hokRepository.countByEvent(selectedEvent);
 
         aantalHokkenType1.setText(countsPerHokType.get(HokType.Type1) == null ? "0" : ""+countsPerHokType.get(HokType.Type1));
         aantalHokkenType2.setText(countsPerHokType.get(HokType.Type2) == null ? "0" : ""+countsPerHokType.get(HokType.Type2));
@@ -365,4 +377,7 @@ public class MainController extends PersistenceController {
         aantalHokken.setText(""+nbrHokken);
     }
 
+    public Event getSelectedEvent() {
+        return selectedEvent;
+    }
 }

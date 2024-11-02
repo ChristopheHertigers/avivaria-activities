@@ -1,14 +1,16 @@
 package be.avivaria.activities.gui;
 
-import be.avivaria.activities.dao.KleurDao;
+import be.avivaria.activities.dao.KleurRepository;
 import be.avivaria.activities.model.Kleur;
-import be.indigosolutions.framework.*;
+import be.indigosolutions.framework.AbstractTableController;
+import be.indigosolutions.framework.DefaultAction;
+import be.indigosolutions.framework.EntityTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,22 +25,26 @@ import java.util.List;
  * Date: 06/10/13
  * Time: 09:54
  */
-public class KleurController extends AbstractPersistentTableController<Kleur> {
-    private static final Logger LOGGER = LogManager.getLogger(KleurController.class);
+@Controller
+public class KleurController extends AbstractTableController<Kleur> {
+    private static final Logger logger = LoggerFactory.getLogger(KleurController.class);
+
+    private final KleurRepository kleurRepository;
 
     // View
-    private JTextField idField;
-    private JTextField naamField;
+    private final JTextField idField;
+    private final JTextField naamField;
 
-    private JButton saveButton;
-    private JButton cancelButton;
-    private JButton closeButton;
+    private final JButton saveButton;
+    private final JButton cancelButton;
+    private final JButton closeButton;
 
     // Model
     private long previousId = -1;
 
-    public KleurController(AbstractController parentController) {
-        super(new JFrame("Onderhoud Kleurslagen"), parentController, 570, 250);
+    @Autowired
+    public KleurController(KleurRepository kleurRepository) {
+        super(new JFrame("Onderhoud Kleurslagen"), 570, 250);
         final JFrame mainWindow = (JFrame) getView();
         mainWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         mainWindow.addWindowListener(new WindowAdapter() {
@@ -47,6 +53,8 @@ public class KleurController extends AbstractPersistentTableController<Kleur> {
                 closeButton.doClick();
             }
         });
+
+        this.kleurRepository = kleurRepository;
 
         // View components
         JPanel detailPanel = new JPanel(new BorderLayout());
@@ -86,21 +94,20 @@ public class KleurController extends AbstractPersistentTableController<Kleur> {
         mainWindow.setMinimumSize(new Dimension(600, 600));
         mainWindow.setPreferredSize(new Dimension(600, 600));
         mainWindow.setLocation(350, 50);
-        mainWindow.setVisible(true);
+    }
 
+    @Override
+    public void show() {
+        refreshItemList();
+        super.show();
         // initial display
         closeButton.requestFocus();
     }
 
     @Override
-    protected void doDispose() {
+    public void dispose() {
         getView().setVisible(false);
-        idField = null;
-        naamField = null;
-        saveButton = null;
-        cancelButton = null;
-        ControllerRegistry.getInstance().unregister(this);
-        ((JFrame)getView()).dispose();
+        clearDetail();
     }
 
     @Override
@@ -125,57 +132,47 @@ public class KleurController extends AbstractPersistentTableController<Kleur> {
     }
 
     private boolean isValid() {
-        if (!StringUtils.isNumeric(idField.getText())) return false;
         return true;
     }
 
     private void persistChanges() {
         if (isValid()) {
-            selected.setId(Long.parseLong(idField.getText()));
+            selected.setId(StringUtils.isNotBlank(idField.getText()) ? Long.parseLong(idField.getText()) : null);
             selected.setNaam(naamField.getText());
 
-            Session session = getPersistenceContext();
-            KleurDao kleurDao = new KleurDao(session);
-            Transaction transaction = session.getTransaction();
             try {
-                transaction.begin();
-                kleurDao.saveOrUpdate(selected);
-                kleurDao.flush();
-                transaction.commit();
+                kleurRepository.save(selected);
             } catch (Exception e) {
-                transaction.rollback();
+                logger.error("Error saving kleur", e);
                 throw new RuntimeException(e);
             } finally {
                 setDirty(false);
-                previousId = selected.getId();
-                refreshItemList(session);
+                previousId = selected.getId() == null ? -1 : selected.getId();
+                refreshItemList();
             }
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void refreshItemList(Session currentSession) {
-        KleurDao kleurDao = new KleurDao(currentSession);
-        List<Kleur> kleuren = kleurDao.findAll();
+    @Override
+    public void refreshItemList() {
+        List<Kleur> kleuren = kleurRepository.findAllByOrderByNaam();
         itemTableModel = new EntityTableModel<>(Kleur.class, kleuren);
         itemTableModel.addColumn("Naam", "naam");
         itemTable.setModel(itemTableModel);
         setColumnProperties(itemTable, itemTableModel);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (previousId >= 0) {
-                    for (int i = 0; i < itemTableModel.getRowCount(); i++) {
-                        Kleur k = (Kleur) itemTableModel.getRow(i);
-                        if (k.getId() == previousId) {
-                            itemTable.setRowSelectionInterval(i,i);
-                            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
-                            return;
-                        }
+        SwingUtilities.invokeLater(() -> {
+            if (previousId >= 0) {
+                for (int i = 0; i < itemTableModel.getRowCount(); i++) {
+                    Kleur k = (Kleur) itemTableModel.getRow(i);
+                    if (k.getId() == previousId) {
+                        itemTable.setRowSelectionInterval(i,i);
+                        itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
+                        return;
                     }
                 }
-                itemTable.setRowSelectionInterval(0, 0);
-                itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
             }
+            itemTable.setRowSelectionInterval(0, 0);
+            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
         });
     }
 
@@ -196,20 +193,14 @@ public class KleurController extends AbstractPersistentTableController<Kleur> {
         registerAction(button, new DefaultAction("delete") {
             public void actionPerformed(ActionEvent e) {
                 if (selected != null) {
-                    Session session = getPersistenceContext();
-                    KleurDao kleurDao = new KleurDao(session);
-                    Transaction transaction = session.getTransaction();
                     try {
-                        transaction.begin();
-                        kleurDao.delete(selected);
-                        kleurDao.flush();
-                        transaction.commit();
+                        kleurRepository.delete(selected);
                     } catch (Exception e1) {
-                        transaction.rollback();
+                        logger.error("Error deleting kleur", e1);
                         throw new RuntimeException(e1);
                     } finally {
                         setDirty(false);
-                        refreshItemList(session);
+                        refreshItemList();
                     }
                 } else {
                     JOptionPane.showMessageDialog(parent, "Er is niets geselecteerd.");
@@ -225,12 +216,9 @@ public class KleurController extends AbstractPersistentTableController<Kleur> {
             public void actionPerformed(ActionEvent e) {
                 itemTable.clearSelection();
                 if (selected == null) {
-                    Session session = getPersistenceContext();
-                    KleurDao kleurDao = new KleurDao(session);
-                    long nextId = kleurDao.getNextId();
                     selected = new Kleur();
-                    selected.setId(nextId);
-                    idField.setText(""+nextId);
+                    selected.setId(null);
+                    idField.setText("");
                     setDirty(true);
                 }
 

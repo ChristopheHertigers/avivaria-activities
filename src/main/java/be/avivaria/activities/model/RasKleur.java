@@ -1,17 +1,15 @@
 package be.avivaria.activities.model;
 
-import org.hibernate.annotations.Type;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import be.indigosolutions.framework.dao.BooleanToStringConverter;
+import be.indigosolutions.framework.model.BaseEntity;
+import jakarta.persistence.*;
 
 /**
  * User: christophe
  * Date: 05/10/13
  * Time: 15:03
  */
+@SuppressWarnings("unused")
 @Entity
 @Table(name="ras_kleur")
 public class RasKleur extends BaseEntity {
@@ -19,7 +17,8 @@ public class RasKleur extends BaseEntity {
     private Ras ras;
     @ManyToOne
     private Kleur kleur;
-    @Column @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column
+    @Convert(converter= BooleanToStringConverter.class)
     private Boolean erkend;
 
     public RasKleur() {

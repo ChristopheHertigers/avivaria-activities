@@ -14,9 +14,10 @@ import java.util.List;
  * Time: 11:00
  * To change this template use File | Settings | File Templates.
  */
+@SuppressWarnings("unused")
 public class DeelnemerReportDecorator {
-    private Deelnemer deelnemer;
-    private List<Ras> rassen;
+    private final Deelnemer deelnemer;
+    private final List<Ras> rassen;
 
     public DeelnemerReportDecorator(Deelnemer deelnemer, List<Ras> rassen) {
         this.deelnemer = deelnemer;
@@ -41,7 +42,7 @@ public class DeelnemerReportDecorator {
         StringBuilder b = new StringBuilder();
         if (StringUtils.isNotEmpty(getNaam())) b.append(getStraat());
         if (StringUtils.isEmpty(getWoonplaats())) return b.toString();
-        if (b.length() > 0) b.append(", ");
+        if (!b.isEmpty()) b.append(", ");
         return b.append(getWoonplaats()).toString();
     }
 
@@ -66,7 +67,7 @@ public class DeelnemerReportDecorator {
         StringBuilder b = new StringBuilder();
         if (CollectionUtils.isEmpty(rassen)) return b.toString();
         for (Ras ras : rassen) {
-            if (b.length() > 0) b.append(", ");
+            if (!b.isEmpty()) b.append(", ");
             b.append(ras.getNaam());
         }
         return b.toString();

@@ -1,9 +1,7 @@
 package be.indigosolutions.framework;
 
-import be.indigosolutions.framework.util.HibernateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.context.internal.ManagedSessionContext;
@@ -63,53 +61,33 @@ public abstract class PersistenceController extends AbstractController {
     /**
      * Subclass wants to control own view and is root controller. Gets a fresh persistence context.
      */
-    public PersistenceController() {}
-
-    /**
-     * Subclass wants to control own view and is subcontroller. Gets a fresh persistence context.
-     *
-     * @param parentController the parent controller
-     */
-    public PersistenceController(AbstractController parentController) {
-        this(null, parentController, null);
+    public PersistenceController() {
     }
 
     /**
      * Subclass is completely dependend on the given view and is a subcontroller. Gets a fresh persistence context.
      *
-     * @param view the view
-     * @param parentController the parent controller
+     * @param view             the view
      */
-    public PersistenceController(Container view, AbstractController parentController) {
-        this(view, parentController, null);
-    }
-
-    /**
-     * Subclass wants to control own view and is subcontroller. Also joins given persistence context.
-     *
-     * @param parentController the parent controller
-     * @param persistenceContext the persistence context
-     */
-    public PersistenceController(AbstractController parentController, Session persistenceContext) {
-        this(null, parentController, persistenceContext);
+    public PersistenceController(Container view) {
+        this(view, null);
     }
 
     /**
      * Subclass is completely dependend on the given view and is a subcontroller. Also joins given persistence context.
      *
-     * @param view the view
-     * @param parentController the parent controller
+     * @param view               the view
      * @param persistenceContext the persistence context
      */
-    public PersistenceController(Container view, AbstractController parentController, Session persistenceContext) {
-        super(view, parentController);
+    public PersistenceController(Container view, Session persistenceContext) {
+        super(view);
 
         // Open a new persistence context for this controller, if none should be joined
         if (persistenceContext == null) {
             logger.debug("Creating new persistence context for controller");
-            this.persistenceContext = HibernateUtils.getSessionFactory().openSession();
-            this.persistenceContext.setHibernateFlushMode(FlushMode.MANUAL);
-            this.ownsPersistenceContext = true;
+            //this.persistenceContext = HibernateUtils.getSessionFactory().openSession();
+            //this.persistenceContext.setHibernateFlushMode(FlushMode.MANUAL);
+            //this.ownsPersistenceContext = true;
         } else {
             logger.debug("Joining existing persistence context");
             this.persistenceContext = persistenceContext;
@@ -125,7 +103,6 @@ public abstract class PersistenceController extends AbstractController {
      * <p>
      * Cascades down in the controller hierarchy and closes all
      * persistence contexts that might be owned by subcontrollers.
-     *
      */
     public final void dispose() {
         if (ownsPersistenceContext && getPersistenceContext().isOpen()) {

@@ -1,6 +1,5 @@
 package be.indigosolutions.framework.dao;
 
-import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
@@ -14,36 +13,36 @@ import java.sql.Types;
  * User: christophe
  * Date: 30/10/13
  */
-public abstract class EnumIntType<T> implements UserType {
+public abstract class EnumIntType<T> implements UserType<T> {
     @Override
-    public int[] sqlTypes() {
-        return new int[] {Types.INTEGER };
+    public int getSqlType() {
+        return Types.INTEGER;
     }
 
     @Override
-    public abstract Class returnedClass();
+    public abstract Class<T> returnedClass();
 
     @Override
-    public boolean equals(Object x, Object y) throws HibernateException {
+    public boolean equals(Object x, Object y) {
         return x.equals(y);
     }
 
     @Override
-    public int hashCode(Object x) throws HibernateException {
+    public int hashCode(Object x) {
         return x.hashCode();
     }
 
     @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException {
-        return fromDB(rs.getInt(names[0]));
+    public T nullSafeGet(ResultSet rs, int names, SharedSessionContractImplementor session, Object owner) throws SQLException {
+        return fromDB(rs.getInt(names));
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement st, T value, int index, SharedSessionContractImplementor session) throws SQLException {
         if (value == null || !returnedClass().isAssignableFrom(value.getClass())) {
             st.setNull(index, Types.INTEGER);
         } else {
-            st.setInt(index, toDB((T)value));
+            st.setInt(index, toDB(value));
         }
     }
 
@@ -51,7 +50,7 @@ public abstract class EnumIntType<T> implements UserType {
     protected abstract int toDB(T value);
 
     @Override
-    public Object deepCopy(Object value) throws HibernateException {
+    public T deepCopy(T value) {
         return value;
     }
 
@@ -61,17 +60,18 @@ public abstract class EnumIntType<T> implements UserType {
     }
 
     @Override
-    public Serializable disassemble(Object value) throws HibernateException {
+    public Serializable disassemble(T value) {
         return (Serializable) value;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Object assemble(Serializable cached, Object owner) throws HibernateException {
-        return cached;
+    public T assemble(Serializable cached, Object owner) {
+        return (T) cached;
     }
 
     @Override
-    public Object replace(Object original, Object target, Object owner) throws HibernateException {
+    public T replace(T original, T target, Object owner) {
         return original;
     }
 }

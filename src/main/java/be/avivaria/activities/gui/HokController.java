@@ -1,42 +1,56 @@
 package be.avivaria.activities.gui;
 
 import be.avivaria.activities.MainController;
-import be.avivaria.activities.dao.EventDao;
-import be.avivaria.activities.dao.HokDao;
-import be.avivaria.activities.dao.InschrijvingDao;
-import be.avivaria.activities.dao.InschrijvingLijnDao;
+import be.avivaria.activities.dao.HokRepository;
+import be.avivaria.activities.dao.InschrijvingLijnRepository;
+import be.avivaria.activities.dao.InschrijvingRepository;
 import be.avivaria.activities.model.Event;
 import be.avivaria.activities.model.Hok;
 import be.avivaria.activities.model.InschrijvingHeader;
 import be.avivaria.activities.model.InschrijvingLijn;
 import be.indigosolutions.framework.AbstractController;
-import be.indigosolutions.framework.PersistenceController;
 import be.indigosolutions.framework.util.CollectionUtils;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: christophe
  * Date: 29/10/13
  */
-public class HokController extends PersistenceController {
-    private final MainController parent;
+@Controller
+public class HokController extends AbstractController {
+    private static final Logger logger = LoggerFactory.getLogger(HokController.class);
+    private final MainController mainController;
 
-    public HokController(AbstractController parentController) {
-        super(parentController);
-        this.parent = (MainController) parentController;
+    private final HokRepository hokRepository;
+    private final InschrijvingRepository inschrijvingRepository;
+    private final InschrijvingLijnRepository inschrijvingLijnRepository;
+
+    @Autowired
+    public HokController(
+            MainController mainController,
+            HokRepository hokRepository,
+            InschrijvingRepository inschrijvingRepository,
+            InschrijvingLijnRepository inschrijvingLijnRepository
+    ) {
+        this.mainController = mainController;
+        this.hokRepository = hokRepository;
+        this.inschrijvingRepository = inschrijvingRepository;
+        this.inschrijvingLijnRepository = inschrijvingLijnRepository;
     }
 
     public void assignHokNummers() {
-        Session session = getPersistenceContext();
-        Event event = getSelectedEvent(session);
-        InschrijvingLijnDao inschrijvingLijnDao = new InschrijvingLijnDao(session);
-        HokDao hokDao = new HokDao(session);
+        Event event = getSelectedEvent();
 
-        List<InschrijvingLijn> inschrijvingLijnen = inschrijvingLijnDao.findByEventId(event.getId());
+        List<InschrijvingLijn> inschrijvingLijnen = inschrijvingLijnRepository.findAllByInschrijving_EventOrderById(event);
         List<Hok> hokken = new ArrayList<>();
         Map<InschrijvingLijn,List<Hok>> fixRemarkFor = new HashMap<>();
         for (InschrijvingLijn lijn : inschrijvingLijnen) {
@@ -47,12 +61,11 @@ public class HokController extends PersistenceController {
             hokken.addAll(lijnHokken);
         }
         // sort
-        Collections.sort(hokken, event.getType().getHokComparator());
+        hokken.sort(event.getType().getHokComparator());
         // number hokken
-        long i = 1L;
-        long id = hokDao.getNextId();
+        long i = event.getHokStartNummer().longValue();
         for (Hok hok : hokken) {
-            hok.setId(id++);
+            hok.setId(null);
             hok.setHoknummer(i++);
         }
         // fix remarks
@@ -66,49 +79,37 @@ public class HokController extends PersistenceController {
             }
         }
 
-        Transaction transaction = session.getTransaction();
         try {
-            transaction.begin();
-            hokDao.deleteByEventId(event.getId());
-            for (Hok hok : hokken) {
-                hokDao.saveOrUpdate(hok);
-            }
+            hokRepository.deleteByInschrijvingLijn_Inschrijving_Event(event);
+            hokRepository.saveAll(hokken);
 
             // renumber inschrijvingen
-            InschrijvingDao inschrijvingDao = new InschrijvingDao(session);
-            List<InschrijvingHeader> inschrijvingen = inschrijvingDao.findByEventId(event.getId());
+            List<InschrijvingHeader> inschrijvingen = inschrijvingRepository.findAllByEventOrderByDeelnemer_Naam(event);
             i = 1;
             for (InschrijvingHeader inschrijving : inschrijvingen) {
                 inschrijving.setVolgnummer(i++);
-                inschrijvingDao.saveOrUpdate(inschrijving);
             }
-            inschrijvingDao.flush();
-            transaction.commit();
+            inschrijvingRepository.saveAll(inschrijvingen);
         } catch (Exception e1) {
-            transaction.rollback();
+            logger.error("Error assigning hoknummers", e1);
             throw new RuntimeException(e1);
         } finally {
-            SwingUtilities.invokeLater(parent::loadData);
-            JOptionPane.showMessageDialog(parent.getView(), "De hokken zijn succesvol aangemaakt.", "Succes", JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.invokeLater(mainController::loadData);
+            JOptionPane.showMessageDialog(mainController.getView(), "De hokken zijn succesvol aangemaakt.", "Succes", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }
 
     public void deleteHokNummers() {
-        Session session = getPersistenceContext();
-        Event event = getSelectedEvent(session);
-        HokDao hokDao = new HokDao(session);
-        Transaction transaction = session.getTransaction();
+        Event event = getSelectedEvent();
         try {
-            transaction.begin();
-            hokDao.deleteByEventId(event.getId());
-            transaction.commit();
+            hokRepository.deleteByInschrijvingLijn_Inschrijving_Event(event);
         } catch (Exception e1) {
-            transaction.rollback();
+            logger.error("Error deleting hokken", e1);
             throw new RuntimeException(e1);
         } finally {
-            SwingUtilities.invokeLater(parent::loadData);
-            JOptionPane.showMessageDialog(parent.getView(), "De hokken zijn verwijderd.", "Succes", JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.invokeLater(mainController::loadData);
+            JOptionPane.showMessageDialog(mainController.getView(), "De hokken zijn verwijderd.", "Succes", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }
@@ -117,15 +118,14 @@ public class HokController extends PersistenceController {
         if (CollectionUtils.isEmpty(hokken)) return "";
         StringBuilder value = new StringBuilder();
         hokken.stream().filter(hok -> hok.getHoknummer() != hoknummer).forEach(hok -> {
-            if (value.length() > 0) value.append(", ");
+            if (!value.isEmpty()) value.append(", ");
             value.append(hok.getHoknummer());
         });
         return value.toString();
     }
 
-    private Event getSelectedEvent(Session session) {
-        EventDao eventDao = new EventDao(session);
-        return eventDao.findSelected();
+    private Event getSelectedEvent() {
+        return mainController.getSelectedEvent();
     }
 
 }

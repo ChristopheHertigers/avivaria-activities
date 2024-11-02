@@ -2,8 +2,8 @@ package be.indigosolutions.framework.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -18,30 +18,10 @@ public enum DateFormat {
     SYSTEM("yyyy-MM-dd"),
     YEAR("yyyy");
 
-    private String format;
+    private final String format;
 
     DateFormat(String format) {
         this.format = format;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public SimpleDateFormat getFormatter() {
-        return new SimpleDateFormat(getFormat(), new Locale("nl","BE"));
-    }
-
-    public String format(Date date) {
-        return getFormatter().format(date);
-    }
-
-    public Date parse(String date) {
-        try {
-            return getFormatter().parse(date);
-        } catch (ParseException e) {
-            throw new RuntimeException("Unparseable date string " + date);
-        }
     }
 
     public static Date startOfDay(Date date) {
@@ -66,5 +46,25 @@ public enum DateFormat {
         cal.set(Calendar.SECOND, cal.getMaximum(Calendar.SECOND));
         cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
         return cal.getTime();
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public SimpleDateFormat getFormatter() {
+        return new SimpleDateFormat(getFormat(), new Locale("nl", "BE"));
+    }
+
+    public String format(Date date) {
+        return getFormatter().format(date);
+    }
+
+    public Date parse(String date) {
+        try {
+            return getFormatter().parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException("Unparseable date string " + date);
+        }
     }
 }

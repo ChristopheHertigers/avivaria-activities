@@ -1,12 +1,10 @@
 package be.indigosolutions.framework;
 
 import org.apache.logging.log4j.LogManager;
-import org.hibernate.Session;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import java.awt.event.ActionEvent;
-
-import be.indigosolutions.framework.util.HibernateUtils;
 
 /**
  * Overrides executeInController() and adds transaction demarcation.
@@ -19,10 +17,11 @@ public abstract class DataAccessAction extends DefaultAction {
 
     private static final Logger logger = LogManager.getLogger(DataAccessAction.class);
 
-    public DataAccessAction() {}
+    public DataAccessAction() {
+    }
 
     public void actionPerformed(ActionEvent actionEvent) {
-        actionPerformed(actionEvent, null,null);//HibernateUtils.getOdbcSessionFactory().getCurrentSession(), HibernateUtils.getWebSessionFactory().getCurrentSession()); //compile
+        actionPerformed(actionEvent, null, null);//HibernateUtils.getOdbcSessionFactory().getCurrentSession(), HibernateUtils.getWebSessionFactory().getCurrentSession()); //compile
     }
 
     public void executeInController(AbstractController controller, ActionEvent event) {
@@ -31,16 +30,18 @@ public abstract class DataAccessAction extends DefaultAction {
             persistenceController = (PersistenceController) controller;
         else
             throw new IllegalArgumentException(
-                "Controller: " + controller.getClass() + " is not a PersistenceController"
+                    "Controller: " + controller.getClass() + " is not a PersistenceController"
             );
 
-        if (preTransaction()) { return; }
+        if (preTransaction()) {
+            return;
+        }
         try {
             //log.debug("Beginning database transaction");
             //persistenceController.getWebPersistenceContext().beginTransaction();
 
             logger.debug("Executing action event");
-            actionPerformed(event, null,null);//persistenceController.getOdbcPersistenceContext(), persistenceController.getWebPersistenceContext()); //compile
+            actionPerformed(event, null, null);//persistenceController.getOdbcPersistenceContext(), persistenceController.getWebPersistenceContext()); //compile
 
             //log.debug("Committing database transaction");
             //persistenceController.getWebPersistenceContext().getTransaction().commit();
@@ -58,24 +59,28 @@ public abstract class DataAccessAction extends DefaultAction {
      *
      * @return Return <tt>true</tt> to abort execution.
      */
-    protected boolean preTransaction() { return false; }
+    protected boolean preTransaction() {
+        return false;
+    }
 
     /**
      * Executes before transaction begins, Session is in auto-commit mode.
      */
-    protected void postTransaction() {}
+    protected void postTransaction() {
+    }
 
     /**
      * Executes when transaction failed, after rollback. Session can't be used anymore.
      */
-    protected void failedTransaction() {}
+    protected void failedTransaction() {
+    }
 
     /**
      * The main execute routine of this action.
      *
-     * @param actionEvent the action event
+     * @param actionEvent        the action event
      * @param currentOdbcSession use this session to access the odbc databse
-     * @param currentWebSession Use this Session to access the web database.
+     * @param currentWebSession  Use this Session to access the web database.
      */
     public abstract void actionPerformed(ActionEvent actionEvent, Session currentOdbcSession, Session currentWebSession);
 

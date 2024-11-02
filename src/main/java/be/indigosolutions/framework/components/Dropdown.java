@@ -1,9 +1,6 @@
 package be.indigosolutions.framework.components;
 
 import javax.swing.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.Calendar;
 
 /**
  * User: christophe

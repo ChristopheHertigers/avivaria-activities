@@ -7,11 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.lang.reflect.Method;
-import java.beans.PropertyDescriptor;
 import java.util.Objects;
 
 /**
@@ -23,13 +23,14 @@ import java.util.Objects;
  */
 public class EntityTableModel<T> extends AbstractTableModel {
 
-    private Class<T> entityClass;
+    private final Class<T> entityClass;
     private List<EntityTableColumn> columns = new ArrayList<EntityTableColumn>();
     private List<T> rows;
 
-    public EntityTableModel(Class<T> entityClass, Collection<T> rows) {
+    public EntityTableModel(Class<T> entityClass, Iterable<T> rows) {
         this.entityClass = entityClass;
-        this.rows = new ArrayList<T>(rows);
+        this.rows = new ArrayList<>();
+        rows.forEach(this.rows::add);
     }
 
     public String getColumnName(int column) {

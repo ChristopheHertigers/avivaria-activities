@@ -1,17 +1,18 @@
 package be.avivaria.activities.model;
 
+import be.indigosolutions.framework.model.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import org.apache.commons.lang3.StringUtils;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  * User: christophe
  * Date: 05/10/13
  * Time: 15:02
  */
+@SuppressWarnings("unused")
 @Entity
 @Table(name="deelnemer")
 public class Deelnemer extends BaseEntity {
@@ -76,7 +77,7 @@ public class Deelnemer extends BaseEntity {
         StringBuilder b = new StringBuilder();
         if (StringUtils.isNotEmpty(straat)) b.append(straat);
         if (StringUtils.isEmpty(woonplaats)) return b.toString();
-        if (b.length() > 0) b.append(", ");
+        if (!b.isEmpty()) b.append(", ");
         return b.append(woonplaats).toString();
     }
 

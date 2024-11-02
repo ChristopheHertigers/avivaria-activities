@@ -1,20 +1,24 @@
 package be.avivaria.activities.model;
 
+import be.avivaria.activities.model.usertype.EventTypeUserType;
+import be.indigosolutions.framework.dao.BooleanToStringConverter;
+import be.indigosolutions.framework.model.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.Type;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * User: christophe
  * Date: 05/10/13
  * Time: 15:02
  */
+@SuppressWarnings("unused")
 @Entity
 @Table(name="event")
 public class Event extends BaseEntity {
-    @Column(length = 50) @Type(type="be.avivaria.activities.model.usertype.EventTypeUserType")
+    @Column(length = 50) @Type(EventTypeUserType.class)
     private EventType type;
     @Column(length = 100)
     private String naam;
@@ -34,17 +38,20 @@ public class Event extends BaseEntity {
     private Double prijsFokkerskaart;
     @Column(name="fokkerskaart_2")
     private Double prijsFokkerskaart2;
-    @Column @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column
+    @Convert(converter= BooleanToStringConverter.class)
     private Boolean selected;
     @Column(name="club_naam_regel_1")
     private String clubNaamRegel1;
     @Column(name="club_naam_regel_2")
     private String clubNaamRegel2;
+    @Column(name="hok_start_nummer")
+    private Integer hokStartNummer;
 
     public Event() {
     }
 
-    public Event(EventType type, String naam, Double prijsDier, Double prijsDierClub, Double prijsDierTeKoop, Double prijsPalmares, Double prijsLidgeld, Double prijsLidgeldJeugd, Double prijsFokkerskaart, Double prijsFokkerskaart2, Boolean selected, String clubNaamRegel1, String clubNaamRegel2) {
+    public Event(EventType type, String naam, Double prijsDier, Double prijsDierClub, Double prijsDierTeKoop, Double prijsPalmares, Double prijsLidgeld, Double prijsLidgeldJeugd, Double prijsFokkerskaart, Double prijsFokkerskaart2, Boolean selected, String clubNaamRegel1, String clubNaamRegel2, Integer hokStartNummer) {
         this.type = type;
         this.naam = naam;
         this.prijsDier = prijsDier;
@@ -58,6 +65,7 @@ public class Event extends BaseEntity {
         this.selected = selected;
         this.clubNaamRegel1 = clubNaamRegel1;
         this.clubNaamRegel2 = clubNaamRegel2;
+        this.hokStartNummer = hokStartNummer;
     }
 
     public EventType getType() {
@@ -162,5 +170,13 @@ public class Event extends BaseEntity {
 
     public void setClubNaamRegel2(String clubNaamRegel2) {
         this.clubNaamRegel2 = clubNaamRegel2;
+    }
+
+    public Integer getHokStartNummer() {
+        return hokStartNummer == null ? 1 : hokStartNummer;
+    }
+
+    public void setHokStartNummer(Integer hokStartNummer) {
+        this.hokStartNummer = hokStartNummer;
     }
 }

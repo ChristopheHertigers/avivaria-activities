@@ -3,21 +3,19 @@ package be.indigosolutions.framework.celleditor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.Serializable;
 import javax.swing.*;
-import javax.swing.AbstractCellEditor;
-import javax.swing.JComboBox;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 public class ComboBoxCellEditor extends AbstractCellEditor implements ActionListener, TableCellEditor, Serializable {
     private static final Logger LOGGER = LogManager.getLogger(ComboBoxCellEditor.class);
 
-    private JComboBox comboBox;
+    private final JComboBox comboBox;
     private Object initialValue;
     private TableModelEvent changeEvent;
 
@@ -35,12 +33,12 @@ public class ComboBoxCellEditor extends AbstractCellEditor implements ActionList
     }
 
     // Implementing ActionListener
-    public void actionPerformed(java.awt.event.ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
         // Selecting an item results in an actioncommand "comboBoxChanged".
         // We should ignore these ones.
 
         // Hitting enter results in an actioncommand "comboBoxEdited"
-        if(e.getActionCommand().equals("comboBoxEdited")) {
+        if (e.getActionCommand().equals("comboBoxEdited")) {
             stopCellEditing();
         }
     }
@@ -57,13 +55,13 @@ public class ComboBoxCellEditor extends AbstractCellEditor implements ActionList
         }
         fireEditingStopped();
         if (initialValue != null && !initialValue.equals(getCellEditorValue()) && changeEvent != null) {
-            ((AbstractTableModel)changeEvent.getSource()).fireTableChanged(changeEvent);
+            ((AbstractTableModel) changeEvent.getSource()).fireTableChanged(changeEvent);
         }
         return true;
     }
 
     // Implementing TableCellEditor
-    public java.awt.Component getTableCellEditorComponent(javax.swing.JTable table, Object value, boolean isSelected, int row, int column) {
+    public java.awt.Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         setValue(value);
         return comboBox;
     }

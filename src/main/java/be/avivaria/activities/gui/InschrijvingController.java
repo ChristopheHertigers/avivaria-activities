@@ -2,29 +2,28 @@ package be.avivaria.activities.gui;
 
 import be.avivaria.activities.MainController;
 import be.avivaria.activities.dao.*;
-import be.avivaria.activities.model.*;
 import be.avivaria.activities.model.Event;
-import be.indigosolutions.framework.*;
+import be.avivaria.activities.model.*;
+import be.indigosolutions.framework.AbstractTableController;
+import be.indigosolutions.framework.DefaultAction;
+import be.indigosolutions.framework.EntityTableModel;
 import be.indigosolutions.framework.celleditor.AutoCompletion;
 import be.indigosolutions.framework.celleditor.ComboBoxCellEditor;
 import be.indigosolutions.framework.components.Dropdown;
 import be.indigosolutions.framework.components.Table;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.*;
 import java.util.List;
 
 
@@ -33,55 +32,75 @@ import java.util.List;
  * Date: 06/10/13
  * Time: 09:54
  */
-public class InschrijvingController extends AbstractPersistentTableController<InschrijvingHeader> {
-    private static final Logger LOGGER = LogManager.getLogger(InschrijvingController.class);
-    private final MainController parent;
+@SuppressWarnings("FieldCanBeLocal")
+@Controller
+public class InschrijvingController extends AbstractTableController<InschrijvingHeader> {
+    private static final Logger logger = LoggerFactory.getLogger(InschrijvingController.class);
+    private final MainController mainController;
+    private final InschrijvingRepository inschrijvingRepository;
+    private final InschrijvingLijnRepository inschrijvingLijnRepository;
+    private final VerenigingRepository verenigingRepository;
+    private final DeelnemerRepository deelnemerRepository;
+    private final AantalRepository aantalRepository;
+    private final RasRepository rasRepository;
+    private final KleurRepository kleurRepository;
+    private final HokRepository hokRepository;
+    private final EventRepository eventRepository;
 
     // View
-    private JTextField idField;
-    private Dropdown<Deelnemer> deelnemerCombo;
-    private JTextField naamField;
-    private JTextField straatField;
-    private JTextField woonplaatsField;
-    private JTextField telefoonField;
-    private Dropdown<Vereniging> verenigingCombo;
-    private JTextField fokkerskaartNummerField;
-    private JTextField jeugdDeelnemerField;
-    private JTextField volgnummerField;
-    private JCheckBox palmaresField;
-    private JCheckBox fokkerskaartField;
-    private JCheckBox fokkerskaart2Field;
-    private JCheckBox lidgeldField;
-    private JCheckBox lidgeld2Field;
-    private JCheckBox lidAvivariaField;
-    private JCheckBox isNewMember;
+    private final JTextField idField;
+    private final Dropdown<Deelnemer> deelnemerCombo;
+    private final JTextField naamField;
+    private final JTextField straatField;
+    private final JTextField woonplaatsField;
+    private final JTextField telefoonField;
+    private final Dropdown<Vereniging> verenigingCombo;
+    private final JTextField fokkerskaartNummerField;
+    private final JTextField jeugdDeelnemerField;
+    private final JTextField volgnummerField;
+    private final JCheckBox palmaresField;
+    private final JCheckBox fokkerskaartField;
+    private final JCheckBox fokkerskaart2Field;
+    private final JCheckBox lidgeldField;
+    private final JCheckBox lidgeld2Field;
+    private final JCheckBox lidAvivariaField;
+    private final JCheckBox isNewMember;
 
-    private Table detailTable;
+    private final Table detailTable;
     private EntityTableModel<InschrijvingLijn> detailTableModel;
 
-    private JButton saveButton;
-    private JButton cancelButton;
-    private JButton addLineButton;
-    private JButton removeLineButton;
-    private JButton copyLineButton;
-    private JButton pasteLineButton;
-    private JButton closeButton;
+    private final JButton saveButton;
+    private final JButton cancelButton;
+    private final JButton addLineButton;
+    private final JButton removeLineButton;
+    private final JButton copyLineButton;
+    private final JButton pasteLineButton;
+    private final JButton closeButton;
 
     // Model
     private long previousId = -1;
-    private Event selectedEvent;
-
     private List<Vereniging> verenigingen;
     private List<Deelnemer> deelnemers;
     private List<Aantal> aantallen;
     private List<Ras> rassen;
     private List<Kleur> kleuren;
-    private String[] leeftijden = new String[] { "jong", "oud" };
+    private final String[] leeftijden = new String[] { "jong", "oud" };
     private Kleur noColor;
 
-    public InschrijvingController(AbstractController parentController) {
-        super(new JFrame("Inschrijvingen"), parentController, 750, 113);
-        this.parent = (MainController)parentController;
+    @Autowired
+    public InschrijvingController(
+            MainController mainController,
+            InschrijvingRepository inschrijvingRepository,
+            InschrijvingLijnRepository inschrijvingLijnRepository,
+            VerenigingRepository verenigingRepository,
+            DeelnemerRepository deelnemerRepository,
+            AantalRepository aantalRepository,
+            RasRepository rasRepository,
+            KleurRepository kleurRepository,
+            HokRepository hokRepository,
+            EventRepository eventRepository
+    ) {
+        super(new JFrame("Inschrijvingen"), 750, 113);
         final JFrame mainWindow = (JFrame) getView();
         mainWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         mainWindow.addWindowListener(new WindowAdapter() {
@@ -91,10 +110,21 @@ public class InschrijvingController extends AbstractPersistentTableController<In
             }
         });
 
+        this.mainController = mainController;
+        this.inschrijvingRepository = inschrijvingRepository;
+        this.inschrijvingLijnRepository = inschrijvingLijnRepository;
+        this.verenigingRepository = verenigingRepository;
+        this.deelnemerRepository = deelnemerRepository;
+        this.aantalRepository = aantalRepository;
+        this.rasRepository = rasRepository;
+        this.kleurRepository = kleurRepository;
+        this.hokRepository = hokRepository;
+        this.eventRepository = eventRepository;
+
         // View components
         JPanel detailPanel = new JPanel(new BorderLayout());
         detailPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(0, 10, 10, 10), BorderFactory.createTitledBorder("Inschrijving voor " + getSelectedEvent().getNaam())));
+                BorderFactory.createEmptyBorder(0, 10, 10, 10), BorderFactory.createTitledBorder("Inschrijving")));
 
         final JPanel detailFormPanel = new JPanel(new BorderLayout());
         final JPanel formPanel = new JPanel(new MigLayout("wrap 4", "[r][l]40[r][l]"));
@@ -117,6 +147,7 @@ public class InschrijvingController extends AbstractPersistentTableController<In
         formPanel.add(deelnemerCombo);
         formPanel.add(new JLabel("deelnemer toevoegen:"));
         isNewMember = new JCheckBox();
+        naamField = new JTextField();
         isNewMember.setEnabled(false);
         isNewMember.setSelected(false);
         isNewMember.addActionListener(e -> {
@@ -132,7 +163,6 @@ public class InschrijvingController extends AbstractPersistentTableController<In
         });
         formPanel.add(isNewMember);
         formPanel.add(new JLabel("naam:"));
-        naamField = new JTextField();
         naamField.setPreferredSize(new Dimension(400, 30));
         naamField.setEnabled(false);
         addDocumentListener(naamField);
@@ -216,8 +246,6 @@ public class InschrijvingController extends AbstractPersistentTableController<In
         detailFormPanel.add(formPanel, BorderLayout.NORTH);
         detailFormPanel.add(tablePanel, BorderLayout.CENTER);
 
-        refreshRelations();
-
         detailTable = new Table() {
             public boolean getScrollableTracksViewportWidth() {
                 return getPreferredSize().width < detailFormPanel.getWidth();
@@ -273,72 +301,43 @@ public class InschrijvingController extends AbstractPersistentTableController<In
         // Assemble the view
         mainWindow.getContentPane().add(detailPanel, BorderLayout.CENTER);
 
-        refreshDetailList(getPersistenceContext());
-
         // Display the window
         mainWindow.setMinimumSize(new Dimension(800, 700));
         mainWindow.setPreferredSize(new Dimension(800, 700));
         mainWindow.setLocation(350, 0);
-        mainWindow.setVisible(true);
+    }
 
+    @Override
+    public void show() {
+        refreshRelations();
+        refreshItemList();
+        refreshDetailList();
+        super.show();
         // initial display
         closeButton.requestFocus();
     }
 
     @SuppressWarnings("unchecked")
     private void refreshRelations() {
-        getPersistenceContext().clear();
-        verenigingen = new VerenigingDao(getPersistenceContext()).findAll();
-        deelnemers = new DeelnemerDao(getPersistenceContext()).findAll();
-        aantallen = new AantalDao(getPersistenceContext()).findAll();
-        rassen = new RasDao(getPersistenceContext()).findAll();
-        kleuren = new KleurDao(getPersistenceContext()).findAll();
+        verenigingen = verenigingRepository.findAllByOrderByNaam();
+        deelnemers = deelnemerRepository.findAllByOrderByNaam();
+        aantallen = aantalRepository.findAllByOrderByNaam();
+        rassen = rasRepository.findAllByOrderByNaam();
+        kleuren = kleurRepository.findAllByOrderByNaam();
         for (Kleur kleur : kleuren) {
             if (kleur.getId() == 0L) {
                 noColor = kleur;
                 break;
             }
         }
-        deelnemerCombo.setModel(new DefaultComboBoxModel<>(deelnemers.toArray(new Deelnemer[deelnemers.size()])));
-        verenigingCombo.setModel(new DefaultComboBoxModel<>(verenigingen.toArray(new Vereniging[verenigingen.size()])));
+        deelnemerCombo.setModel(new DefaultComboBoxModel<>(deelnemers.toArray(new Deelnemer[0])));
+        verenigingCombo.setModel(new DefaultComboBoxModel<>(verenigingen.toArray(new Vereniging[0])));
     }
 
     @Override
-    protected void doDispose() {
+    public void dispose() {
         getView().setVisible(false);
-        idField = null;
-        deelnemerCombo = null;
-        naamField = null;
-        straatField = null;
-        woonplaatsField = null;
-        telefoonField = null;
-        verenigingCombo = null;
-        fokkerskaartNummerField = null;
-        jeugdDeelnemerField = null;
-        volgnummerField = null;
-        palmaresField = null;
-        fokkerskaartField = null;
-        fokkerskaart2Field = null;
-        lidgeldField = null;
-        lidgeld2Field = null;
-        lidAvivariaField = null;
-        detailTable = null;
-        detailTableModel = null;
-        saveButton = null;
-        cancelButton = null;
-        addLineButton = null;
-        removeLineButton = null;
-        copyLineButton = null;
-        pasteLineButton = null;
-        selectedEvent = null;
-        verenigingen = null;
-        deelnemers = null;
-        aantallen = null;
-        rassen = null;
-        kleuren = null;
-        isNewMember = null;
-        ControllerRegistry.getInstance().unregister(this);
-        ((JFrame)getView()).dispose();
+        clearDetail();
     }
 
     @Override
@@ -419,21 +418,16 @@ public class InschrijvingController extends AbstractPersistentTableController<In
             if (!StringUtils.isNumeric(noSpaces) || noSpaces.length() != 10) return;
 
             // create valid number for the current year
-            String nieuwFokkerskaartNr = (getCurrentYear()-2000) + " " + noSpaces.substring(2,3) + " " + noSpaces.substring(3,6) + " " + noSpaces.substring(6);
+            String nieuwFokkerskaartNr = (getCurrentYear()-2000) + " " + noSpaces.charAt(2) + " " + noSpaces.substring(3,6) + " " + noSpaces.substring(6);
             if (!noSpaces.equals(nieuwFokkerskaartNr)) {
                 // only update when the numbers differ
-                Session session = getPersistenceContext();
-                DeelnemerDao dao = new DeelnemerDao(session);
-                Transaction transaction = session.getTransaction();
                 try {
-                    transaction.begin();
-                    deelnemer = dao.load(deelnemer.getId());
-                    deelnemer.setFokkerskaartNummer(nieuwFokkerskaartNr);
-                    dao.update(deelnemer);
-                    dao.flush();
-                    transaction.commit();
+                    deelnemerRepository.findById(deelnemer.getId()).ifPresent(d -> {
+                        deelnemer.setFokkerskaartNummer(nieuwFokkerskaartNr);
+                        deelnemerRepository.save(deelnemer);
+                    });
                 } catch (Exception e) {
-                    transaction.rollback();
+                    logger.error("Failed te update deelnemer", e);
                     throw new RuntimeException(e);
                 }
             }
@@ -466,7 +460,7 @@ public class InschrijvingController extends AbstractPersistentTableController<In
         lidgeld2Field.setEnabled(true);
         lidAvivariaField.setSelected(bool(selected.getLidAvivaria(), false));
         lidAvivariaField.setEnabled(true);
-        refreshDetailList(getPersistenceContext());
+        refreshDetailList();
 
         setDirty(false);
     }
@@ -481,13 +475,13 @@ public class InschrijvingController extends AbstractPersistentTableController<In
         deelnemerCombo.setEnabled(!enabled);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private boolean bool(Boolean bool, boolean def) {
         if (bool == null) return def;
         return bool;
     }
 
     private boolean isValid() {
-        if (!StringUtils.isNumeric(idField.getText())) return false;
         if (!StringUtils.isNumeric(volgnummerField.getText())) return false;
         if (StringUtils.isNotBlank(jeugdDeelnemerField.getText()) && !StringUtils.isNumeric(jeugdDeelnemerField.getText())) return false;
         for (int i = 0; i < detailTableModel.getRowCount(); i++) {
@@ -501,21 +495,17 @@ public class InschrijvingController extends AbstractPersistentTableController<In
 
     private void persistChanges() {
         if (isValid()) {
-            Session session = getPersistenceContext();
-            InschrijvingDao inschrijvingDao = new InschrijvingDao(session);
-            InschrijvingLijnDao inschrijvingLijnDao = new InschrijvingLijnDao(session);
-            Transaction transaction = session.getTransaction();
-
             try {
-                transaction.begin();
-                List<InschrijvingLijn> originalLines = inschrijvingLijnDao.findByInschrijvingId(selected.getId());
+                boolean existingInschrijving = selected != null && selected.getId() != null;
+                List<InschrijvingLijn> originalLines = existingInschrijving ? inschrijvingLijnRepository.findAllByInschrijvingOrderById(selected) : Collections.emptyList();
 
-                InschrijvingHeader existing = inschrijvingDao.get(Long.parseLong(idField.getText()));
-                if (existing != null) selected = existing;
+                if (existingInschrijving) {
+                    Optional<InschrijvingHeader> existing = inschrijvingRepository.findById(Long.parseLong(idField.getText()));
+                    existing.ifPresent(inschrijvingHeader -> selected = inschrijvingHeader);
+                }
 
-                selected.setId(Long.parseLong(idField.getText()));
                 selected.setVolgnummer(Long.parseLong(volgnummerField.getText()));
-                selected.setEvent(selectedEvent);
+                selected.setEvent(getSelectedEvent());
                 selected.setPalmares(palmaresField.isSelected());
                 selected.setFokkerskaart(fokkerskaartField.isSelected());
                 selected.setFokkerskaart2(fokkerskaart2Field.isSelected());
@@ -533,10 +523,8 @@ public class InschrijvingController extends AbstractPersistentTableController<In
                     deelnemer.setFokkerskaartNummer(fokkerskaartField.getText());
                     deelnemer.setJeugddeelnemer(StringUtils.isBlank(jeugdDeelnemerField.getText()) ? null : Integer.parseInt(jeugdDeelnemerField.getText()));
 
-                    DeelnemerDao deelnemerDao = new DeelnemerDao(session);
-                    deelnemer.setId(deelnemerDao.getNextId());
-                    deelnemerDao.saveOrUpdate(deelnemer);
-                    deelnemerDao.flush();
+                    deelnemer.setId(null);
+                    deelnemerRepository.save(deelnemer);
 
                     selected.setDeelnemer(deelnemer);
                     // update combo boxes
@@ -546,17 +534,14 @@ public class InschrijvingController extends AbstractPersistentTableController<In
                     selected.setDeelnemer((Deelnemer) deelnemerCombo.getSelectedItem());
                 }
 
-                inschrijvingDao.saveOrUpdate(selected);
-                long nextId = inschrijvingLijnDao.getNextId();
+                selected = inschrijvingRepository.save(selected);
+                idField.setText(""+selected.getId());
                 for (int i = 0; i < detailTableModel.getRowCount(); i++) {
                     InschrijvingLijn lijn = detailTableModel.getRow(i);
-                    if (lijn.getId() == null) {
-                        lijn.setId(nextId++);
-                    }
                     if (lijn.getKleur() == null) {
                         lijn.setKleur(noColor);
                     }
-                    inschrijvingLijnDao.saveOrUpdate(lijn);
+                    inschrijvingLijnRepository.save(lijn);
                 }
                 // check for lijnen to delete
                 List<InschrijvingLijn> toDelete = new ArrayList<>();
@@ -571,60 +556,50 @@ public class InschrijvingController extends AbstractPersistentTableController<In
                     }
                     if (!found) toDelete.add(original);
                 }
-                for (InschrijvingLijn original : toDelete) {
-                    inschrijvingLijnDao.delete(original);
-                }
-                // flush
-                inschrijvingDao.flush();
-                transaction.commit();
+                inschrijvingLijnRepository.deleteAll(toDelete);
             } catch (Exception e) {
-                transaction.rollback();
+                logger.error("Failed to save inschrijving", e);
                 throw new RuntimeException(e);
             } finally {
                 setDirty(false);
-                previousId = selected.getId();
-                refreshItemList(session);
+                previousId = selected.getId() == null ? -1 : selected.getId();
+                refreshItemList();
 
-                SwingUtilities.invokeLater(parent::loadData);
+                SwingUtilities.invokeLater(mainController::loadData);
             }
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void refreshItemList(Session currentSession) {
-        InschrijvingDao inschrijvingDao = new InschrijvingDao(currentSession);
-        List<InschrijvingHeader> inschrijvingen = inschrijvingDao.findByEventId(getSelectedEvent().getId());
+    @Override
+    public void refreshItemList() {
+        List<InschrijvingHeader> inschrijvingen = inschrijvingRepository.findAllByEventOrderByDeelnemer_Naam(getSelectedEvent());
         itemTableModel = new EntityTableModel<>(InschrijvingHeader.class, inschrijvingen);
         itemTableModel.addColumn("Naam", "deelnemer.naam", 600);
         itemTableModel.addColumn("Volgnummer", "volgnummer", 150);
         itemTable.setModel(itemTableModel);
         setColumnProperties(itemTable, itemTableModel);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (previousId >= 0) {
-                    for (int i = 0; i < itemTableModel.getRowCount(); i++) {
-                        InschrijvingHeader s = (InschrijvingHeader) itemTableModel.getRow(i);
-                        if (s.getId() == previousId) {
-                            itemTable.setRowSelectionInterval(i,i);
-                            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
-                            return;
-                        }
+        SwingUtilities.invokeLater(() -> {
+            if (previousId >= 0) {
+                for (int i = 0; i < itemTableModel.getRowCount(); i++) {
+                    InschrijvingHeader s = (InschrijvingHeader) itemTableModel.getRow(i);
+                    if (s.getId() == previousId) {
+                        itemTable.setRowSelectionInterval(i,i);
+                        itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
+                        return;
                     }
                 }
-                if (itemTable.getRowCount() > 0) {
-                    itemTable.setRowSelectionInterval(0, 0);
-                    itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
-                }
+            }
+            if (itemTable.getRowCount() > 0) {
+                itemTable.setRowSelectionInterval(0, 0);
+                itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
             }
         });
     }
 
-    @SuppressWarnings("unchecked")
-    public void refreshDetailList(Session currentSession) {
-        InschrijvingLijnDao inschrijvingLijnDao = new InschrijvingLijnDao(currentSession);
+    public void refreshDetailList() {
         List<InschrijvingLijn> inschrijvingLijnen;
-        if (selected != null) {
-            inschrijvingLijnen = inschrijvingLijnDao.findByInschrijvingId(selected.getId());
+        if (selected != null && selected.getId() != null) {
+            inschrijvingLijnen = inschrijvingLijnRepository.findAllByInschrijvingOrderById(selected);
         } else {
             inschrijvingLijnen = new ArrayList<>();
         }
@@ -644,20 +619,13 @@ public class InschrijvingController extends AbstractPersistentTableController<In
         detailTableModel.addColumn("Kleur", "kleur", 150, new ComboBoxCellEditor(kleurCombo), true);
         detailTableModel.addColumn("Ring nr", "ringnummer", 70, null, true);
         detailTableModel.addColumn("Prijs", "prijs", 50, null, true);
-        detailTableModel.addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                setDirty(true);
-            }
-        });
+        detailTableModel.addTableModelListener(e -> setDirty(true));
         detailTable.setModel(detailTableModel);
         setColumnProperties(detailTable, detailTableModel);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (detailTable.getRowCount() > 0) {
-                    detailTable.setRowSelectionInterval(0, 0);
-                    detailTable.scrollRectToVisible(new Rectangle(detailTable.getCellRect(0, 0, true)));
-                }
+        SwingUtilities.invokeLater(() -> {
+            if (detailTable.getRowCount() > 0) {
+                detailTable.setRowSelectionInterval(0, 0);
+                detailTable.scrollRectToVisible(new Rectangle(detailTable.getCellRect(0, 0, true)));
             }
         });
     }
@@ -679,32 +647,23 @@ public class InschrijvingController extends AbstractPersistentTableController<In
         registerAction(button, new DefaultAction("delete") {
             public void actionPerformed(ActionEvent e) {
                 if (selected != null) {
-                    Session session = getPersistenceContext();
-                    InschrijvingDao inschrijvingDao = new InschrijvingDao(session);
-                    InschrijvingLijnDao inschrijvingLijnDao = new InschrijvingLijnDao(session);
-                    HokDao hokDao = new HokDao(session);
-                    selected = inschrijvingDao.load(selected.getId());
-                    if (hokDao.countForEvent(selected.getEvent().getId()) > 0) {
+                    inschrijvingRepository.findById(selected.getId()).ifPresent(i -> selected = i);
+                    if (hokRepository.countByEvent(selected.getEvent()) > 0) {
                         JOptionPane.showMessageDialog(parent, "De hoknummers moeten eerst verwijderd worden \n(via menu Activiteit > Hoknummers > Verwijderen).");
                         return;
                     }
-                    Transaction transaction = session.getTransaction();
                     try {
-                        transaction.begin();
-                        List<InschrijvingLijn> lijnen = inschrijvingLijnDao.findByInschrijvingId(selected.getId());
-                        for (InschrijvingLijn inschrijvingLijn : lijnen) {
-                            inschrijvingLijnDao.delete(inschrijvingLijn);
-                        }
-                        inschrijvingDao.delete(selected);
-                        inschrijvingLijnDao.flush();
-                        inschrijvingDao.flush();
-                        transaction.commit();
+                        List<InschrijvingLijn> lijnen = inschrijvingLijnRepository.findAllByInschrijvingOrderById(selected);
+                        inschrijvingLijnRepository.deleteAll(lijnen);
+                        inschrijvingRepository.delete(selected);
                     } catch(Exception ex) {
-                        transaction.rollback();
+                        logger.error("Failed to delete inschrijving", ex);
                         throw new RuntimeException(ex);
                     } finally {
                         setDirty(false);
-                        refreshItemList(session);
+                        refreshItemList();
+
+                        SwingUtilities.invokeLater(mainController::loadData);
                     }
 
                 } else {
@@ -721,15 +680,12 @@ public class InschrijvingController extends AbstractPersistentTableController<In
             public void actionPerformed(ActionEvent e) {
                 refreshRelations();
                 itemTable.clearSelection();
-                Session session = getPersistenceContext();
-                InschrijvingDao inschrijvingDao = new InschrijvingDao(session);
-                long nextId = inschrijvingDao.getNextId();
+                Long volgnummer = inschrijvingRepository.nextVolgnummerByEvent(getSelectedEvent());
                 selected = new InschrijvingHeader();
-                selected.setId(nextId);
-                selected.setVolgnummer(inschrijvingDao.getNextVolgnummer(selectedEvent.getId()));
+                selected.setVolgnummer(volgnummer);
                 loadDetail();
                 setDirty(true);
-                SwingUtilities.invokeLater(() -> deelnemerCombo.requestFocus());
+                SwingUtilities.invokeLater(deelnemerCombo::requestFocus);
             }
         });
         return button;
@@ -739,6 +695,7 @@ public class InschrijvingController extends AbstractPersistentTableController<In
         try {
             return new ImageIcon(ImageIO.read(getClass().getResource(name)));
         } catch (IOException ex) {
+            //intentionally left blank
         }
         return null;
     }
@@ -856,10 +813,6 @@ public class InschrijvingController extends AbstractPersistentTableController<In
     }
 
     private Event getSelectedEvent() {
-        if (selectedEvent == null) {
-            EventDao eventDao = new EventDao(getPersistenceContext());
-            selectedEvent = eventDao.findSelected();
-        }
-        return selectedEvent;
+        return mainController.getSelectedEvent();
     }
 }

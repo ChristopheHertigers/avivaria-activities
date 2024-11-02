@@ -37,35 +37,46 @@
 	<field name="teKoop" class="java.lang.String">
 		<description><![CDATA[teKoop]]></description>
 	</field>
-	<group name="Soort" keepTogether="true">
+	<field name="rasKeurmeester" class="java.lang.String">
+		<description><![CDATA[rasKeurmeester]]></description>
+	</field>
+	<field name="kleurKeurmeester" class="java.lang.String">
+		<description><![CDATA[kleurKeurmeester]]></description>
+	</field>
+	<field name="addBreak" class="java.lang.String"/>
+	<group name="Soort">
 		<expression><![CDATA[$F{soort}]]></expression>
 		<groupHeader>
-			<band height="21">
-				<element kind="textField" uuid="2c57eaa5-1a1c-4d41-85ef-1103d1c18868" x="0" y="5" width="277" height="15" fontSize="11.0" pdfFontName="Helvetica-Bold" underline="true" bold="true" vTextAlign="Middle">
+			<band height="28">
+				<element kind="textField" uuid="2c57eaa5-1a1c-4d41-85ef-1103d1c18868" x="0" y="9" width="277" height="15" fontSize="11.0" pdfFontName="Helvetica-Bold" underline="true" bold="true" vTextAlign="Middle">
 					<expression><![CDATA[$F{soort}]]></expression>
 				</element>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			</band>
 		</groupHeader>
-		<groupFooter>
-			<band height="7"/>
-		</groupFooter>
 	</group>
-	<group name="Ras" keepTogether="true">
+	<group name="Ras">
 		<expression><![CDATA[$F{ras}]]></expression>
 		<groupHeader>
-			<band height="20">
+			<band height="24">
 				<element kind="textField" uuid="db084d95-c942-4b46-b289-00d3aa35f4d8" x="0" y="4" width="277" height="15" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
 					<expression><![CDATA[$F{ras}]]></expression>
 				</element>
+				<element kind="textField" uuid="2c4fca02-647b-4e80-89d3-c98a1a16dad3" x="55" y="4" width="217" height="15" fontSize="9.0" pdfFontName="Helvetica-Bold" blankWhenNull="true" bold="false" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{rasKeurmeester}]]></expression>
+				</element>
 			</band>
 		</groupHeader>
 	</group>
-	<group name="Kleur" keepTogether="true">
+	<group name="Kleur">
 		<expression><![CDATA[$F{kleur}]]></expression>
 		<groupHeader>
-			<band height="17">
+			<band height="22">
 				<element kind="textField" uuid="d4b1a571-ae07-449e-93b7-874c8ef6e57b" x="0" y="2" width="277" height="15" pdfFontName="Helvetica-Oblique" removeLineWhenBlank="true" underline="true" italic="true" vTextAlign="Middle">
 					<expression><![CDATA[$F{kleur}]]></expression>
+				</element>
+				<element kind="textField" uuid="46174978-c01f-452a-b9f9-a7ac671e5f09" x="55" y="2" width="217" height="15" fontSize="9.0" pdfFontName="Helvetica-Oblique" blankWhenNull="true" removeLineWhenBlank="true" underline="false" italic="false" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$F{kleurKeurmeester}]]></expression>
 				</element>
 			</band>
 		</groupHeader>
@@ -116,11 +127,14 @@
 			<element kind="textField" uuid="2be9e5c2-f730-4865-9d0d-67e954ea917d" x="23" y="0" width="183" height="15" vTextAlign="Middle">
 				<expression><![CDATA[$F{inschrijver}]]></expression>
 			</element>
-			<element kind="textField" uuid="a441effb-fec8-46cd-b273-3b38c45f5786" x="249" y="0" width="24" height="15" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="textField" uuid="a441effb-fec8-46cd-b273-3b38c45f5786" x="253" y="0" width="24" height="15" hTextAlign="Left" vTextAlign="Middle">
 				<expression><![CDATA[$F{teKoop}]]></expression>
 			</element>
-			<element kind="textField" uuid="95fd6613-6df3-416e-be14-d5c7d66802ba" x="206" y="0" width="34" height="15" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="textField" uuid="95fd6613-6df3-416e-be14-d5c7d66802ba" x="206" y="0" width="44" height="15" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{predicaat}]]></expression>
+			</element>
+			<element kind="break" uuid="a66c39d6-8af1-429f-92b7-83d4c400a232" x="0" y="0" width="100" height="1" type="Column" printRepeatedValues="false">
+				<printWhenExpression><![CDATA[$F{addBreak}.equalsIgnoreCase("true")]]></printWhenExpression>
 			</element>
 		</band>
 	</detail>

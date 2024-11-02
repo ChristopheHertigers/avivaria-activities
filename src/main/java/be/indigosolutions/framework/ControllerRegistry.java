@@ -1,40 +1,23 @@
 package be.indigosolutions.framework;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * User: christophe
  * Date: 09/11/13
  */
-public class ControllerRegistry {
-
-    private Map<Class, AbstractController> controllerInstances;
-    private static ControllerRegistry INSTANCE;
-
-    private ControllerRegistry() {
-        controllerInstances = new HashMap<>();
+@Component
+public class ControllerRegistry implements ApplicationContextAware {
+    private static ApplicationContext applicationContext;
+    @SuppressWarnings("NullableProblems")
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        ControllerRegistry.applicationContext = applicationContext;
     }
-
-    public static ControllerRegistry getInstance() {
-        if (INSTANCE == null) INSTANCE = new ControllerRegistry();
-        return INSTANCE;
-    }
-
-    public void register(AbstractController controller) {
-        controllerInstances.putIfAbsent(controller.getClass(), controller);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T extends AbstractController> T get(Class<T> controllerClass) {
-        return (T) controllerInstances.get(controllerClass);
-    }
-
-    public void unregister(Class controllerClass) {
-        controllerInstances.remove(controllerClass);
-    }
-
-    public void unregister(AbstractController controller) {
-        controllerInstances.remove(controller.getClass());
+    public static <T extends AbstractController> T get(Class<T> controllerClass) {
+        return applicationContext.getBean(controllerClass);
     }
 }

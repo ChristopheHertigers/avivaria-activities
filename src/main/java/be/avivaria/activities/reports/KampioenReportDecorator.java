@@ -11,18 +11,21 @@ import java.util.Locale;
  * User: christophe
  * Date: 05/11/13
  */
+@SuppressWarnings("unused")
 public class KampioenReportDecorator implements Comparable<KampioenReportDecorator> {
 
-    private HoofdSoort hoofdSoort;
+    private final String hoofdSoort;
+    private final String hoofdSoortLabel;
     private int order = 0;
-    private Deelnemer deelnemer;
-    private double totaal;
-    private int totaalJong;
-    private int totaalMan;
-    private boolean lidAvivaria;
+    private final Deelnemer deelnemer;
+    private final double totaal;
+    private final int totaalJong;
+    private final int totaalMan;
+    private final boolean lidAvivaria;
 
     public KampioenReportDecorator(HoofdSoort hoofdSoort, Deelnemer deelnemer, double totaal, int totaalJong, int totaalMan, boolean lidAvivaria) {
-        this.hoofdSoort = hoofdSoort;
+        this.hoofdSoort = hoofdSoort.name();
+        this.hoofdSoortLabel = hoofdSoort.getLabel();
         this.deelnemer = deelnemer;
         this.totaal = totaal;
         this.totaalJong = totaalJong;
@@ -30,8 +33,12 @@ public class KampioenReportDecorator implements Comparable<KampioenReportDecorat
         this.lidAvivaria = lidAvivaria;
     }
 
-    public HoofdSoort getHoofdSoort() {
+    public String getHoofdSoort() {
         return hoofdSoort;
+    }
+
+    public String getHoofdSoortLabel() {
+        return hoofdSoortLabel;
     }
 
     public String getOrder() {

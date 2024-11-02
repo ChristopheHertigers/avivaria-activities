@@ -6,11 +6,12 @@ import be.avivaria.activities.model.Vereniging;
  * User: christophe
  * Date: 03/11/13
  */
+@SuppressWarnings("unused")
 public class VerenigingReportDecorator {
 
-    private Vereniging vereniging;
-    private long aantalDeelnemers;
-    private long aantalDieren;
+    private final Vereniging vereniging;
+    private final long aantalDeelnemers;
+    private final long aantalDieren;
 
 
     public VerenigingReportDecorator(Vereniging vereniging, long aantalDeelnemers, long aantalDieren) {

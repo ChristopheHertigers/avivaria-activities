@@ -1,14 +1,16 @@
 package be.avivaria.activities.model;
 
+import be.avivaria.activities.model.usertype.HokTypeUserType;
+import be.indigosolutions.framework.model.BaseEntity;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
-
-import javax.persistence.*;
 
 /**
  * User: christophe
  * Date: 05/10/13
  * Time: 15:02
  */
+@SuppressWarnings("unused")
 @Entity
 @Table(name="hok")
 public class Hok extends BaseEntity {
@@ -23,7 +25,7 @@ public class Hok extends BaseEntity {
     private InschrijvingLijn inschrijvingLijn;
     @ManyToOne
     private Aantal aantal;
-    @Column @Type(type = "be.avivaria.activities.model.usertype.HokTypeUserType")
+    @Column @Type(HokTypeUserType.class)
     private HokType type;
     @Column
     private String predicaat;

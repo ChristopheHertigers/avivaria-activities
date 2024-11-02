@@ -1,0 +1,64 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="kampioenen" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96db1f5f-608d-43e4-af78-d00fd69a939e">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="EVENT_NAME" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVENT NAME"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ADDRESS" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["EVENT ADDRESS"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPORT_PAGE_FOOTER_TITLE" forPrompting="false" class="java.lang.String">
+		<defaultValueExpression><![CDATA["REPORT PAGE HEADER TITLE"]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[]]></query>
+	<field name="naam" class="java.lang.String">
+		<description><![CDATA[naam]]></description>
+	</field>
+	<field name="totaal" class="java.lang.Integer">
+		<description><![CDATA[totaal]]></description>
+	</field>
+	<background splitType="Stretch"/>
+	<pageHeader height="99">
+		<element kind="rectangle" uuid="f91ddc76-3cb5-4ee7-9814-297abb1d40ee" x="0" y="0" width="555" height="78"/>
+		<element kind="image" uuid="ef5c5bae-f3bf-41cd-81d5-02dcb4a00cb8" x="1" y="1" width="76" height="76">
+			<expression><![CDATA["logo.jpg"]]></expression>
+		</element>
+		<element kind="textField" uuid="765bca48-8828-4676-b66d-0b7989b28889" x="94" y="0" width="462" height="50" fontSize="16.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{EVENT_NAME}]]></expression>
+		</element>
+		<element kind="textField" uuid="06a3bef6-b6e5-4fab-a37d-44e3caee3a47" x="94" y="51" width="462" height="27" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{EVENT_ADDRESS}]]></expression>
+		</element>
+		<element kind="line" uuid="02d7eee4-4e42-4288-850e-113f173cca86" x="0" y="98" width="555" height="1"/>
+		<element kind="staticText" uuid="fc9f7bcb-b435-455f-b3d6-b1e2791c56cc" x="5" y="84" width="282" height="15" pdfFontName="Helvetica-Bold" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Naam]]></text>
+		</element>
+		<element kind="staticText" uuid="93f7a9d8-6db1-424a-9196-a544471627b1" x="287" y="84" width="113" height="15" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Aantal dieren]]></text>
+		</element>
+	</pageHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<element kind="textField" uuid="317186ce-c474-4ea1-9b15-ed791f9828c4" x="5" y="0" width="282" height="15" vTextAlign="Middle">
+				<expression><![CDATA[$F{naam}]]></expression>
+			</element>
+			<element kind="textField" uuid="bbaabd2d-01fe-4b65-b0a5-39f283c69ea5" x="288" y="0" width="112" height="15" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{totaal}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="20" splitType="Stretch">
+		<element kind="staticText" uuid="24d1b2bf-9c87-477f-a82d-a03faa983332" x="509" y="0" width="22" height="15" hTextAlign="Right" vTextAlign="Bottom">
+			<text><![CDATA[Blz.]]></text>
+		</element>
+		<element kind="textField" uuid="b6c6965f-703d-4a43-9936-d523bba66735" x="535" y="0" width="18" height="15" vTextAlign="Bottom">
+			<expression><![CDATA[$V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="904a9ad6-fa97-4a3d-a308-da5377690b3f" x="0" y="0" width="434" height="15" fontSize="10.0" pdfFontName="Helvetica-Bold" bold="false" vTextAlign="Bottom">
+			<expression><![CDATA[$P{REPORT_PAGE_FOOTER_TITLE}]]></expression>
+		</element>
+		<element kind="line" uuid="35436ffd-e1cc-4124-a233-17137d97901c" x="0" y="1" width="555" height="1"/>
+	</pageFooter>
+</jasperReport>

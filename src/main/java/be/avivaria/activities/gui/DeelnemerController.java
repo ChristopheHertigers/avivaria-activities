@@ -1,16 +1,18 @@
 package be.avivaria.activities.gui;
 
-import be.avivaria.activities.dao.DeelnemerDao;
-import be.avivaria.activities.dao.VerenigingDao;
+import be.avivaria.activities.dao.DeelnemerRepository;
+import be.avivaria.activities.dao.VerenigingRepository;
 import be.avivaria.activities.model.Deelnemer;
 import be.avivaria.activities.model.Vereniging;
-import be.indigosolutions.framework.*;
+import be.indigosolutions.framework.AbstractTableController;
+import be.indigosolutions.framework.DefaultAction;
+import be.indigosolutions.framework.EntityTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,28 +27,38 @@ import java.util.List;
  * Date: 06/10/13
  * Time: 09:54
  */
-public class DeelnemerController extends AbstractPersistentTableController<Deelnemer> {
-    private static final Logger LOGGER = LogManager.getLogger(DeelnemerController.class);
+@Controller
+public class DeelnemerController extends AbstractTableController<Deelnemer> {
+    private static final Logger logger = LoggerFactory.getLogger(DeelnemerController.class);
+
+    private final VerenigingRepository verenigingRepository;
+    private final DeelnemerRepository deelnemerRepository;
 
     // View
-    private JTextField idField;
-    private JTextField naamField;
-    private JTextField straatField;
-    private JTextField woonplaatsField;
-    private JTextField telefoonField;
-    private JComboBox verenigingCombo;
-    private JTextField fokkerskaartField;
-    private JTextField jeugdDeelnemerField;
+    private final JTextField idField;
+    private final JTextField naamField;
+    private final JTextField straatField;
+    private final JTextField woonplaatsField;
+    private final JTextField telefoonField;
+    private final JComboBox<Vereniging> verenigingCombo;
+    private final JTextField fokkerskaartField;
+    private final JTextField jeugdDeelnemerField;
 
-    private JButton saveButton;
-    private JButton cancelButton;
-    private JButton closeButton;
+    private final JButton saveButton;
+    private final JButton cancelButton;
+    private final JButton closeButton;
+
+    private List<Vereniging> verenigingen;
 
     // Model
     private long previousId = -1;
 
-    public DeelnemerController(AbstractController parentController) {
-        super(new JFrame("Deelnemers"), parentController, 570, 250);
+    @Autowired
+    public DeelnemerController(
+            DeelnemerRepository deelnemerRepository,
+            VerenigingRepository verenigingRepository
+    ) {
+        super(new JFrame("Deelnemers"), 570, 250);
         final JFrame mainWindow = (JFrame) getView();
         mainWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         mainWindow.addWindowListener(new WindowAdapter() {
@@ -56,12 +68,13 @@ public class DeelnemerController extends AbstractPersistentTableController<Deeln
             }
         });
 
+        this.deelnemerRepository = deelnemerRepository;
+        this.verenigingRepository = verenigingRepository;
+
         // View components
         JPanel detailPanel = new JPanel(new BorderLayout());
         detailPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(0, 10, 10, 10), BorderFactory.createTitledBorder("Deelnemer Detail")));
-
-        List<Vereniging> verenigingen = new VerenigingDao(getPersistenceContext()).findAll();
 
         JPanel detailFormPanel = new JPanel(new MigLayout("wrap 2", "[r][l]"));
         detailFormPanel.add(new JLabel("id:"));
@@ -90,7 +103,7 @@ public class DeelnemerController extends AbstractPersistentTableController<Deeln
         addDocumentListener(telefoonField);
         detailFormPanel.add(telefoonField);
         detailFormPanel.add(new JLabel("vereniging:"));
-        verenigingCombo = new JComboBox(verenigingen.toArray(new Vereniging[verenigingen.size()]));
+        verenigingCombo = new JComboBox<>();
         verenigingCombo.setPreferredSize(new Dimension(400, 30));
         addItemChangeListener(verenigingCombo);
         detailFormPanel.add(verenigingCombo);
@@ -126,27 +139,26 @@ public class DeelnemerController extends AbstractPersistentTableController<Deeln
         mainWindow.setMinimumSize(new Dimension(600, 700));
         mainWindow.setPreferredSize(new Dimension(600, 700));
         mainWindow.setLocation(350, 50);
-        mainWindow.setVisible(true);
+    }
 
+    @Override
+    public void show() {
+        refreshRelations();
+        refreshItemList();
+        super.show();
         // initial display
         closeButton.requestFocus();
     }
 
+    private void refreshRelations() {
+        verenigingen = verenigingRepository.findAllByOrderByNaam();
+        verenigingCombo.setModel(new DefaultComboBoxModel<>(verenigingen.toArray(new Vereniging[0])));
+    }
+
     @Override
-    protected void doDispose() {
+    public void dispose() {
         getView().setVisible(false);
-        idField = null;
-        naamField = null;
-        straatField = null;
-        woonplaatsField = null;
-        telefoonField = null;
-        verenigingCombo = null;
-        fokkerskaartField = null;
-        jeugdDeelnemerField = null;
-        saveButton = null;
-        cancelButton = null;
-        ControllerRegistry.getInstance().unregister(this);
-        ((JFrame)getView()).dispose();
+        clearDetail();
     }
 
     @Override
@@ -183,14 +195,12 @@ public class DeelnemerController extends AbstractPersistentTableController<Deeln
     }
 
     private boolean isValid() {
-        if (!StringUtils.isNumeric(idField.getText())) return false;
-        if (StringUtils.isNotBlank(jeugdDeelnemerField.getText()) && !StringUtils.isNumeric(jeugdDeelnemerField.getText())) return false;
-        return true;
+        return !StringUtils.isNotBlank(jeugdDeelnemerField.getText()) || StringUtils.isNumeric(jeugdDeelnemerField.getText());
     }
 
     private void persistChanges() {
         if (isValid()) {
-            selected.setId(Long.parseLong(idField.getText()));
+            selected.setId(StringUtils.isNotBlank(idField.getText()) ? Long.parseLong(idField.getText()) : null);
             selected.setNaam(naamField.getText());
             selected.setStraat(straatField.getText());
             selected.setWoonplaats(woonplaatsField.getText());
@@ -199,49 +209,40 @@ public class DeelnemerController extends AbstractPersistentTableController<Deeln
             selected.setFokkerskaartNummer(fokkerskaartField.getText());
             selected.setJeugddeelnemer(StringUtils.isBlank(jeugdDeelnemerField.getText()) ? null : Integer.parseInt(jeugdDeelnemerField.getText()));
 
-            Session session = getPersistenceContext();
-            DeelnemerDao deelnemerDao = new DeelnemerDao(session);
-            Transaction transaction = session.getTransaction();
             try {
-                transaction.begin();
-                deelnemerDao.saveOrUpdate(selected);
-                deelnemerDao.flush();
-                transaction.commit();
+                deelnemerRepository.save(selected);
             } catch (Exception e1) {
-                transaction.rollback();
+                logger.error("Error while saving deelnemer", e1);
                 throw new RuntimeException(e1);
             } finally {
                 setDirty(false);
-                previousId = selected.getId();
-                refreshItemList(session);
+                previousId = selected.getId() == null ? -1 : selected.getId();
+                refreshItemList();
             }
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void refreshItemList(Session currentSession) {
-        DeelnemerDao deelnemerDao = new DeelnemerDao(currentSession);
-        List<Deelnemer> deelnemers = deelnemerDao.findAll();
+    @Override
+    public void refreshItemList() {
+        List<Deelnemer> deelnemers = deelnemerRepository.findAllByOrderByNaam();
         itemTableModel = new EntityTableModel<>(Deelnemer.class, deelnemers);
         itemTableModel.addColumn("Naam", "naam", 420);
         itemTableModel.addColumn("Telefoon", "telefoon", 150);
         itemTable.setModel(itemTableModel);
         setColumnProperties(itemTable, itemTableModel);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (previousId >= 0) {
-                    for (int i = 0; i < itemTableModel.getRowCount(); i++) {
-                        Deelnemer s = (Deelnemer) itemTableModel.getRow(i);
-                        if (s.getId() == previousId) {
-                            itemTable.setRowSelectionInterval(i,i);
-                            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
-                            return;
-                        }
+        SwingUtilities.invokeLater(() -> {
+            if (previousId >= 0) {
+                for (int i = 0; i < itemTableModel.getRowCount(); i++) {
+                    Deelnemer s = (Deelnemer) itemTableModel.getRow(i);
+                    if (s.getId() == previousId) {
+                        itemTable.setRowSelectionInterval(i,i);
+                        itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
+                        return;
                     }
                 }
-                itemTable.setRowSelectionInterval(0, 0);
-                itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
             }
+            itemTable.setRowSelectionInterval(0, 0);
+            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
         });
     }
 
@@ -262,20 +263,14 @@ public class DeelnemerController extends AbstractPersistentTableController<Deeln
         registerAction(button, new DefaultAction("delete") {
             public void actionPerformed(ActionEvent e) {
                 if (selected != null) {
-                    Session session = getPersistenceContext();
-                    Transaction transaction = session.getTransaction();
                     try {
-                        transaction.begin();
-                        DeelnemerDao deelnemerDao = new DeelnemerDao(session);
-                        deelnemerDao.delete(selected);
-                        deelnemerDao.flush();
-                        transaction.commit();
+                        deelnemerRepository.delete(selected);
                     } catch (Exception e1) {
-                        transaction.rollback();
+                        logger.error("Error while deleting deelnemer", e1);
                         throw new RuntimeException(e1);
                     } finally {
                         setDirty(false);
-                        refreshItemList(session);
+                        refreshItemList();
                     }
                 } else {
                     JOptionPane.showMessageDialog(parent, "Er is niets geselecteerd.");
@@ -291,12 +286,9 @@ public class DeelnemerController extends AbstractPersistentTableController<Deeln
             public void actionPerformed(ActionEvent e) {
                 itemTable.clearSelection();
                 if (selected == null) {
-                    Session session = getPersistenceContext();
-                    DeelnemerDao deelnemerDao = new DeelnemerDao(session);
-                    long nextId = deelnemerDao.getNextId();
                     selected = new Deelnemer();
-                    selected.setId(nextId);
-                    idField.setText(""+nextId);
+                    selected.setId(null);
+                    idField.setText("");
                     setDirty(true);
                 }
 

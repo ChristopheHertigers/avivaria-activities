@@ -8,10 +8,10 @@ import be.avivaria.activities.model.InschrijvingLijn;
  * User: christophe
  * Date: 03/11/13
  */
-@SuppressWarnings("SpellCheckingInspection")
+@SuppressWarnings("unused")
 public class LabelReportDecorator {
 
-    private Hok hok;
+    private final Hok hok;
 
     public LabelReportDecorator(Hok hok) {
         this.hok = hok;
@@ -52,6 +52,4 @@ public class LabelReportDecorator {
     public Long getVolgnummer() {
         return getInschrijving().getVolgnummer();
     }
-
-    public String getNaam() { return getInschrijving().getDeelnemer().getNaamForReport(); }
 }

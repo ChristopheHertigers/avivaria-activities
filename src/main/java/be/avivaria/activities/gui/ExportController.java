@@ -1,17 +1,16 @@
 package be.avivaria.activities.gui;
 
-import be.avivaria.activities.MainController;
 import be.avivaria.activities.reports.InschrijvingReportDecorator;
 import be.avivaria.activities.reports.ReportDataFactory;
 import be.indigosolutions.framework.AbstractController;
-import be.indigosolutions.framework.PersistenceController;
 import be.indigosolutions.framework.util.EnvironmentUtil;
 import be.indigosolutions.framework.util.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.io.File;
@@ -20,21 +19,25 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
+
 /**
  * @author ch
  */
-public class ExportController extends PersistenceController {
-    private static final Logger LOGGER = LogManager.getLogger(ExportController.class);
+@Controller
+public class ExportController extends AbstractController {
+    private static final Logger logger = LoggerFactory.getLogger(ExportController.class);
     private static final String SEP = EnvironmentUtil.getDirSeparator();
 
-    private final MainController parent;
+    private final ReportDataFactory reportDataFactory;
 
-    public ExportController(AbstractController parentController) {
-        super(parentController);
-        this.parent = (MainController) parentController;
+    @Autowired
+    public ExportController(ReportDataFactory reportDataFactory) {
+        this.reportDataFactory = reportDataFactory;
+    }
 
-        Session session = getPersistenceContext();
-        List<InschrijvingReportDecorator> inschrijvingen = ReportDataFactory.getInschrijvingenForActiveEvent(session);
+    public void export() {
+        List<InschrijvingReportDecorator> inschrijvingen = reportDataFactory.getInschrijvingenForActiveEvent();
         Iterator<InschrijvingReportDecorator> it = inschrijvingen.iterator();
         long previousInschrijvingId = -999L;
         // remove duplicates (which are necessary for the report, but not here)
@@ -46,7 +49,7 @@ public class ExportController extends PersistenceController {
 
         File desktop = EnvironmentUtil.getDesktopDirectory();
 
-        try {
+        try (FileOutputStream out = new FileOutputStream(desktop.getAbsolutePath() + SEP + "inschrijvingen.xlsx")) {
             Workbook wb = new XSSFWorkbook();
             Sheet sheet1 = wb.createSheet("Inschrijvingen");
             CellStyle bold = createBoldStyle(wb);
@@ -68,29 +71,27 @@ public class ExportController extends PersistenceController {
                 Row row = sheet1.createRow(rowCount++);
                 row.createCell(0).setCellValue(inschrijving.getDeelnemerNaam());
                 row.createCell(1).setCellValue(inschrijving.getDeelnemerStraat() + " " + inschrijving.getDeelnemerWoonplaats());
-                cell = row.createCell(2, Cell.CELL_TYPE_NUMERIC); cell.setCellValue(d(inschrijving.getTotaalDier())); cell.setCellStyle(decimal);
-                cell = row.createCell(3, Cell.CELL_TYPE_NUMERIC); cell.setCellValue(d(inschrijving.getTotaalPalmares())); cell.setCellStyle(decimal);
-                cell = row.createCell(4, Cell.CELL_TYPE_NUMERIC); cell.setCellValue(d(inschrijving.getTotaalDierTeKoop())); cell.setCellStyle(decimal);
-                cell = row.createCell(5, Cell.CELL_TYPE_NUMERIC); cell.setCellValue(d(inschrijving.getTotaalLidgeld())); cell.setCellStyle(decimal);
-                cell = row.createCell(6, Cell.CELL_TYPE_NUMERIC); cell.setCellValue(d(inschrijving.getTotaalLidgeldJeugd())); cell.setCellStyle(decimal);
-                cell = row.createCell(7, Cell.CELL_TYPE_NUMERIC); cell.setCellValue(d(inschrijving.getTotaalFokkerskaart())); cell.setCellStyle(decimal);
-                cell = row.createCell(8, Cell.CELL_TYPE_NUMERIC); cell.setCellValue(d(inschrijving.getTotaalFokkerskaart2())); cell.setCellStyle(decimal);
-                cell = row.createCell(9, Cell.CELL_TYPE_NUMERIC); cell.setCellValue(d(inschrijving.getTotaal())); cell.setCellStyle(decimal);
+                cell = row.createCell(2, NUMERIC); cell.setCellValue(d(inschrijving.getTotaalDier())); cell.setCellStyle(decimal);
+                cell = row.createCell(3, NUMERIC); cell.setCellValue(d(inschrijving.getTotaalPalmares())); cell.setCellStyle(decimal);
+                cell = row.createCell(4, NUMERIC); cell.setCellValue(d(inschrijving.getTotaalDierTeKoop())); cell.setCellStyle(decimal);
+                cell = row.createCell(5, NUMERIC); cell.setCellValue(d(inschrijving.getTotaalLidgeld())); cell.setCellStyle(decimal);
+                cell = row.createCell(6, NUMERIC); cell.setCellValue(d(inschrijving.getTotaalLidgeldJeugd())); cell.setCellStyle(decimal);
+                cell = row.createCell(7, NUMERIC); cell.setCellValue(d(inschrijving.getTotaalFokkerskaart())); cell.setCellStyle(decimal);
+                cell = row.createCell(8, NUMERIC); cell.setCellValue(d(inschrijving.getTotaalFokkerskaart2())); cell.setCellStyle(decimal);
+                cell = row.createCell(9, NUMERIC); cell.setCellValue(d(inschrijving.getTotaal())); cell.setCellStyle(decimal);
             }
-
-            FileOutputStream out = new FileOutputStream(desktop.getAbsolutePath() + SEP + "inschrijvingen.xlsx");
             wb.write(out);
-            out.close();
+
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error writing export", e);
         }
 
-        JOptionPane.showMessageDialog(parent.getView(), "Export inschrijvingen succesvol aangemaakt.", "Succes", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Export inschrijvingen succesvol aangemaakt.", "Succes", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private CellStyle createBoldStyle(Workbook wb) {
         Font boldFont = wb.createFont();
-        boldFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        boldFont.setBold(true);
         CellStyle bold = wb.createCellStyle();
         bold.setFont(boldFont);
         return bold;

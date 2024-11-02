@@ -1,22 +1,23 @@
 package be.avivaria.activities.gui;
 
 import be.avivaria.activities.MainController;
-import be.avivaria.activities.dao.EventDao;
+import be.avivaria.activities.dao.EventRepository;
 import be.avivaria.activities.model.Event;
 import be.avivaria.activities.model.EventType;
-import be.indigosolutions.framework.*;
+import be.indigosolutions.framework.AbstractTableController;
+import be.indigosolutions.framework.DefaultAction;
+import be.indigosolutions.framework.EntityTableModel;
 import be.indigosolutions.framework.cellrenderer.CellRenderers;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
 
 
 /**
@@ -24,37 +25,43 @@ import java.util.List;
  * Date: 06/10/13
  * Time: 09:54
  */
-public class EventController extends AbstractPersistentTableController<Event> {
-    private static final Logger LOGGER = LogManager.getLogger(EventController.class);
+@Controller
+public class EventController extends AbstractTableController<Event> {
+    private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 
     public static final String LABEL_VERKOOPDAG = "Verkoopdag";
     public static final String LABEL_TENTOONSTELLING = "Tentoonstelling";
 
-    // View
-    private JTextField idField;
-    private JComboBox typeCombo;
-    private JTextField naamField;
-    private JTextField dierenField;
-    private JTextField dierenClubField;
-    private JTextField dierenTeKoopField;
-    private JTextField palmaresField;
-    private JTextField lidgeldField;
-    private JTextField lidgeldJeugdField;
-    private JTextField fokkerskaartField;
-    private JTextField fokkerskaart2Field;
-    private JTextField clubNaamRegel1;
-    private JTextField clubNaamRegel2;
-    private JLabel dierenTeKoopLabel;
+    private final MainController mainController;
+    private final EventRepository eventRepository;
 
-    private JButton saveButton;
-    private JButton cancelButton;
-    private JButton closeButton;
+    // View
+    private final JTextField idField;
+    private final JComboBox<String> typeCombo;
+    private final JTextField naamField;
+    private final JTextField dierenField;
+    private final JTextField hokStartField;
+    private final JTextField dierenClubField;
+    private final JTextField dierenTeKoopField;
+    private final JTextField palmaresField;
+    private final JTextField lidgeldField;
+    private final JTextField lidgeldJeugdField;
+    private final JTextField fokkerskaartField;
+    private final JTextField fokkerskaart2Field;
+    private final JTextField clubNaamRegel1;
+    private final JTextField clubNaamRegel2;
+    private final JLabel dierenTeKoopLabel;
+
+    private final JButton saveButton;
+    private final JButton cancelButton;
+    private final JButton closeButton;
 
     // Model
     private long previousId = -1;
 
-    public EventController(AbstractController parentController) {
-        super(new JFrame("Activiteiten"), parentController, 600, 250);
+    @Autowired
+    public EventController(MainController mainController, EventRepository eventRepository) {
+        super(new JFrame("Activiteiten"), 600, 250);
         final JFrame mainWindow = (JFrame) getView();
         mainWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         mainWindow.addWindowListener(new WindowAdapter() {
@@ -63,6 +70,9 @@ public class EventController extends AbstractPersistentTableController<Event> {
                 closeButton.doClick();
             }
         });
+
+        this.mainController = mainController;
+        this.eventRepository = eventRepository;
 
         // View components
         JPanel detailPanel = new JPanel(new BorderLayout());
@@ -74,17 +84,19 @@ public class EventController extends AbstractPersistentTableController<Event> {
         idField = new JTextField();
         idField.setPreferredSize(new Dimension(100, 30));
         idField.setEnabled(false);
-        detailFormPanel.add(idField, "span 3");
+        detailFormPanel.add(idField);
+        detailFormPanel.add(new JLabel("1ste hoknr:"));
+        hokStartField = new JTextField();
+        hokStartField.setPreferredSize(new Dimension(100, 30));
+        addDocumentListener(hokStartField);
+        detailFormPanel.add(hokStartField);
         detailFormPanel.add(new JLabel("type:"));
-        typeCombo = new JComboBox(new String[]{LABEL_VERKOOPDAG, LABEL_TENTOONSTELLING});
+        typeCombo = new JComboBox<>(new String[]{LABEL_VERKOOPDAG, LABEL_TENTOONSTELLING});
         typeCombo.setPreferredSize(new Dimension(200, 30));
-        typeCombo.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    setDirty(true);
-                    updateDierenTeKoopLabel((String)e.getItem());
-                }
+        typeCombo.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                setDirty(true);
+                updateDierenTeKoopLabel((String)e.getItem());
             }
         });
         detailFormPanel.add(typeCombo, "span 3");
@@ -167,8 +179,13 @@ public class EventController extends AbstractPersistentTableController<Event> {
         mainWindow.setMinimumSize(new Dimension(630, 700));
         mainWindow.setPreferredSize(new Dimension(630, 700));
         mainWindow.setLocation(350, 50);
-        mainWindow.setVisible(true);
+    }
 
+
+    @Override
+    public void show() {
+        refreshItemList();
+        super.show();
         // initial display
         closeButton.requestFocus();
     }
@@ -182,25 +199,9 @@ public class EventController extends AbstractPersistentTableController<Event> {
     }
 
     @Override
-    protected void doDispose() {
+    public void dispose() {
         getView().setVisible(false);
-        idField = null;
-        typeCombo = null;
-        naamField = null;
-        dierenField = null;
-        dierenClubField = null;
-        dierenTeKoopField = null;
-        palmaresField = null;
-        lidgeldField = null;
-        lidgeldJeugdField = null;
-        fokkerskaartField = null;
-        fokkerskaart2Field = null;
-        clubNaamRegel1 = null;
-        clubNaamRegel2 = null;
-        saveButton = null;
-        cancelButton = null;
-        ControllerRegistry.getInstance().unregister(this);
-        ((JFrame)getView()).dispose();
+        clearDetail();
     }
 
     @Override
@@ -213,6 +214,7 @@ public class EventController extends AbstractPersistentTableController<Event> {
     @Override
     protected void clearDetail() {
         idField.setText(null);
+        hokStartField.setText(null);
         typeCombo.setSelectedItem(null);
         naamField.setText(null);
         dierenField.setText(null);
@@ -230,26 +232,29 @@ public class EventController extends AbstractPersistentTableController<Event> {
 
     @Override
     protected void loadDetail() {
-        idField.setText("" + selected.getId());
-        typeCombo.setSelectedItem(EventType.Verkoopdag == selected.getType() ? LABEL_VERKOOPDAG : LABEL_TENTOONSTELLING);
-        naamField.setText(selected.getNaam());
-        dierenField.setText("" + selected.getPrijsDier());
-        dierenClubField.setText("" + selected.getPrijsDierClub());
-        dierenTeKoopField.setText("" + selected.getPrijsDierTeKoop());
-        palmaresField.setText(""+selected.getPrijsPalmares());
-        lidgeldField.setText(""+selected.getPrijsLidgeld());
-        lidgeldJeugdField.setText(""+selected.getPrijsLidgeldJeugd());
-        fokkerskaartField.setText(""+selected.getPrijsFokkerskaart());
-        fokkerskaart2Field.setText(""+selected.getPrijsFokkerskaart2());
-        clubNaamRegel1.setText(""+selected.getClubNaamRegel1());
-        clubNaamRegel2.setText(""+selected.getClubNaamRegel2());
-        updateDierenTeKoopLabel((String)typeCombo.getSelectedItem());
-        setDirty(false);
+        if (selected != null) {
+            idField.setText(selected.getId() != null ? ""+selected.getId() : "");
+            hokStartField.setText(selected.getHokStartNummer() != null ? ""+selected.getHokStartNummer() : "1");
+            typeCombo.setSelectedItem(EventType.Verkoopdag == selected.getType() ? LABEL_VERKOOPDAG : LABEL_TENTOONSTELLING);
+            naamField.setText(selected.getNaam());
+            dierenField.setText("" + selected.getPrijsDier());
+            dierenClubField.setText("" + selected.getPrijsDierClub());
+            dierenTeKoopField.setText("" + selected.getPrijsDierTeKoop());
+            palmaresField.setText(""+selected.getPrijsPalmares());
+            lidgeldField.setText(""+selected.getPrijsLidgeld());
+            lidgeldJeugdField.setText(""+selected.getPrijsLidgeldJeugd());
+            fokkerskaartField.setText(""+selected.getPrijsFokkerskaart());
+            fokkerskaart2Field.setText(""+selected.getPrijsFokkerskaart2());
+            clubNaamRegel1.setText(selected.getClubNaamRegel1());
+            clubNaamRegel2.setText(selected.getClubNaamRegel2());
+            updateDierenTeKoopLabel((String)typeCombo.getSelectedItem());
+            setDirty(false);
+        }
     }
 
     private boolean isValid() {
-        if (!StringUtils.isNumeric(idField.getText())) return false;
         try {
+            parseInt(hokStartField.getText());
             parseDouble(dierenField.getText());
             parseDouble(dierenClubField.getText());
             parseDouble(dierenTeKoopField.getText());
@@ -268,12 +273,21 @@ public class EventController extends AbstractPersistentTableController<Event> {
         if (StringUtils.isBlank(value)) return 0.0;
         return Double.parseDouble(value.trim().replaceAll(",", "."));
     }
+    private Integer parseInt(String value) {
+        return parseInt(value, 0);
+    }
+
+    private Integer parseInt(String value, int defaultValue) {
+        if (StringUtils.isBlank(value)) return defaultValue;
+        return Integer.parseInt(value.trim());
+    }
 
     private void persistChanges() {
         if (isValid()) {
-            selected.setId(Long.parseLong(idField.getText()));
+            selected.setId(StringUtils.isNotBlank(idField.getText()) ? Long.parseLong(idField.getText()) : null);
             selected.setType(LABEL_VERKOOPDAG.equals(typeCombo.getSelectedItem()) ? EventType.Verkoopdag : EventType.Tentoonstelling);
             selected.setNaam(naamField.getText());
+            selected.setHokStartNummer(parseInt(hokStartField.getText(), 1));
             selected.setPrijsDier(parseDouble(dierenField.getText()));
             selected.setPrijsDierClub(parseDouble(dierenClubField.getText()));
             selected.setPrijsDierTeKoop(parseDouble(dierenTeKoopField.getText()));
@@ -285,50 +299,41 @@ public class EventController extends AbstractPersistentTableController<Event> {
             selected.setClubNaamRegel1(clubNaamRegel1.getText());
             selected.setClubNaamRegel2(clubNaamRegel2.getText());
 
-            Session session = getPersistenceContext();
-            EventDao eventDao = new EventDao(session);
-            Transaction transaction = session.getTransaction();
             try {
-                transaction.begin();
-                eventDao.saveOrUpdate(selected);
-                eventDao.flush();
-                transaction.commit();
-            } catch (Exception e1) {
-                transaction.rollback();
-                throw new RuntimeException(e1);
+                eventRepository.save(selected);
+            } catch (Exception e) {
+                logger.error("Error while saving event", e);
+                throw new RuntimeException(e);
             } finally {
                 setDirty(false);
-                previousId = selected.getId();
-                refreshItemList(session);
+                previousId = selected.getId() == null ? -1 : selected.getId();
+                refreshItemList();
             }
         }
     }
 
-    @SuppressWarnings("unchecked") @Override
-    public void refreshItemList(Session currentSession) {
-        EventDao eventDao = new EventDao(currentSession);
-        List<Event> events = eventDao.findAll();
+    @Override
+    public void refreshItemList() {
+        Iterable<Event> events = eventRepository.findAllByOrderByIdDesc();
         itemTableModel = new EntityTableModel<>(Event.class, events);
         itemTableModel.addColumn("Type", "type.code", 50, CellRenderers.StringCentered.getRenderer());
         itemTableModel.addColumn("Naam", "naam");
         itemTableModel.addColumn("Actief", "selected", 60, CellRenderers.BooleanCentered.getRenderer());
         itemTable.setModel(itemTableModel);
         setColumnProperties(itemTable, itemTableModel);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (previousId >= 0) {
-                    for (int i = 0; i < itemTableModel.getRowCount(); i++) {
-                        Event s = (Event) itemTableModel.getRow(i);
-                        if (s.getId() == previousId) {
-                            itemTable.setRowSelectionInterval(i, i);
-                            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
-                            return;
-                        }
+        SwingUtilities.invokeLater(() -> {
+            if (previousId >= 0) {
+                for (int i = 0; i < itemTableModel.getRowCount(); i++) {
+                    Event s = (Event) itemTableModel.getRow(i);
+                    if (s.getId() == previousId) {
+                        itemTable.setRowSelectionInterval(i, i);
+                        itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
+                        return;
                     }
                 }
-                itemTable.setRowSelectionInterval(0, 0);
-                itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
             }
+            itemTable.setRowSelectionInterval(0, 0);
+            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
         });
     }
 
@@ -336,6 +341,7 @@ public class EventController extends AbstractPersistentTableController<Event> {
         JButton closeButton = new JButton("Sluit");
         registerAction(closeButton, new DefaultAction("close") {
             public void actionPerformed(ActionEvent e) {
+                mainController.loadData();
                 parent.setVisible(false);
                 parent.dispose();
                 dispose();
@@ -349,20 +355,14 @@ public class EventController extends AbstractPersistentTableController<Event> {
         registerAction(button, new DefaultAction("delete") {
             public void actionPerformed(ActionEvent e) {
                 if (selected != null) {
-                    Session session = getPersistenceContext();
-                    EventDao eventDao = new EventDao(session);
-                    Transaction transaction = session.getTransaction();
                     try {
-                        transaction.begin();
-                        eventDao.delete(selected);
-                        eventDao.flush();
-                        transaction.commit();
+                        eventRepository.delete(selected);
                     } catch (Exception e1) {
-                        transaction.rollback();
+                        logger.error("Error while deleting event",e1);
                         throw new RuntimeException(e1);
                     } finally {
                         setDirty(false);
-                        refreshItemList(session);
+                        refreshItemList();
                     }
                 } else {
                     JOptionPane.showMessageDialog(parent, "Er is niets geselecteerd.");
@@ -378,13 +378,8 @@ public class EventController extends AbstractPersistentTableController<Event> {
             public void actionPerformed(ActionEvent e) {
                 itemTable.clearSelection();
                 if (selected == null) {
-                    Session session = getPersistenceContext();
-                    EventDao eventDao = new EventDao(session);
-                    long nextId = eventDao.getNextId();
                     selected = new Event();
-                    selected.setId(nextId);
                     selected.setSelected(false);
-                    idField.setText(""+nextId);
                     setDirty(true);
                 }
 
@@ -398,23 +393,18 @@ public class EventController extends AbstractPersistentTableController<Event> {
         registerAction(button, new DefaultAction("select") {
             public void actionPerformed(ActionEvent e) {
                 if (selected != null) {
-                    final Session session = getPersistenceContext();
-                    EventDao eventDao = new EventDao(session);
-                    Transaction transaction = session.getTransaction();
                     try {
-                        transaction.begin();
-                        eventDao.selectEvent(selected);
-                        eventDao.flush();
-                        transaction.commit();
+                        eventRepository.deselectAll();
+                        eventRepository.select(selected.getId());
                     } catch (Exception e1) {
-                        transaction.rollback();
+                        logger.error("Error selecting event", e1);
                         throw new RuntimeException(e1);
                     } finally {
                         setDirty(false);
-                        previousId = selected.getId();
+                        previousId = selected.getId() == null ? -1 : selected.getId();
                         SwingUtilities.invokeLater(() -> {
-                            refreshItemList(session);
-                            ((MainController)getParentController()).loadData();
+                            refreshItemList();
+                            mainController.loadData();
                         });
                     }
                 } else {

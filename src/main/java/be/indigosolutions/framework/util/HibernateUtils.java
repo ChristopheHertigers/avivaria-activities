@@ -2,7 +2,7 @@ package be.indigosolutions.framework.util;
 
 import org.hibernate.SessionFactory;
 
-import javax.persistence.Persistence;
+import jakarta.persistence.Persistence;
 
 /**
  * The only purpose of this class is to provide a SessionFactory.

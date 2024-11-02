@@ -1,17 +1,17 @@
 package be.avivaria.activities.model;
 
+import be.avivaria.activities.model.usertype.HokTypeUserType;
+import be.indigosolutions.framework.dao.BooleanToStringConverter;
+import be.indigosolutions.framework.model.BaseEntity;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  * User: christophe
  * Date: 05/10/13
  * Time: 15:03
  */
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "ras")
 public class Ras extends BaseEntity {
@@ -19,13 +19,15 @@ public class Ras extends BaseEntity {
     private Soort soort;
     @Column(length = 100)
     private String naam;
-    @Column @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column
+    @Convert(converter= BooleanToStringConverter.class)
     private Boolean erkend;
-    @Column(name = "hoktype_man") @Type(type = "be.avivaria.activities.model.usertype.HokTypeUserType")
+    @Column(name = "hoktype_man") @Type(HokTypeUserType.class)
     private HokType hokTypeMan;
-    @Column(name = "hoktype_vrouw") @Type(type = "be.avivaria.activities.model.usertype.HokTypeUserType")
+    @Column(name = "hoktype_vrouw") @Type(HokTypeUserType.class)
     private HokType hokTypeVrouw;
-    @Column @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column
+    @Convert(converter= BooleanToStringConverter.class)
     private boolean belgisch;
     @Column
     private Integer volgorde;

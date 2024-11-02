@@ -1,18 +1,20 @@
 package be.avivaria.activities.gui;
 
-import be.avivaria.activities.dao.RasDao;
-import be.avivaria.activities.dao.SoortDao;
+import be.avivaria.activities.dao.RasRepository;
+import be.avivaria.activities.dao.SoortRepository;
 import be.avivaria.activities.model.HokType;
 import be.avivaria.activities.model.Ras;
 import be.avivaria.activities.model.Soort;
-import be.indigosolutions.framework.*;
+import be.indigosolutions.framework.AbstractTableController;
+import be.indigosolutions.framework.DefaultAction;
+import be.indigosolutions.framework.EntityTableModel;
 import be.indigosolutions.framework.cellrenderer.CellRenderers;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,25 +29,32 @@ import java.util.List;
  * Date: 06/10/13
  * Time: 09:54
  */
-public class RasController extends AbstractPersistentTableController<Ras> {
-    private static final Logger LOGGER = LogManager.getLogger(RasController.class);
+@SuppressWarnings("FieldCanBeLocal")
+@Controller
+public class RasController extends AbstractTableController<Ras> {
+    private static final Logger logger = LoggerFactory.getLogger(RasController.class);
+
+    private final RasRepository rasRepository;
+    private final SoortRepository soortRepository;
 
     // View
-    private JTextField idField;
-    private JComboBox soortCombo;
-    private JTextField naamField;
-    private JTextField hokTypeManField;
-    private JTextField hokTypeVrouwField;
+    private final JTextField idField;
+    private final JComboBox<Soort> soortCombo;
+    private final JTextField naamField;
+    private final JTextField hokTypeManField;
+    private final JTextField hokTypeVrouwField;
 
-    private JButton saveButton;
-    private JButton cancelButton;
-    private JButton closeButton;
+    private final JButton saveButton;
+    private final JButton cancelButton;
+    private final JButton closeButton;
 
     // Model
     private long previousId = -1;
+    private List<Soort> soorten;
 
-    public RasController(AbstractController parentController) {
-        super(new JFrame("Onderhoud Rassen"), parentController, 570, 250);
+    @Autowired
+    public RasController(RasRepository rasRepository, SoortRepository soortRepository) {
+        super(new JFrame("Onderhoud Rassen"), 570, 250);
         final JFrame mainWindow = (JFrame) getView();
         mainWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         mainWindow.addWindowListener(new WindowAdapter() {
@@ -55,12 +64,13 @@ public class RasController extends AbstractPersistentTableController<Ras> {
             }
         });
 
+        this.rasRepository = rasRepository;
+        this.soortRepository = soortRepository;
+
         // View components
         JPanel detailPanel = new JPanel(new BorderLayout());
         detailPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(0, 10, 10, 10), BorderFactory.createTitledBorder("Ras Detail")));
-
-        List<Soort> soorten = new SoortDao(getPersistenceContext()).findAll();
 
         JPanel detailFormPanel = new JPanel(new MigLayout("wrap 2", "[r][l]"));
         detailFormPanel.add(new JLabel("id:"));
@@ -69,7 +79,7 @@ public class RasController extends AbstractPersistentTableController<Ras> {
         idField.setEnabled(false);
         detailFormPanel.add(idField);
         detailFormPanel.add(new JLabel("soort:"));
-        soortCombo = new JComboBox(soorten.toArray(new Soort[soorten.size()]));
+        soortCombo = new JComboBox<>();
         soortCombo.setPreferredSize(new Dimension(400, 30));
         addItemChangeListener(soortCombo);
         detailFormPanel.add(soortCombo);
@@ -110,24 +120,26 @@ public class RasController extends AbstractPersistentTableController<Ras> {
         mainWindow.setMinimumSize(new Dimension(600, 600));
         mainWindow.setPreferredSize(new Dimension(600, 600));
         mainWindow.setLocation(350, 50);
-        mainWindow.setVisible(true);
+    }
 
+    @Override
+    public void show() {
+        refreshRelations();
+        refreshItemList();
+        super.show();
         // initial display
         closeButton.requestFocus();
     }
 
+    private void refreshRelations() {
+        soorten = soortRepository.findAllByOrderByNaam();
+        soortCombo.setModel(new DefaultComboBoxModel<>(soorten.toArray(new Soort[0])));
+    }
+
     @Override
-    protected void doDispose() {
+    public void dispose() {
         getView().setVisible(false);
-        idField = null;
-        soortCombo = null;
-        naamField = null;
-        hokTypeManField = null;
-        hokTypeVrouwField = null;
-        saveButton = null;
-        cancelButton = null;
-        ControllerRegistry.getInstance().unregister(this);
-        ((JFrame)getView()).dispose();
+        clearDetail();
     }
 
     @Override
@@ -158,15 +170,13 @@ public class RasController extends AbstractPersistentTableController<Ras> {
     }
 
     private boolean isValid() {
-        if (!StringUtils.isNumeric(idField.getText())) return false;
         if (!StringUtils.isNumeric(hokTypeManField.getText())) return false;
-        if (!StringUtils.isNumeric(hokTypeVrouwField.getText())) return false;
-        return true;
+        return StringUtils.isNumeric(hokTypeVrouwField.getText());
     }
 
     private void persistChanges() {
         if (isValid()) {
-            selected.setId(Long.parseLong(idField.getText()));
+            selected.setId(StringUtils.isNotBlank(idField.getText()) ? Long.parseLong(idField.getText()) : null);
             selected.setSoort((Soort) soortCombo.getSelectedItem());
             selected.setHokTypeMan(HokType.fromType(Integer.parseInt(hokTypeManField.getText())));
             selected.setHokTypeVrouw(HokType.fromType(Integer.parseInt(hokTypeVrouwField.getText())));
@@ -174,29 +184,22 @@ public class RasController extends AbstractPersistentTableController<Ras> {
             selected.setBelgisch(false);
             selected.setVolgorde(1000);
 
-            Session session = getPersistenceContext();
-            RasDao rasDao = new RasDao(session);
-            Transaction transaction = session.getTransaction();
             try {
-                transaction.begin();
-                rasDao.saveOrUpdate(selected);
-                rasDao.flush();
-                transaction.commit();
+                rasRepository.save(selected);
             } catch (Exception e) {
-                transaction.rollback();
+                logger.error("Error saving ras", e);
                 throw new RuntimeException(e);
             } finally {
                 setDirty(false);
-                previousId = selected.getId();
-                refreshItemList(session);
+                previousId = selected.getId() == null ? -1 : selected.getId();
+                refreshItemList();
             }
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void refreshItemList(Session currentSession) {
-        RasDao rasDao = new RasDao(currentSession);
-        List<Ras> rassen = rasDao.findAll();
+    @Override
+    public void refreshItemList() {
+        List<Ras> rassen = rasRepository.findAllByOrderByNaam();
         itemTableModel = new EntityTableModel<>(Ras.class, rassen);
         itemTableModel.addColumn("Soort", "soort");
         itemTableModel.addColumn("Naam", "naam");
@@ -204,21 +207,19 @@ public class RasController extends AbstractPersistentTableController<Ras> {
         itemTableModel.addColumn("Hok V", "hokTypeVrouw.type", 50, CellRenderers.StringCentered.getRenderer());
         itemTable.setModel(itemTableModel);
         setColumnProperties(itemTable, itemTableModel);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (previousId >= 0) {
-                    for (int i = 0; i < itemTableModel.getRowCount(); i++) {
-                        Ras s = (Ras) itemTableModel.getRow(i);
-                        if (s.getId() == previousId) {
-                            itemTable.setRowSelectionInterval(i,i);
-                            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
-                            return;
-                        }
+        SwingUtilities.invokeLater(() -> {
+            if (previousId >= 0) {
+                for (int i = 0; i < itemTableModel.getRowCount(); i++) {
+                    Ras s = (Ras) itemTableModel.getRow(i);
+                    if (s.getId() == previousId) {
+                        itemTable.setRowSelectionInterval(i,i);
+                        itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
+                        return;
                     }
                 }
-                itemTable.setRowSelectionInterval(0, 0);
-                itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
             }
+            itemTable.setRowSelectionInterval(0, 0);
+            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
         });
     }
 
@@ -239,20 +240,14 @@ public class RasController extends AbstractPersistentTableController<Ras> {
         registerAction(button, new DefaultAction("delete") {
             public void actionPerformed(ActionEvent e) {
                 if (selected != null) {
-                    Session session = getPersistenceContext();
-                    RasDao rasDao = new RasDao(session);
-                    Transaction transaction = session.getTransaction();
                     try {
-                        transaction.begin();
-                        rasDao.delete(selected);
-                        rasDao.flush();
-                        transaction.commit();
+                        rasRepository.delete(selected);
                     } catch (Exception e1) {
-                        transaction.rollback();
+                        logger.error("Error deleting ras", e1);
                         throw new RuntimeException(e1);
                     } finally {
                         setDirty(false);
-                        refreshItemList(session);
+                        refreshItemList();
                     }
                 } else {
                     JOptionPane.showMessageDialog(parent, "Er is niets geselecteerd.");
@@ -268,13 +263,10 @@ public class RasController extends AbstractPersistentTableController<Ras> {
             public void actionPerformed(ActionEvent e) {
                 itemTable.clearSelection();
                 if (selected == null) {
-                    Session session = getPersistenceContext();
-                    RasDao rasDao = new RasDao(session);
-                    long nextId = rasDao.getNextId();
                     selected = new Ras();
-                    selected.setId(nextId);
+                    selected.setId(null);
                     selected.setErkend(false);
-                    idField.setText(""+nextId);
+                    idField.setText("");
                     setDirty(true);
                 }
 

@@ -1,21 +1,31 @@
 package be.avivaria.activities.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import be.indigosolutions.framework.model.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 /**
  * User: christophe
  * Date: 05/10/13
  * Time: 15:01
  */
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "aantal")
 public class Aantal extends BaseEntity {
     @Column(length = 5)
     private String naam;
+
+    /**
+     * Aantal hokken
+     */
     @Column
     private Integer aantal;
+
+    /**
+     * Aantal dieren
+     */
     @Column
     private Integer aantal2;
     @Column

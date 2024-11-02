@@ -1,5 +1,8 @@
 package be.avivaria.activities.database;
 
+import org.hibernate.Session;
+import org.hibernate.jdbc.Work;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
@@ -20,13 +23,12 @@ public class ScriptRunner {
      * Runs an SQL script (read in using the Reader parameter) using the
      * connection passed in
      *
-     * @param conn   - the connection to use for the script
+     * @param session - the connection to use for the script
      * @param reader - the source of the script
      * @throws SQLException if any SQL errors occur
      * @throws IOException  if there is an error reading from the Reader
      */
-    public void runScript(Connection conn, Reader reader) throws IOException,
-            SQLException {
+    public void runScript(Session session, Reader reader) throws IOException {
         StringBuffer command = null;
         try {
             LineNumberReader lineReader = new LineNumberReader(reader);
@@ -49,7 +51,7 @@ public class ScriptRunner {
                     command.append(line.substring(0, line
                             .lastIndexOf(delimiter)));
                     command.append(" ");
-                    this.execCommand(conn, command, lineReader);
+                    this.execCommand(session, command, lineReader);
                     command = null;
                 } else {
                     command.append(line);
@@ -57,30 +59,24 @@ public class ScriptRunner {
                 }
             }
             if (command != null) {
-                this.execCommand(conn, command, lineReader);
+                this.execCommand(session, command, lineReader);
             }
         } catch (Exception e) {
             throw new IOException(String.format("Error executing '%s': %s", command, e.getMessage()), e);
         }
     }
 
-    private void execCommand(Connection conn, StringBuffer command,
-                             LineNumberReader lineReader) throws SQLException {
+    private void execCommand(Session session, StringBuffer command,
+                             LineNumberReader lineReader) {
 
-        Statement statement = conn.createStatement();
-
-        try {
-            statement.execute(command.toString());
-        } catch (SQLException e) {
-            final String errText = String.format("Error executing '%s' (line %d): %s", command, lineReader.getLineNumber(), e.getMessage());
-            throw new SQLException(errText, e);
-        }
-
-        try {
-            statement.close();
-        } catch (Exception e) {
-            // Ignore to workaround a bug in Jakarta DBCP
-        }
+        session.doWork(conn -> {
+            try (Statement statement = conn.createStatement()) {
+                statement.execute(command.toString());
+            } catch (SQLException e) {
+                final String errText = String.format("Error executing '%s' (line %d): %s", command, lineReader.getLineNumber(), e.getMessage());
+                throw new SQLException(errText, e);
+            }
+        });
     }
 
 }

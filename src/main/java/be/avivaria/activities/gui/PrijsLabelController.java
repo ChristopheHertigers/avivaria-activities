@@ -1,16 +1,18 @@
 package be.avivaria.activities.gui;
 
-import be.avivaria.activities.dao.EventDao;
-import be.avivaria.activities.dao.HokDao;
+import be.avivaria.activities.dao.EventRepository;
+import be.avivaria.activities.dao.HokRepository;
 import be.avivaria.activities.model.Event;
 import be.avivaria.activities.model.Hok;
-import be.indigosolutions.framework.*;
+import be.indigosolutions.framework.AbstractTableController;
+import be.indigosolutions.framework.DefaultAction;
+import be.indigosolutions.framework.EntityTableModel;
 import be.indigosolutions.framework.cellrenderer.CellRenderers;
 import net.miginfocom.swing.MigLayout;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,30 +27,35 @@ import java.util.List;
  * Date: 06/10/13
  * Time: 09:54
  */
-@SuppressWarnings("Duplicates")
-public class PrijsLabelController extends AbstractPersistentTableController<Hok> {
-    private static final Logger LOGGER = LogManager.getLogger(PrijsLabelController.class);
+
+@SuppressWarnings("FieldCanBeLocal")
+@Controller
+public class PrijsLabelController extends AbstractTableController<Hok> {
+    private static final Logger logger = LoggerFactory.getLogger(PrijsLabelController.class);
+
+    private final HokRepository hokRepository;
+    private final EventRepository eventRepository;
 
     // View
-    private JTextField idField;
-    private JTextField hoknummerField;
-    private JTextField aantalField;
-    private JTextField rasField;
-    private JTextField kleurField;
-    private JTextField deelnemerField;
-    private JTextField prijsField;
-    private JTextField opmerkingField;
+    private final JTextField idField;
+    private final JTextField hoknummerField;
+    private final JTextField aantalField;
+    private final JTextField rasField;
+    private final JTextField kleurField;
+    private final JTextField deelnemerField;
+    private final JTextField prijsField;
+    private final JTextField opmerkingField;
 
-    private JButton saveButton;
-    private JButton cancelButton;
-    private JButton closeButton;
+    private final JButton saveButton;
+    private final JButton cancelButton;
+    private final JButton closeButton;
 
     // Model
     private long previousId = -1;
-    private Event selectedEvent;
 
-    public PrijsLabelController(AbstractController parentController) {
-        super(new JFrame("Prijs Labels"), parentController, 570, 250);
+    @Autowired
+    public PrijsLabelController(HokRepository hokRepository, EventRepository eventRepository) {
+        super(new JFrame("Prijs Labels"), 570, 250);
         final JFrame mainWindow = (JFrame) getView();
         mainWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         mainWindow.addWindowListener(new WindowAdapter() {
@@ -57,7 +64,9 @@ public class PrijsLabelController extends AbstractPersistentTableController<Hok>
                 closeButton.doClick();
             }
         });
-        getSelectedEvent();
+
+        this.hokRepository = hokRepository;
+        this.eventRepository = eventRepository;
 
         // View components
         JPanel detailPanel = new JPanel(new BorderLayout());
@@ -125,27 +134,20 @@ public class PrijsLabelController extends AbstractPersistentTableController<Hok>
         mainWindow.setMinimumSize(new Dimension(600, 600));
         mainWindow.setPreferredSize(new Dimension(600, 600));
         mainWindow.setLocation(350, 50);
-        mainWindow.setVisible(true);
+    }
 
+    @Override
+    public void show() {
+        refreshItemList();
+        super.show();
         // initial display
         closeButton.requestFocus();
     }
 
     @Override
-    protected void doDispose() {
+    public void dispose() {
         getView().setVisible(false);
-        idField = null;
-        hoknummerField = null;
-        aantalField = null;
-        rasField = null;
-        kleurField = null;
-        deelnemerField = null;
-        prijsField = null;
-        opmerkingField = null;
-        saveButton = null;
-        cancelButton = null;
-        ControllerRegistry.getInstance().unregister(this);
-        ((JFrame) getView()).dispose();
+        clearDetail();
     }
 
     @Override
@@ -155,6 +157,7 @@ public class PrijsLabelController extends AbstractPersistentTableController<Hok>
         cancelButton.setVisible(dirty);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     protected void clearDetail() {
         idField.setText(null);
@@ -191,33 +194,23 @@ public class PrijsLabelController extends AbstractPersistentTableController<Hok>
             selected.setPrijs(prijsField.getText());
             selected.setOpmerking(opmerkingField.getText());
 
-            Session session = getPersistenceContext();
-            HokDao hokDao = new HokDao(session);
-            Transaction transaction = session.getTransaction();
             try {
-                transaction.begin();
-                hokDao.saveOrUpdate(selected);
-                hokDao.flush();
-                transaction.commit();
+                hokRepository.save(selected);
             } catch (Exception e) {
-                transaction.rollback();
+                logger.error("Error updating hok", e);
                 throw new RuntimeException(e);
             } finally {
                 setDirty(false);
-                previousId = selected.getId();
-                refreshItemList(session);
+                previousId = selected.getId() == null ? -1 : selected.getId();
+                refreshItemList();
             }
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
     public void refreshItemList() {
-        refreshItemList(getPersistenceContext());
-    }
-
-    public void refreshItemList(Session currentSession) {
-        HokDao hokDao = new HokDao(currentSession);
-        List<Hok> hokken = hokDao.findByEventId(getSelectedEvent().getId());
+        Event selectedEvent = eventRepository.findBySelectedTrue();
+        List<Hok> hokken = hokRepository.findAllByEventOrderByHoknummer(selectedEvent);
         itemTableModel = new EntityTableModel<>(Hok.class, hokken);
         itemTableModel.addColumn("Hoknummer", "hoknummer", 60, CellRenderers.StringCentered.getRenderer());
         itemTableModel.addColumn("Aantal", "inschrijvingLijn.aantal", 60, CellRenderers.StringCentered.getRenderer());
@@ -277,13 +270,4 @@ public class PrijsLabelController extends AbstractPersistentTableController<Hok>
         });
         return button;
     }
-
-    private Event getSelectedEvent() {
-        if (selectedEvent == null) {
-            EventDao eventDao = new EventDao(getPersistenceContext());
-            selectedEvent = eventDao.findSelected();
-        }
-        return selectedEvent;
-    }
-
 }

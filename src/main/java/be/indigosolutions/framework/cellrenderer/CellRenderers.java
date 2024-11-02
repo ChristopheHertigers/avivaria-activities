@@ -14,15 +14,15 @@ public enum CellRenderers {
     BooleanCentered(BooleanCenteredRenderer.class)
     ;
 
-    private Class<? extends TableCellRenderer> cellRendererClass;
+    private final Class<? extends TableCellRenderer> cellRendererClass;
 
-    private CellRenderers(Class<? extends TableCellRenderer> cellRendererClass) {
+    CellRenderers(Class<? extends TableCellRenderer> cellRendererClass) {
         this.cellRendererClass = cellRendererClass;
     }
 
     public TableCellRenderer getRenderer() {
         try {
-            return cellRendererClass.newInstance();
+            return cellRendererClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

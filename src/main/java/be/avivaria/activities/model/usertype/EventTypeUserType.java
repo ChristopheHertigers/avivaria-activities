@@ -2,11 +2,6 @@ package be.avivaria.activities.model.usertype;
 
 import be.avivaria.activities.model.EventType;
 import be.indigosolutions.framework.dao.EnumStringType;
-import org.hibernate.HibernateException;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +12,7 @@ import java.sql.SQLException;
  */
 public class EventTypeUserType extends EnumStringType<EventType> {
     @Override
-    public Class returnedClass() {
+    public Class<EventType> returnedClass() {
         return EventType.class;
     }
 

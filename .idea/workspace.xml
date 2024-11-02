@@ -4,10 +4,112 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="versie 3.0.0">
-      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/derby.log" beforeDir="false" />
+    <list default="true" id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="versie 3.3.0">
+      <change afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/aantaldieren.jrxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/ActivitiesApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/AantalRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/DeelnemerRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/EventRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/HokRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/InschrijvingLijnRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/InschrijvingRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/KeurmeesterRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/KleurRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/RasRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/SoortRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/VerenigingRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/KeurmeesterController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/AantalDierenReportDecorator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/AbstractTableController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/BooleanToStringConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/model/BaseEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/database/upgrade-3.0.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/be/avivaria/activities/database/upgrade-3.1.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/docs/_TODO.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/izpack/install.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/izpack/install.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/palmares.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/palmares.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/FixFokkerskaartNummers.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/AantalDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/DeelnemerDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/EventDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/HokDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/InschrijvingDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/InschrijvingLijnDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/KeurmeesterDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/KleurDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/RasDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/SoortDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/dao/VerenigingDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/DatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/ScriptRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/ScriptRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/AantalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/AantalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/AboutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/AboutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ActivityMenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ActivityMenuItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/DeelnemerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/DeelnemerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/EventController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ExportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ExportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/HokController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/HokController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/InschrijvingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/InschrijvingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/KleurController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/KleurController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/PredicaatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/PredicaatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/PrijsLabelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/PrijsLabelController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ProgressDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/RasController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/RasController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/ReportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/SoortController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/SoortController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/VerenigingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/VerenigingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Aantal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Aantal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/BaseEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Deelnemer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Deelnemer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/EventType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/EventType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Hok.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Hok.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/HoofdSoort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/HoofdSoort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/InschrijvingHeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/InschrijvingHeader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/InschrijvingLijn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/InschrijvingLijn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Keurmeester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Keurmeester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Kleur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Kleur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Ras.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Ras.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/RasKleur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/RasKleur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Soort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Soort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Vereniging.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/Vereniging.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/usertype/EventTypeUserType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/usertype/EventTypeUserType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/usertype/HokTypeUserType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/usertype/HokTypeUserType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/DeelnemerReportDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/DeelnemerReportDecorator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/InschrijvingReportDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/InschrijvingReportDecorator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/KampioenReportDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/KampioenReportDecorator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/LabelReportDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/LabelReportDecorator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/PalmaresReportDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/PalmaresReportDecorator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/ReportDataFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/ReportDataFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/VerenigingReportDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/VerenigingReportDecorator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/AbstractController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/AbstractController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/AbstractPersistentTableController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/ControllerRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/ControllerRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/DataAccessAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/DataAccessAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/EntityTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/EntityTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/PersistenceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/PersistenceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/celleditor/AutoCompletion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/celleditor/AutoCompletion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/celleditor/ComboBoxCellEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/celleditor/ComboBoxCellEditor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/cellrenderer/CellRenderers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/cellrenderer/CellRenderers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/components/Dropdown.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/components/Dropdown.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/components/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/components/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/BooleanStringType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/Dao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/EnumIntType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/EnumIntType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/EnumStringType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/dao/EnumStringType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/DateFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/DateFormat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/HibernateUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/HibernateUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/NumberUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/NumberUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/SystemConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/indigosolutions/framework/util/SystemConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/log4j2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/system.properties" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +132,14 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
+    "Maven.activities [package].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.ActivitiesApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/christophe/projects/avivaria/activities",
@@ -46,7 +154,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.ActivitiesApplication">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="be.avivaria.activities.Main" />
       <module name="activities" />
@@ -73,6 +181,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ActivitiesApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" activateToolWindowBeforeRun="false" nameIsGenerated="true">
+      <module name="activities" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="be.avivaria.activities.ActivitiesApplication" />
+      <method v="2">
+        <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="package" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Spring Boot.ActivitiesApplication" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
@@ -95,7 +214,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1730550073753</updated>
-      <workItem from="1730550074760" duration="4474000" />
+      <workItem from="1730550074760" duration="15947000" />
     </task>
     <task id="LOCAL-00001" summary="versie 3.0.0">
       <option name="closed" value="true" />
@@ -113,7 +232,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730558456875</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="versie 3.0.0">
+      <option name="closed" value="true" />
+      <created>1730558514153</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1730558514153</updated>
+    </task>
+    <task id="LOCAL-00004" summary="versie 3.3.0">
+      <option name="closed" value="true" />
+      <created>1730558686186</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730558686186</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -123,6 +258,7 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="versie 3.0.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="versie 3.0.0" />
+    <MESSAGE value="versie 3.3.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="versie 3.3.0" />
   </component>
 </project>

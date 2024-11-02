@@ -40,7 +40,6 @@
 	<field name="volgnummer" class="java.lang.Long">
 		<description><![CDATA[volgnummer]]></description>
 	</field>
-	<field name="naam" class="java.lang.String"/>
 	<background splitType="Stretch"/>
 	<detail>
 		<band height="105" splitType="Stretch">

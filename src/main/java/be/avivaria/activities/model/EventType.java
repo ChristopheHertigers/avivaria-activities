@@ -35,11 +35,11 @@ public enum EventType {
                     // 6. Kleur (alphabetisch)
                     i = o1.getInschrijvingLijn().getKleur().getNaam().compareTo(o2.getInschrijvingLijn().getKleur().getNaam());
                     if (i != 0) return i;
-                    // 7. Geslacht (man voor vrouw)
-                    i = Long.valueOf(o1.getAantal().getId()).compareTo(o2.getAantal().getId());
+                    // 7. Leeftijd (oud voor jong)
+                    i = -1 * o1.getInschrijvingLijn().getLeeftijd().compareTo(o2.getInschrijvingLijn().getLeeftijd());
                     if (i != 0) return i;
-                    // 8. Leeftijd (jong voor oud)
-                    i = o1.getInschrijvingLijn().getLeeftijd().compareTo(o2.getInschrijvingLijn().getLeeftijd());
+                    // 8. Geslacht (man voor vrouw)
+                    i = Long.valueOf(o1.getAantal().getId()).compareTo(o2.getAantal().getId());
                     if (i != 0) return i;
                     // 9. Inschrijving volgnummer
                     i = o1.getInschrijvingLijn().getInschrijving().getVolgnummer().compareTo(o2.getInschrijvingLijn().getInschrijving().getVolgnummer());

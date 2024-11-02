@@ -1,7 +1,6 @@
 package be.indigosolutions.framework;
 
-import be.avivaria.activities.model.BaseEntity;
-import org.hibernate.Session;
+import be.indigosolutions.framework.model.BaseEntity;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -20,7 +19,7 @@ import java.util.Objects;
  * Date: 09/10/13
  * Time: 22:00
  */
-public abstract class AbstractPersistentTableController<T extends BaseEntity> extends PersistenceController {
+public abstract class AbstractTableController<T extends BaseEntity> extends AbstractController {
 
     protected JTable itemTable;
     protected EntityTableModel itemTableModel;
@@ -28,8 +27,8 @@ public abstract class AbstractPersistentTableController<T extends BaseEntity> ex
     protected boolean dirty = false;
 
     @SuppressWarnings("unchecked")
-    public AbstractPersistentTableController(Container view, AbstractController parentController, int width, int height) {
-        super(view, parentController);
+    public AbstractTableController(Container view, int width, int height) {
+        super(view);
 
         JPanel masterPanel = new JPanel();
         itemTable = new JTable() {
@@ -39,7 +38,6 @@ public abstract class AbstractPersistentTableController<T extends BaseEntity> ex
         };
         itemTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         itemTable.setFillsViewportHeight(true);
-        refreshItemList(getPersistenceContext());
         JScrollPane tableScrollPane = new JScrollPane(itemTable);
         tableScrollPane.setPreferredSize(new Dimension(width, height));
         itemTable.setPreferredScrollableViewportSize(new Dimension(width, height));
@@ -74,12 +72,12 @@ public abstract class AbstractPersistentTableController<T extends BaseEntity> ex
         masterPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                tableScrollPane.setPreferredSize(new Dimension(masterPanel.getWidth()-30, height));
+                tableScrollPane.setPreferredSize(new Dimension(masterPanel.getWidth() - 30, height));
             }
         });
     }
 
-    public abstract void refreshItemList(Session currentSession);
+    public abstract void refreshItemList();
 
     protected abstract void setDirty(boolean dirty);
 

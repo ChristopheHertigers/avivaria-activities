@@ -3,17 +3,26 @@ package be.avivaria.activities.reports;
 import be.avivaria.activities.model.Hok;
 import be.avivaria.activities.model.InschrijvingHeader;
 import be.avivaria.activities.model.InschrijvingLijn;
+import be.avivaria.activities.model.Keurmeester;
 import be.indigosolutions.framework.util.StringUtils;
 
 /**
  * User: christophe
  * Date: 03/11/13
  */
+@SuppressWarnings("unused")
 public class PalmaresReportDecorator {
-    private Hok hok;
+    private final Hok hok;
+    private final String rasKeurmeester;
+    private final String kleurKeurmeester;
 
-    public PalmaresReportDecorator(Hok hok) {
+    private String addBreak;
+
+    public PalmaresReportDecorator(Hok hok, String rasKeurmeester, String kleurKeurmeester, String addBreak) {
         this.hok = hok;
+        this.rasKeurmeester = rasKeurmeester;
+        this.kleurKeurmeester = kleurKeurmeester;
+        this.addBreak = addBreak;
     }
 
     private InschrijvingLijn getLijn() {
@@ -34,6 +43,14 @@ public class PalmaresReportDecorator {
 
     public String getKleur() {
         return getLijn().getKleur().getNaam();
+    }
+
+    public String getRasKeurmeester() {
+        return rasKeurmeester;
+    }
+
+    public String getKleurKeurmeester() {
+        return kleurKeurmeester;
     }
 
     public String getGeslachtEnLeeftijd() {
@@ -58,5 +75,13 @@ public class PalmaresReportDecorator {
 
     public String getTeKoop() {
         return StringUtils.isNotBlank(hok.getPrijs()) ? "X" : "";
+    }
+
+    public String getAddBreak() {
+        return StringUtils.isNotBlank(addBreak) ? "true" : "false";
+    }
+
+    public void setAddBreak(String addBreak) {
+        this.addBreak = addBreak;
     }
 }

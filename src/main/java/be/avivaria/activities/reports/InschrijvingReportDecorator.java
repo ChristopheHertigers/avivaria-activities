@@ -12,10 +12,11 @@ import java.util.Locale;
  * User: christophe
  * Date: 02/11/13
  */
+@SuppressWarnings("unused")
 public class InschrijvingReportDecorator {
-    private Long aantalDieren;
-    private Long aantalTeKoop;
-    private Hok hok;
+    private final Long aantalDieren;
+    private final Long aantalTeKoop;
+    private final Hok hok;
 
     public InschrijvingReportDecorator(Hok hok, long aantalDieren, long aantalTeKoop) {
         this.hok = hok;

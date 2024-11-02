@@ -2,15 +2,14 @@ package be.avivaria.activities.model.usertype;
 
 import be.avivaria.activities.model.HokType;
 import be.indigosolutions.framework.dao.EnumIntType;
-import org.hibernate.usertype.UserType;
 
 /**
  * User: christophe
  * Date: 30/10/13
  */
-public class HokTypeUserType extends EnumIntType<HokType> implements UserType {
+public class HokTypeUserType extends EnumIntType<HokType> {
     @Override
-    public Class returnedClass() {
+    public Class<HokType> returnedClass() {
         return HokType.class;
     }
 

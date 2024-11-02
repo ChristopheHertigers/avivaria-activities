@@ -2,18 +2,22 @@ package be.avivaria.activities.gui;
 
 import be.indigosolutions.framework.AbstractController;
 import be.indigosolutions.framework.DefaultAction;
-import be.indigosolutions.framework.util.SystemConfiguration;
 import net.miginfocom.swing.MigLayout;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
 
+@Component
 public class AboutController extends AbstractController {
 
-    public AboutController(AbstractController parentController) {
-        super(new JFrame("Over"), parentController);
+    private final JButton closeButton;
+
+    public AboutController(@Value("${app.version}") String appVersion) {
+        super(new JFrame("Over"));
         final JFrame mainWindow = (JFrame) getView();
 
         // View components
@@ -25,7 +29,7 @@ public class AboutController extends AbstractController {
         JLabel label = new JLabel();
         label.setText(
                 "<html>" +
-                "<h2><b>Avivaria Activiteiten " + getVersion() + "</b></h2>" +
+                "<h2><b>Avivaria Activiteiten " + appVersion + "</b></h2>" +
                 "<p></p>" +
                 "<p><b>JVM:</b> " + System.getProperty("java.version") + "</p>" +
                 "<p></p>" +
@@ -39,7 +43,7 @@ public class AboutController extends AbstractController {
         int year = LocalDateTime.now().getYear();
         JPanel buttonPanel = new JPanel(new MigLayout("", "[grow][]"));
         buttonPanel.add(new JLabel("<html><p>&copy; 2008-"+year+" Christophe Hertigers</p></html>"));
-        JButton closeButton = createCloseButton(mainWindow);
+        closeButton = createCloseButton();
         buttonPanel.add(closeButton, "east");
         detailPanel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -50,23 +54,20 @@ public class AboutController extends AbstractController {
         mainWindow.setMinimumSize(new Dimension(300, 200));
         mainWindow.setPreferredSize(new Dimension(300, 200));
         mainWindow.setLocation(350, 50);
-        mainWindow.setVisible(true);
+    }
 
+    @Override
+    public void show() {
+        super.show();
         // initial display
         closeButton.requestFocus();
     }
 
-    private String getVersion() {
-        return SystemConfiguration.AppVersion.getValue().replace("-SNAPSHOT","");
-    }
-
-    private JButton createCloseButton(final JFrame parent) {
+    private JButton createCloseButton() {
         JButton closeButton = new JButton("Sluit");
         registerAction(closeButton, new DefaultAction("close") {
             public void actionPerformed(ActionEvent e) {
-                parent.setVisible(false);
-                parent.dispose();
-                dispose();
+                close();
             }
         });
         return closeButton;

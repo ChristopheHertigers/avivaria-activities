@@ -1,7 +1,6 @@
 package be.indigosolutions.framework.util;
 
 import be.indigosolutions.framework.exception.MissingArgumentException;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.Properties;
 public enum SystemConfiguration {
     AppVersion("app.version");
 
-    private String propertyName;
+    private final String propertyName;
 
     SystemConfiguration(String propertyName) {
         this.propertyName = propertyName;
@@ -61,14 +60,14 @@ public enum SystemConfiguration {
     /**
      * Utility class to get access to system properties.
      * <p/>
-     * <b>Note:</b> Do not use this class directly, instead use {@link be.indigosolutions.framework.util.SystemConfiguration}
+     * <b>Note:</b> Do not use this class directly, instead use {@link SystemConfiguration}
      *
      * @author Christophe Hertigers
      * @created 15-aug-2008
      */
     private static class SystemConfigurationManager {
-        private static Properties properties;
         private static final String SYSTEM_PROP_FILE = "system.properties";
+        private static final Properties properties;
 
         static {
             properties = new Properties();

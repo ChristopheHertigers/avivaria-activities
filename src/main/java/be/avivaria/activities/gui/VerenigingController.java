@@ -1,14 +1,16 @@
 package be.avivaria.activities.gui;
 
-import be.avivaria.activities.dao.VerenigingDao;
+import be.avivaria.activities.dao.VerenigingRepository;
 import be.avivaria.activities.model.Vereniging;
-import be.indigosolutions.framework.*;
+import be.indigosolutions.framework.AbstractTableController;
+import be.indigosolutions.framework.DefaultAction;
+import be.indigosolutions.framework.EntityTableModel;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,22 +25,26 @@ import java.util.List;
  * Date: 06/10/13
  * Time: 09:54
  */
-public class VerenigingController extends AbstractPersistentTableController<Vereniging> {
-    private static final Logger LOGGER = LogManager.getLogger(VerenigingController.class);
+@Controller
+public class VerenigingController extends AbstractTableController<Vereniging> {
+    private static final Logger logger = LoggerFactory.getLogger(VerenigingController.class);
+
+    private final VerenigingRepository verenigingRepository;
 
     // View
-    private JTextField idField;
-    private JTextField naamField;
+    private final JTextField idField;
+    private final JTextField naamField;
 
-    private JButton saveButton;
-    private JButton cancelButton;
-    private JButton closeButton;
+    private final JButton saveButton;
+    private final JButton cancelButton;
+    private final JButton closeButton;
 
     // Model
     private long previousId = -1;
 
-    public VerenigingController(AbstractController parentController) {
-        super(new JFrame("Onderhoud Verenigingen"), parentController, 570, 250);
+    @Autowired
+    public VerenigingController(VerenigingRepository verenigingRepository) {
+        super(new JFrame("Onderhoud Verenigingen"), 570, 250);
         final JFrame mainWindow = (JFrame) getView();
         mainWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         mainWindow.addWindowListener(new WindowAdapter() {
@@ -47,6 +53,8 @@ public class VerenigingController extends AbstractPersistentTableController<Vere
                 closeButton.doClick();
             }
         });
+
+        this.verenigingRepository = verenigingRepository;
 
         // View components
         JPanel detailPanel = new JPanel(new BorderLayout());
@@ -86,21 +94,20 @@ public class VerenigingController extends AbstractPersistentTableController<Vere
         mainWindow.setMinimumSize(new Dimension(600, 600));
         mainWindow.setPreferredSize(new Dimension(600, 600));
         mainWindow.setLocation(350, 50);
-        mainWindow.setVisible(true);
+    }
 
+    @Override
+    public void show() {
+        refreshItemList();
+        super.show();
         // initial display
         closeButton.requestFocus();
     }
 
     @Override
-    protected void doDispose() {
+    public void dispose() {
         getView().setVisible(false);
-        idField = null;
-        naamField = null;
-        saveButton = null;
-        cancelButton = null;
-        ControllerRegistry.getInstance().unregister(this);
-        ((JFrame)getView()).dispose();
+        clearDetail();
     }
 
     @Override
@@ -125,57 +132,47 @@ public class VerenigingController extends AbstractPersistentTableController<Vere
     }
 
     private boolean isValid() {
-        if (!StringUtils.isNumeric(idField.getText())) return false;
         return true;
     }
 
     private void persistChanges() {
         if (isValid()) {
-            selected.setId(Long.parseLong(idField.getText()));
+            selected.setId(StringUtils.isNotBlank(idField.getText()) ? Long.parseLong(idField.getText()) : null);
             selected.setNaam(naamField.getText());
 
-            Session session = getPersistenceContext();
-            VerenigingDao verenigingDao = new VerenigingDao(session);
-            Transaction transaction = session.getTransaction();
             try {
-                transaction.begin();
-                verenigingDao.saveOrUpdate(selected);
-                verenigingDao.flush();
-                transaction.commit();
+                verenigingRepository.save(selected);
             } catch (Exception e) {
-                transaction.rollback();
+                logger.error("Error saving vereniging", e);
                 throw new RuntimeException(e);
             } finally {
                 setDirty(false);
-                previousId = selected.getId();
-                refreshItemList(session);
+                previousId = selected.getId() == null ? -1 : selected.getId();
+                refreshItemList();
             }
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void refreshItemList(Session currentSession) {
-        VerenigingDao verenigingDao = new VerenigingDao(currentSession);
-        List<Vereniging> verenigingen = verenigingDao.findAll();
+    @Override
+    public void refreshItemList() {
+        List<Vereniging> verenigingen = verenigingRepository.findAllByOrderByNaam();
         itemTableModel = new EntityTableModel<>(Vereniging.class, verenigingen);
         itemTableModel.addColumn("Naam", "naam");
         itemTable.setModel(itemTableModel);
         setColumnProperties(itemTable, itemTableModel);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (previousId >= 0) {
-                    for (int i = 0; i < itemTableModel.getRowCount(); i++) {
-                        Vereniging s = (Vereniging) itemTableModel.getRow(i);
-                        if (s.getId() == previousId) {
-                            itemTable.setRowSelectionInterval(i,i);
-                            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
-                            return;
-                        }
+        SwingUtilities.invokeLater(() -> {
+            if (previousId >= 0) {
+                for (int i = 0; i < itemTableModel.getRowCount(); i++) {
+                    Vereniging s = (Vereniging) itemTableModel.getRow(i);
+                    if (s.getId() == previousId) {
+                        itemTable.setRowSelectionInterval(i,i);
+                        itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(i, 0, true)));
+                        return;
                     }
                 }
-                itemTable.setRowSelectionInterval(0, 0);
-                itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
             }
+            itemTable.setRowSelectionInterval(0, 0);
+            itemTable.scrollRectToVisible(new Rectangle(itemTable.getCellRect(0, 0, true)));
         });
     }
 
@@ -196,20 +193,14 @@ public class VerenigingController extends AbstractPersistentTableController<Vere
         registerAction(button, new DefaultAction("delete") {
             public void actionPerformed(ActionEvent e) {
                 if (selected != null) {
-                    Session session = getPersistenceContext();
-                    VerenigingDao verenigingDao = new VerenigingDao(session);
-                    Transaction transaction = session.getTransaction();
                     try {
-                        transaction.begin();
-                        verenigingDao.delete(selected);
-                        verenigingDao.flush();
-                        transaction.commit();
+                        verenigingRepository.delete(selected);
                     } catch (Exception e1) {
-                        transaction.rollback();
+                        logger.error("Error deleting vereniging",e1);
                         throw new RuntimeException(e1);
                     } finally {
                         setDirty(false);
-                        refreshItemList(session);
+                        refreshItemList();
                     }
                 } else {
                     JOptionPane.showMessageDialog(parent, "Er is niets geselecteerd.");
@@ -225,12 +216,9 @@ public class VerenigingController extends AbstractPersistentTableController<Vere
             public void actionPerformed(ActionEvent e) {
                 itemTable.clearSelection();
                 if (selected == null) {
-                    Session session = getPersistenceContext();
-                    VerenigingDao verenigingDao = new VerenigingDao(session);
-                    long nextId = verenigingDao.getNextId();
                     selected = new Vereniging();
-                    selected.setId(nextId);
-                    idField.setText(""+nextId);
+                    selected.setId(null);
+                    idField.setText("");
                     setDirty(true);
                 }
 

@@ -1,9 +1,9 @@
 package be.avivaria.activities.model;
 
+import be.indigosolutions.framework.model.BaseEntity;
+import jakarta.persistence.*;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.*;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +15,13 @@ import java.util.Locale;
  * Time: 15:02
  */
 @Entity
-@Table(name="inschrijving_lijn")
+@Table(name = "inschrijving_lijn")
 public class InschrijvingLijn extends BaseEntity implements Cloneable {
+    private static final Aantal ONE_MALE = new Aantal(1, "1-0", 1, 1, "");
+    private static final Aantal ONE_FEMALE = new Aantal(2, "0-1", 1, 1, "");
+    private static final NumberFormat FORMAT = NumberFormat.getCurrencyInstance(new Locale("nl", "BE"));
     @ManyToOne
-    @JoinColumn(name="inschrijving_header_id", nullable = false)
+    @JoinColumn(name = "inschrijving_header_id", nullable = false)
     private InschrijvingHeader inschrijving;
     @ManyToOne
     private Ras ras;
@@ -116,11 +119,6 @@ public class InschrijvingLijn extends BaseEntity implements Cloneable {
         this.prijs = prijs;
     }
 
-    private static final Aantal ONE_MALE = new Aantal(1,"1-0",1,1,"");
-    private static final Aantal ONE_FEMALE = new Aantal(2,"0-1",1,1,"");
-
-    private static final NumberFormat FORMAT = NumberFormat.getCurrencyInstance(new Locale("nl", "BE"));
-
     public List<Hok> getHokList() {
         List<Hok> hokken = new ArrayList<>();
         String prijs = getFormattedPrijs();
@@ -147,7 +145,7 @@ public class InschrijvingLijn extends BaseEntity implements Cloneable {
         if (getPrijs() == null) return "";
         String value = FORMAT.format(getPrijs());
         if (StringUtils.isNotBlank(getAantal().getBenaming())) {
-            value += "/"+getAantal().getBenaming();
+            value += "/" + getAantal().getBenaming();
         }
         return value;
     }

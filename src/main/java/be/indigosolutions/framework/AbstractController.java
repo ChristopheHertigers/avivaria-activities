@@ -1,15 +1,17 @@
 package be.indigosolutions.framework;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
 import java.awt.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract superclass for building a hierarchical controller structure (HMVC).
@@ -36,42 +38,25 @@ import java.util.*;
  */
 public abstract class AbstractController implements ActionListener, WindowListener {
 
-    private static final Logger logger = LogManager.getLogger(AbstractController.class);
-
-    private Container view;
-    private AbstractController parentController;
-    private java.util.List<AbstractController> subControllers = new ArrayList<AbstractController>();
-    private Map<String, DefaultAction> actions = new HashMap<String, DefaultAction>();
-    private Map<Class, java.util.List<DefaultEventListener>> eventListeners =
+    private static final Logger logger = LoggerFactory.getLogger(AbstractController.class);
+    private final Map<String, DefaultAction> actions = new HashMap<String, DefaultAction>();
+    private final Map<Class, java.util.List<DefaultEventListener>> eventListeners =
             new HashMap<Class, java.util.List<DefaultEventListener>>();
+    private Container view;
 
     /**
      * Subclass wants to control own view and is root controller.
      */
-    public AbstractController() {}
-
-    /**
-     * Subclass wants to control own view and is a subcontroller.
-     *
-     * @param parentController the parent controller
-     */
-    public AbstractController(AbstractController parentController) {
-        this(null, parentController);
+    public AbstractController() {
     }
 
     /**
      * Subclass is completely dependend on the given view and is a subcontroller.
-     * @param view the view
-     * @param parentController the parent controller
+     *
+     * @param view             the view
      */
-    public AbstractController(Container view, AbstractController parentController) {
+    public AbstractController(Container view) {
         this.view = view;
-
-        // Check if this is a subcontroller or a root controller
-        if (parentController != null) {
-            this.parentController = parentController;
-            parentController.getSubControllers().add(this);
-        }
     }
 
 
@@ -79,25 +64,19 @@ public abstract class AbstractController implements ActionListener, WindowListen
         return view;
     }
 
-    public AbstractController getParentController() {
-        return parentController;
+    public void show() {
+        getView().setVisible(true);
     }
 
-    public java.util.List<AbstractController> getSubControllers() {
-        return subControllers;
+    public void close() {
+        getView().setVisible(false);
     }
-
 
     /**
      * Close controller and all children, detach it from parent controller.
      */
     public void dispose() {
         logger.debug("Disposing controller " + getClass().getName());
-        for (Iterator<AbstractController> iterator = getSubControllers().iterator(); iterator.hasNext();) {
-            AbstractController subController = iterator.next();
-            subController.dispose();
-            iterator.remove();
-        }
     }
 
     /**
@@ -139,13 +118,15 @@ public abstract class AbstractController implements ActionListener, WindowListen
     /**
      * Register an event listener that is being executed when an event is intercepted by this controller.
      *
-     * @param eventClass The actual event class this listeners is interested in.
+     * @param eventClass    The actual event class this listeners is interested in.
      * @param eventListener The listener implementation.
      */
     public void registerEventListener(Class eventClass, DefaultEventListener eventListener) {
         logger.debug("Registering listener: " + eventListener + " for event type: " + eventClass.getName());
         java.util.List<DefaultEventListener> listenersForEvent = eventListeners.get(eventClass);
-        if (listenersForEvent == null) { listenersForEvent = new ArrayList<DefaultEventListener>(); }
+        if (listenersForEvent == null) {
+            listenersForEvent = new ArrayList<>();
+        }
         listenersForEvent.add(eventListener);
         eventListeners.put(eventClass, listenersForEvent);
     }
@@ -183,14 +164,6 @@ public abstract class AbstractController implements ActionListener, WindowListen
                 }
             }
             event.addFiredInController(this);
-            logger.debug("Passing event: " + event.getClass().getName() + " DOWN in the controller hierarchy");
-            for (AbstractController subController : subControllers) subController.fireEvent(event, global);
-        }
-        if (getParentController() != null
-            && !event.alreadyFired(getParentController())
-            && global) {
-            logger.debug("Passing event: " + event.getClass().getName() + " UP in the controller hierarchy");
-            getParentController().fireEvent(event, global);
         }
     }
 
@@ -208,9 +181,9 @@ public abstract class AbstractController implements ActionListener, WindowListen
         try {
             String actionCommand;
             if (actionEvent.getSource() instanceof JComboBox) {
-                actionCommand = ((JComboBox)actionEvent.getSource()).getActionCommand();
+                actionCommand = ((JComboBox) actionEvent.getSource()).getActionCommand();
             } else {
-                actionCommand = ((AbstractButton)actionEvent.getSource()).getActionCommand();
+                actionCommand = ((AbstractButton) actionEvent.getSource()).getActionCommand();
             }
             DefaultAction action = actions.get(actionCommand);
 
@@ -226,33 +199,46 @@ public abstract class AbstractController implements ActionListener, WindowListen
                 } finally {
                     finalActionExecute();
                 }
-            } else {
-                // Let's try the parent controller in the hierarchy
-                if(getParentController() != null) {
-                    parentController.actionPerformed(actionEvent);
-                } else {
-                    throw new RuntimeException("Nobody is responsible for action command: " + actionCommand);
-                }
             }
-        }
-        catch(ClassCastException e) {
+        } catch (ClassCastException e) {
             throw new IllegalArgumentException("Action source is not an Abstractbutton: " + actionEvent);
         }
     }
 
-    protected void preActionExecute() {}
-    protected void postActionExecute() {}
-    protected void failedActionExecute() {}
-    protected void finalActionExecute() {}
+    protected void preActionExecute() {
+    }
+
+    protected void postActionExecute() {
+    }
+
+    protected void failedActionExecute() {
+    }
+
+    protected void finalActionExecute() {
+    }
 
     // If this controller is responsible for a JFrame, close it and all its children when the
     // window is closed.
-    public void windowClosing(WindowEvent windowEvent) { dispose(); }
-    public void windowOpened(WindowEvent windowEvent) {}
-    public void windowClosed(WindowEvent windowEvent) {}
-    public void windowIconified(WindowEvent windowEvent) {}
-    public void windowDeiconified(WindowEvent windowEvent) {}
-    public void windowActivated(WindowEvent windowEvent) {}
-    public void windowDeactivated(WindowEvent windowEvent) {}
+    public void windowClosing(WindowEvent windowEvent) {
+        dispose();
+    }
+
+    public void windowOpened(WindowEvent windowEvent) {
+    }
+
+    public void windowClosed(WindowEvent windowEvent) {
+    }
+
+    public void windowIconified(WindowEvent windowEvent) {
+    }
+
+    public void windowDeiconified(WindowEvent windowEvent) {
+    }
+
+    public void windowActivated(WindowEvent windowEvent) {
+    }
+
+    public void windowDeactivated(WindowEvent windowEvent) {
+    }
 
 }

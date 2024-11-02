@@ -1,7 +1,5 @@
 package be.indigosolutions.framework.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * User: christophe
  * Date: 08/11/13

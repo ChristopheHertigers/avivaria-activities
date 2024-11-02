@@ -1,17 +1,15 @@
 package be.avivaria.activities.model;
 
-import org.hibernate.annotations.Type;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import be.indigosolutions.framework.dao.BooleanToStringConverter;
+import be.indigosolutions.framework.model.BaseEntity;
+import jakarta.persistence.*;
 
 /**
  * User: christophe
  * Date: 05/10/13
  * Time: 15:02
  */
+@SuppressWarnings("unused")
 @Entity
 @Table(name="inschrijving_header")
 public class InschrijvingHeader extends BaseEntity {
@@ -21,17 +19,23 @@ public class InschrijvingHeader extends BaseEntity {
     private Long volgnummer;
     @ManyToOne
     private Deelnemer deelnemer;
-    @Column @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column
+    @Convert(converter= BooleanToStringConverter.class)
     private Boolean palmares;
-    @Column @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column
+    @Convert(converter= BooleanToStringConverter.class)
     private Boolean fokkerskaart;
-    @Column @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column
+    @Convert(converter= BooleanToStringConverter.class)
     private Boolean fokkerskaart2;
-    @Column @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column
+    @Convert(converter= BooleanToStringConverter.class)
     private Boolean lidgeld;
-    @Column @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column
+    @Convert(converter= BooleanToStringConverter.class)
     private Boolean lidgeld2;
-    @Column(name="lid_avivaria") @Type(type = "be.indigosolutions.framework.dao.BooleanStringType")
+    @Column(name="lid_avivaria")
+    @Convert(converter= BooleanToStringConverter.class)
     private Boolean lidAvivaria;
 
     public InschrijvingHeader() {
