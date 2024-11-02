@@ -6,7 +6,7 @@
     <groupId>be.indigo-solutions.avivaria</groupId>
     <artifactId>activities</artifactId>
     <packaging>jar</packaging>
-    <version>3.0.0</version>
+    <version>3.3.0</version>
     <name>Avivaria Activiteiten</name>
     <url>http://www.avivaria.be</url>
     <description>Avivaria Activiteiten</description>
