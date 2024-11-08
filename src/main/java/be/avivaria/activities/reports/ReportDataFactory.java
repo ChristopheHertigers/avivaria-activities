@@ -439,7 +439,7 @@ public class ReportDataFactory {
         // sort
         Collections.sort(results);
         // set order
-        String prevSoort = HoofdSoort.Cavia.name();
+        HoofdSoort prevSoort = HoofdSoort.Cavia;
         double prevTotaal = 0.0;
         int prevTotaalJong = 0;
         int prevTotaalMan = 0;
