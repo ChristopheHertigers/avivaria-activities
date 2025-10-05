@@ -15,7 +15,6 @@
 	<parameter name="LABEL_CLUBNAAM" forPrompting="false" class="java.lang.String">
 		<defaultValueExpression><![CDATA["CLUB NAAM"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="LABEL_FOKKERNAAM" class="java.lang.String"/>
 	<parameter name="LABEL_RAS" class="java.lang.String"/>
 	<parameter name="LABEL_KLEUR" class="java.lang.String"/>
 	<query language="sql"><![CDATA[]]></query>
@@ -52,27 +51,30 @@
 			<element kind="textField" uuid="d05c425e-0e34-43ae-a83c-288519cd1fa8" x="73" y="14" width="213" height="27" fontSize="20.0" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{prijs}]]></expression>
 			</element>
-			<element kind="textField" uuid="91448dd7-761e-41d3-b7a2-e1deb4790cf9" x="73" y="60" width="61" height="10" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+			<element kind="textField" uuid="91448dd7-761e-41d3-b7a2-e1deb4790cf9" x="73" y="60" width="61" height="11" fontSize="9.0" hTextAlign="Right" vTextAlign="Middle">
 				<expression><![CDATA[$P{LABEL_FOKKERNUMMER}]]></expression>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			</element>
-			<element kind="textField" uuid="9bde9678-d492-4e9c-931e-8a41c7822974" x="139" y="60" width="24" height="10" fontSize="8.0" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="textField" uuid="9bde9678-d492-4e9c-931e-8a41c7822974" x="139" y="60" width="147" height="11" fontSize="9.0" hTextAlign="Left" vTextAlign="Middle">
 				<expression><![CDATA[$F{volgnummer}]]></expression>
 			</element>
 			<element kind="textField" uuid="b71fcb30-65f7-4456-8dc7-88c6b5269475" x="73" y="41" width="213" height="15" pdfFontName="Helvetica-Bold" bold="true" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{opmerking}]]></expression>
 			</element>
-			<element kind="textField" uuid="0afe3d74-0824-4876-b1a4-3decbbd8b11d" x="73" y="70" width="61" height="10" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+			<element kind="textField" uuid="0afe3d74-0824-4876-b1a4-3decbbd8b11d" x="73" y="71" width="61" height="11" fontSize="9.0" hTextAlign="Right" vTextAlign="Middle">
 				<expression><![CDATA[$P{LABEL_RAS}]]></expression>
 			</element>
-			<element kind="textField" uuid="6a88f6be-2a7c-41d7-8f86-332fb96162a1" x="139" y="70" width="147" height="10" fontSize="8.0" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="textField" uuid="6a88f6be-2a7c-41d7-8f86-332fb96162a1" x="139" y="71" width="147" height="11" fontSize="9.0" hTextAlign="Left" vTextAlign="Middle">
 				<expression><![CDATA[$F{ras}]]></expression>
 			</element>
-			<element kind="textField" uuid="58e9ee67-1413-4539-9473-150735290f46" x="73" y="80" width="61" height="10" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+			<element kind="textField" uuid="58e9ee67-1413-4539-9473-150735290f46" x="73" y="82" width="61" height="11" fontSize="9.0" hTextAlign="Right" vTextAlign="Middle">
 				<expression><![CDATA[$P{LABEL_KLEUR}]]></expression>
 			</element>
-			<element kind="textField" uuid="e8d8b16a-0182-479e-86e5-5840e56afc26" x="139" y="80" width="147" height="10" fontSize="8.0" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="textField" uuid="e8d8b16a-0182-479e-86e5-5840e56afc26" x="139" y="82" width="147" height="11" fontSize="9.0" hTextAlign="Left" vTextAlign="Middle">
 				<expression><![CDATA[$F{kleur}]]></expression>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				<property name="com.jaspersoft.studio.unit.y" value="px"/>
 			</element>
 		</band>
 	</detail>

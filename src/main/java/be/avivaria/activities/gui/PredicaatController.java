@@ -76,6 +76,7 @@ public class PredicaatController extends AbstractController {
             public void actionPerformed(ActionEvent e) {
                 mainWindow.setVisible(false);
                 mainWindow.dispose();
+                dispose();
             }
         });
         buttonPanel.add(Box.createHorizontalGlue());
@@ -99,17 +100,17 @@ public class PredicaatController extends AbstractController {
 
             @Override
             public Component getFirstComponent(Container aContainer) {
-                return fields.get(0);
+                return fields.getFirst();
             }
 
             @Override
             public Component getLastComponent(Container aContainer) {
-                return fields.get(fields.size()-1);
+                return fields.getLast();
             }
 
             @Override
             public Component getDefaultComponent(Container aContainer) {
-                return fields.get(0);
+                return fields.getFirst();
             }
         });
 
@@ -123,6 +124,9 @@ public class PredicaatController extends AbstractController {
                         rect.x = Math.max(rect.x - 100, 0);
                         rect.width = rect.width + 200;
                         contentPanel.scrollRectToVisible(rect);
+                    }
+                    if (evt.getNewValue() instanceof JTextField textField) {
+                        textField.selectAll();
                     }
                 });
 
@@ -178,7 +182,7 @@ public class PredicaatController extends AbstractController {
         super.show();
 
         // initial display
-        fields.get(0).requestFocus();
+        fields.getFirst().requestFocus();
 
     }
 
