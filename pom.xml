@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.5.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>be.indigo-solutions.avivaria</groupId>
     <artifactId>activities</artifactId>
-    <version>3.3.3</version>
+    <version>3.4.0</version>
     <name>activities</name>
     <description>Avivaria Activiteiten</description>
     <properties>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
+            <version>3.19.0</version>
         </dependency>
         <dependency>
             <groupId>com.miglayout</groupId>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.3.0</version>
+            <version>5.4.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -1,6 +1,7 @@
 package be.avivaria.activities.model;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,8 +15,14 @@ public enum HoofdSoort {
     Duif("Duiven", new Long[]{30L,31L,32L,33L,34L,35L,36L,37L,38L}),
     Kriel("Krielen", new Long[]{50L}),
     Hoender("Hoenders", new Long[]{60L}),
-    GedomesticeerdeParkEnWatervogel("Gedomesticeerde Park- en Watervogels", new Long[]{70L,71L,72L,73L,74L}),
+    GedomesticeerdeParkvogel("Gedomesticeerde Parkvogels", new Long[]{70L,71L,125L}),
+    GedomesticeerdeWatervogel("Gedomesticeerde Watervogels", new Long[]{72L,73L,74L}),
+    GedomesticeerdeParkEnWatervogel("Gedomesticeerde Park- en Watervogels", new Long[]{70L,71L,125L,72L,73L,74L}),
+    WildeParkvogel("Wilde Parkvogels", new Long[]{78L,80L,81L,82L,83L,84L,85L,86L,87L}),
+    WildeWatervogel("Wilde Watervogels", new Long[]{100L,101L,102L,103L,104L,105L,106L,107L,108L,121L,122L}),
     WildeParkEnWatervogel("Wilde Park- en Watervogels", new Long[]{78L,80L,81L,82L,83L,84L,85L,86L,87L,100L,101L,102L,103L,104L,105L,106L,107L,108L,121L,122L});
+
+//125 Legkwartel
 
     private final String label;
     private final List<Long> soortIds;
@@ -33,14 +40,9 @@ public enum HoofdSoort {
         return soortIds;
     }
 
-    public static HoofdSoort getFromRas(Ras ras) {
-        if (ras == null || ras.getSoort() == null) return null;
-        for (HoofdSoort hoofdSoort : values()) {
-            if (hoofdSoort.soortIds.contains(ras.getSoort().getId())) {
-                return hoofdSoort;
-            }
-        }
-        return null;
+    public static List<HoofdSoort> getFromRas(Ras ras) {
+        if (ras == null || ras.getSoort() == null) return Collections.emptyList();
+        return Arrays.stream(values()).filter(s -> s.soortIds.contains(ras.getSoort().getId())).toList();
     }
 }
 

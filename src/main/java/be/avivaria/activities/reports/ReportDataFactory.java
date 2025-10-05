@@ -392,16 +392,12 @@ public class ReportDataFactory {
         }
         // divide hokken into hokken per deelnemer per hoofsoort
         for (Hok hok : hokken) {
-            HoofdSoort hoofdSoort = HoofdSoort.getFromRas(hok.getInschrijvingLijn().getRas());
-            if (hoofdSoort != null) {
+            List<HoofdSoort> hoofdSoorten = HoofdSoort.getFromRas(hok.getInschrijvingLijn().getRas());
+            hoofdSoorten.forEach(hoofdSoort -> {
                 Map<Deelnemer, List<Hok>> deelnemerListMap = mapping.get(hoofdSoort);
                 Deelnemer deelnemer = hok.getInschrijvingLijn().getInschrijving().getDeelnemer();
-                deelnemerListMap.computeIfAbsent(deelnemer, k -> new ArrayList<>());
-                List<Hok> deelnemerHokken = deelnemerListMap.get(deelnemer);
-                deelnemerHokken.add(hok);
-            } else {
-                System.out.println("Geen hoofdsoort voor " + hok.getInschrijvingLijn().getRas().getSoort());
-            }
+                deelnemerListMap.computeIfAbsent(deelnemer, k -> new ArrayList<>()).add(hok);
+            });
         }
 
         List<KampioenReportDecorator> results = new ArrayList<>();

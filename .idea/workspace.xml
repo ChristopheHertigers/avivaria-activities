@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="bugfix kampioenen">
+    <list default="true" id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="predicaten en prijslabels">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/prijslabels.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/prijslabels.jrxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/PredicaatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/gui/PredicaatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/HoofdSoort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/model/HoofdSoort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/ReportDataFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/ReportDataFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,33 +30,35 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.activities [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.activities [install].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.activities [package].executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.ActivitiesApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/christophe/projects/avivaria/activities&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Maven.activities [clean].executor": "Run",
+    "Maven.activities [compile].executor": "Run",
+    "Maven.activities [install].executor": "Run",
+    "Maven.activities [package].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.ActivitiesApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/christophe/projects/avivaria/activities",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Spring Boot.ActivitiesApplication">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="be.avivaria.activities.Main" />
@@ -84,7 +87,7 @@
       </method>
     </configuration>
     <configuration name="ActivitiesApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" activateToolWindowBeforeRun="false" nameIsGenerated="true">
-      <module name="activities (2)" />
+      <module name="activities" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="be.avivaria.activities.ActivitiesApplication" />
       <method v="2">
         <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="package" />
@@ -103,8 +106,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.19072.14" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.19072.14" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
       </set>
     </attachedChunks>
   </component>
@@ -121,6 +124,7 @@
       <workItem from="1731011938550" duration="9462000" />
       <workItem from="1731224826988" duration="4611000" />
       <workItem from="1731396869266" duration="636000" />
+      <workItem from="1759670399308" duration="5233000" />
     </task>
     <task id="LOCAL-00001" summary="versie 3.0.0">
       <option name="closed" value="true" />
@@ -170,7 +174,23 @@
       <option name="project" value="LOCAL" />
       <updated>1731099284107</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="predicaten en prijslabels">
+      <option name="closed" value="true" />
+      <created>1759670486435</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1759670486435</updated>
+    </task>
+    <task id="LOCAL-00008" summary="predicaten en prijslabels">
+      <option name="closed" value="true" />
+      <created>1759670507606</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1759670507606</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +225,7 @@
     <MESSAGE value="versie 3.3.0" />
     <MESSAGE value="versie 3.3.1" />
     <MESSAGE value="bugfix kampioenen" />
-    <option name="LAST_COMMIT_MESSAGE" value="bugfix kampioenen" />
+    <MESSAGE value="predicaten en prijslabels" />
+    <option name="LAST_COMMIT_MESSAGE" value="predicaten en prijslabels" />
   </component>
 </project>
