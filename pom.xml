@@ -10,7 +10,7 @@
     </parent>
     <groupId>be.indigo-solutions.avivaria</groupId>
     <artifactId>activities</artifactId>
-    <version>3.4.0</version>
+    <version>3.4.2</version>
     <name>activities</name>
     <description>Avivaria Activiteiten</description>
     <properties>

@@ -143,21 +143,22 @@ public class ReportDataFactory {
         int i = 0;
         int currentHeight = SOORT_HEADER;
         for (RecordHeight soort : recordHeights) {
+            // always add a break after soort
+            currentHeight = SOORT_HEADER;
             if (soort.height <= PAGE_HEIGHT) {
                 System.out.println(soort.group + " fits on page, no split [" + soort.height + "/" + PAGE_HEIGHT + "]");
 
                 while (i < palmares.size() && soort.group.equals(palmares.get(i).getSoort())) {
                     i++;
                 }
-                // always add a break after soort
-                currentHeight = SOORT_HEADER;
 
             } else {
                 System.out.println(soort.group + " does not fit on page, need to split. HELP! [" + soort.height + "/" + PAGE_HEIGHT + "]");
 
                 for (RecordHeight ras : soort.children) {
-                    if (ras.height <= (PAGE_HEIGHT - SOORT_HEADER - currentHeight)) {
-                        System.out.println(ras.group + " fits on current page, phew [" + ras.height + "/" + (PAGE_HEIGHT - SOORT_HEADER - currentHeight) + "]");
+                    System.out.println("Current height: " + currentHeight);
+                    if (ras.height <= (PAGE_HEIGHT - currentHeight)) {
+                        System.out.println(ras.group + " fits on current page, phew [" + ras.height + "/" + (PAGE_HEIGHT - currentHeight) + "]");
                         while (i < palmares.size() && ras.group.equals(palmares.get(i).getRas())) {
                             i++;
                         }
@@ -176,9 +177,26 @@ public class ReportDataFactory {
                     } else {
                         System.out.println(ras.group + " does not fit on page, need to split. NO NO NO! [" + ras.height + "/" + (PAGE_HEIGHT - SOORT_HEADER) + "]");
 
+//                        Antwerpse baardkriel does not fit on page, need to split. NO NO NO! [658/642]
+//                        checking blauw with height 52 / 91
+//                        blauw fits on current page, man man [52/91]
+//                        checking blauw gezoomd with height 82 / 39
+//                        blauw gezoomd fits on page, man man [82/618]
+//                        checking duizendkleur with height 112 / 536
+//                        duizendkleur fits on current page, man man [112/536]
+//                        checking kwartel with height 112 / 424
+//                        kwartel fits on current page, man man [112/424]
+//                        checking parelgrijskwartel with height 112 / 312
+//                        parelgrijskwartel fits on current page, man man [112/312]
+//                        checking splash with height 52 / 200
+//                        splash fits on current page, man man [52/200]
+//                        checking zwart with height 112 / 148
+//                        zwart fits on current page, man man [112/148]
+
                         for (RecordHeight kleur : ras.children) {
+                            System.out.println("checking " + kleur.group + " with height " + kleur.height + " / " + (PAGE_HEIGHT - SOORT_HEADER - RAS_HEADER - currentHeight));
                             if (kleur.height <= (PAGE_HEIGHT - SOORT_HEADER - RAS_HEADER - currentHeight)) {
-                                System.out.println(kleur.group + " fits on current page, man man [" + kleur.height + "/" + (PAGE_HEIGHT - SOORT_HEADER - RAS_HEADER) + "]");
+                                System.out.println(kleur.group + " fits on current page, man man [" + kleur.height + "/" + (PAGE_HEIGHT - SOORT_HEADER - RAS_HEADER - currentHeight) + "]");
                                 while (i < palmares.size() && kleur.group.equals(palmares.get(i).getKleur())) {
                                     i++;
                                 }

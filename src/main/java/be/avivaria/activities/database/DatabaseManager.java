@@ -87,7 +87,8 @@ public class DatabaseManager {
     }
 
     List<String> getUpgradeScripts() throws URISyntaxException, IOException {
-        return getScripts().stream().filter(s -> s.startsWith("upgrade-")).collect(Collectors.toList());
+        return Collections.emptyList(); //todo
+        //return getScripts().stream().filter(s -> s.startsWith("upgrade-")).collect(Collectors.toList());
     }
 
     List<String> getScripts() throws URISyntaxException, IOException {

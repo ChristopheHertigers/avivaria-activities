@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="extra hoofdsoorten voor provinciale wedstrijd">
+    <list default="true" id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="fix export">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/prijslabels.jrxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jasperreports/be/avivaria/activities/reports/prijslabels.jrxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/DatabaseManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/ReportDataFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/ReportDataFactory.java" afterDir="false" />
     </list>
@@ -99,8 +99,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
       </set>
     </attachedChunks>
   </component>
@@ -120,6 +120,10 @@
       <workItem from="1759670399308" duration="7225000" />
       <workItem from="1759848828927" duration="1117000" />
       <workItem from="1760187232927" duration="10524000" />
+      <workItem from="1760349736035" duration="50000" />
+      <workItem from="1761330205723" duration="4577000" />
+      <workItem from="1761995651433" duration="1000" />
+      <workItem from="1762011103094" duration="4267000" />
     </task>
     <task id="LOCAL-00001" summary="versie 3.0.0">
       <option name="closed" value="true" />
@@ -193,7 +197,23 @@
       <option name="project" value="LOCAL" />
       <updated>1759677123766</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fix voor prijslabels">
+      <option name="closed" value="true" />
+      <created>1760349780642</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1760349780642</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fix export">
+      <option name="closed" value="true" />
+      <created>1761330534987</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1761330534987</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -230,6 +250,8 @@
     <MESSAGE value="bugfix kampioenen" />
     <MESSAGE value="predicaten en prijslabels" />
     <MESSAGE value="extra hoofdsoorten voor provinciale wedstrijd" />
-    <option name="LAST_COMMIT_MESSAGE" value="extra hoofdsoorten voor provinciale wedstrijd" />
+    <MESSAGE value="fix voor prijslabels" />
+    <MESSAGE value="fix export" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix export" />
   </component>
 </project>
