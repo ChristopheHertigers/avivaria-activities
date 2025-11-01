@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="fix export">
+    <list default="true" id="ab5fc8c2-2bef-4699-9ec9-e15221ca57cd" name="Changes" comment="fix palmares">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/database/DatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/ReportDataFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/be/avivaria/activities/reports/ReportDataFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +120,7 @@
       <workItem from="1760349736035" duration="50000" />
       <workItem from="1761330205723" duration="4577000" />
       <workItem from="1761995651433" duration="1000" />
-      <workItem from="1762011103094" duration="4267000" />
+      <workItem from="1762011103094" duration="5620000" />
     </task>
     <task id="LOCAL-00001" summary="versie 3.0.0">
       <option name="closed" value="true" />
@@ -213,7 +210,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761330534987</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="fix palmares">
+      <option name="closed" value="true" />
+      <created>1762018477717</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1762018477717</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,6 +257,7 @@
     <MESSAGE value="extra hoofdsoorten voor provinciale wedstrijd" />
     <MESSAGE value="fix voor prijslabels" />
     <MESSAGE value="fix export" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix export" />
+    <MESSAGE value="fix palmares" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix palmares" />
   </component>
 </project>

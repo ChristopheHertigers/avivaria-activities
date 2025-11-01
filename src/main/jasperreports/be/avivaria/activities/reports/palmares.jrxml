@@ -97,7 +97,7 @@
 		<element kind="image" uuid="6e3a263a-7aa8-4564-b872-eea4ef1de82d" x="1" y="1" width="76" height="76">
 			<expression><![CDATA["logo.jpg"]]></expression>
 		</element>
-		<element kind="textField" uuid="d185e45d-3c05-463d-8f86-f375c518b736" x="93" y="0" width="462" height="50" fontSize="16.0" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" uuid="d185e45d-3c05-463d-8f86-f375c518b736" x="110" y="0" width="430" height="50" fontSize="16.0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$P{EVENT_NAME}]]></expression>
 		</element>
 		<element kind="textField" uuid="7ef1b224-f92d-4d1e-8b5e-7086a4d1b63d" x="93" y="50" width="462" height="27" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">

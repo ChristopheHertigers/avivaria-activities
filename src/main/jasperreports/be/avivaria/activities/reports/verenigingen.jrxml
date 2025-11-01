@@ -28,8 +28,10 @@
 		<element kind="image" uuid="3a86f802-8de4-4d14-8bd5-93bac5658e19" x="1" y="1" width="76" height="76">
 			<expression><![CDATA["logo.jpg"]]></expression>
 		</element>
-		<element kind="textField" uuid="c6ad6ba6-31ef-4f57-b343-b09a9ae92f54" x="93" y="0" width="462" height="50" fontSize="16.0" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" uuid="c6ad6ba6-31ef-4f57-b343-b09a9ae92f54" x="110" y="0" width="430" height="50" fontSize="16.0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$P{EVENT_NAME}]]></expression>
+			<property name="com.jaspersoft.studio.unit.x" value="px"/>
+			<property name="com.jaspersoft.studio.unit.width" value="px"/>
 		</element>
 		<element kind="textField" uuid="b07ea6e3-52ed-428a-9f1d-c371b1a5f9e9" x="93" y="51" width="462" height="27" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$P{EVENT_ADDRESS}]]></expression>
